@@ -1,0 +1,6 @@
+@gcapi_HostAddress = http://localhost:5017
+
+GET {{gcapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
