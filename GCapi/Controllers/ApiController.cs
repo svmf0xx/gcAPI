@@ -17,7 +17,7 @@ using gcapi.Dto;
 
 namespace gcapi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class ApiController : ControllerBase
     {
