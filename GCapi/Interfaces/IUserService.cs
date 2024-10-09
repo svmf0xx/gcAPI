@@ -6,6 +6,7 @@ namespace gcapi.Interfaces
     {
         public Task RegisterUser(UserModel user);
         public Task UpdateUserData(UserModel user);
-        public Task<bool> LogIn(string login, string passwd);
+        public Task<bool> LogInCheck(string login, string passwd);
+        Task<IEnumerable<UserModel>> GetAllUsersAsync();
     }
 }

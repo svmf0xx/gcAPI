@@ -33,11 +33,18 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
-        [Route("GetEvents")]
+        [Route("GetAllEvents")]
         public async Task<IEnumerable<EventModel>> GetEvents()
         {
             var evs = await _eventRepository.GetAllEventsAsync();
             return evs;
+        }
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public async Task<IEnumerable<UserModel>> GetUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return users;
         }
 
         [HttpPost]
@@ -48,7 +55,7 @@ namespace gcapi.Controllers
             {
                 EventHeader = ev.EventHeader,
                 EventDescription = ev.EventDescription,
-                EventUsers = ev.EventUsers,
+                EventUsersId = ev.EventUsersId,
             };
 
             await _eventRepository.AddEventAsync(newEv);
@@ -71,8 +78,8 @@ namespace gcapi.Controllers
         }
 
         [HttpPost]
-        [Route("Login")]
-        public async Task<bool> LogIn(LogInDto loginData)
+        [Route("LoginCheck")]
+        public async Task<bool> LogInCheck(LogInDto loginData)
         {
 
             if (loginData == null)
@@ -80,8 +87,7 @@ namespace gcapi.Controllers
                 return false;
             }
 
-            bool result = await _userService.LogIn(loginData.Login, loginData.Password);
-
+            bool result = await _userService.LogInCheck(loginData.Login, loginData.Password);
             return result;
             
         }

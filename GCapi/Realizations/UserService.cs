@@ -15,6 +15,10 @@ namespace gcapi.Realizations
             _context = context;
         }
 
+        public async Task<IEnumerable<UserModel>> GetAllUsersAsync()
+        {
+            return await _context.UserTable.ToListAsync();
+        }
         private (string hash, string salt) HashPassword(string passwd)
         {
 
@@ -68,7 +72,7 @@ namespace gcapi.Realizations
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> LogIn(string login, string passwd)
+        public async Task<bool> LogInCheck(string login, string passwd)
         {
             var user = await _context.UserTable.FirstOrDefaultAsync(user => user.Login == login);
             if (user == null) return false;
