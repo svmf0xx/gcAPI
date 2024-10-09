@@ -1,4 +1,4 @@
-using gcapi.db;
+using gcapi.DataBase;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Repos;
 using gcapi.Realizations;
@@ -31,7 +31,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<Context>(options =>
+builder.Services.AddDbContext<gContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //DI Containers

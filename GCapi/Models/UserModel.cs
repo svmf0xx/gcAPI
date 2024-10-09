@@ -7,12 +7,10 @@ namespace gcapi.Models
     {
         public Guid Id { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required] [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required] [MaxLength(50)]
         public string SecondName { get; set; }
 
         [EmailAddress]
@@ -23,13 +21,12 @@ namespace gcapi.Models
 
 
         //Аккаунт
-        [Required]
-        [MaxLength(50)]
+        [Required] [MaxLength(50)]
         public string Login { get; set; }
-
-        [Required]
-        [MaxLength(50)]
+        
+        [Required] [MaxLength(50)]
         public string PasswordHash { get; set; }
+
         public string? Salt { get; set; }
         public Roles? Role { get; set; } = Roles.User;
     }
