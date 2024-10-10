@@ -18,6 +18,7 @@ namespace gcapi.Models
         public string? Phone { get; set; }
         public string? TelegramId { get; set; }
         public List<Guid>? UserEventsId { get; set; } = new List<Guid>();
+        public List<Guid>? UserGroupsIds { get; set; } = new List<Guid>();
 
 
         //Аккаунт

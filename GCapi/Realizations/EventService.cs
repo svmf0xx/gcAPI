@@ -1,17 +1,17 @@
 ﻿using gcapi.DataBase;
 using gcapi.Dto;
-using gcapi.Interfaces.Repos;
+using gcapi.Interfaces;
 using gcapi.Models;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using System.Threading.Tasks;
-namespace gcapi.Realizations.Repos
+namespace gcapi.Realizations
 {
-    public class EventRepository : IEventRepository
+    public class EventService : IEventService
     {
         private readonly gContext _context;
-        public EventRepository(gContext context)
+        public EventService(gContext context)
         {
             _context = context;
         }

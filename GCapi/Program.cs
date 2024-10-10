@@ -1,8 +1,6 @@
 using gcapi.DataBase;
 using gcapi.Interfaces;
-using gcapi.Interfaces.Repos;
 using gcapi.Realizations;
-using gcapi.Realizations.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -35,8 +33,9 @@ builder.Services.AddDbContext<gContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //DI Containers
-builder.Services.AddTransient<IEventRepository, EventRepository>();
+builder.Services.AddTransient<IEventService, EventService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IGroupService, GroupService>();
 
 
 var app = builder.Build();

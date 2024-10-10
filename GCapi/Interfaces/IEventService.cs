@@ -1,8 +1,8 @@
 ﻿using gcapi.Models;
 
-namespace gcapi.Interfaces.Repos
+namespace gcapi.Interfaces
 {
-    public interface IEventRepository
+    public interface IEventService
     {
         public Task<IEnumerable<EventModel>> GetAllEventsAsync();
         public Task<IEnumerable<EventModel>> GetEventsByIdsAsync(List<Guid> ids);

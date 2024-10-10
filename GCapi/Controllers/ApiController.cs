@@ -11,7 +11,6 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.SignalR;
-using gcapi.Interfaces.Repos;
 using gcapi.Interfaces;
 using gcapi.Dto;
 
@@ -22,14 +21,16 @@ namespace gcapi.Controllers
     public class ApiController : ControllerBase
     {
         private readonly ILogger<ApiController> _logger;
-        private readonly IEventRepository _eventRepository;
+        private readonly IEventService _eventRepository;
         private readonly IUserService _userService;
+        private readonly IGroupService _groupService;
 
-        public ApiController(IEventRepository eventRepository, ILogger<ApiController> logger, IUserService userService)
+        public ApiController(IEventService eventRepository, ILogger<ApiController> logger, IUserService userService, IGroupService groupService)
         {
             _eventRepository = eventRepository;
             _userService = userService;
             _logger = logger;
+            _groupService = groupService;
         }
 
         [HttpGet]
@@ -142,6 +143,49 @@ namespace gcapi.Controllers
             bool result = await _userService.LogInCheck(loginData.Login, loginData.Password);
             return result;
 
+        }
+
+
+        [HttpGet]
+        [Route("GetAllGroups")]
+        public async Task<List<GroupModel>> GetAllGroupsAsync()
+        {
+            return await _groupService.GetAllGroups();
+        }
+
+        [HttpPost]
+        [Route("GetUsersFromGroup")]
+        public async Task<List<UserModel>> GetUsersFromGroupAsync(Guid grId)
+        {
+            return await _groupService.GetUsersFromGroup(grId);
+        }
+
+        [HttpPost]
+        [Route("GetUserGroupsByLogin")]
+        public async Task<List<GroupModel>> GetUserGroupsByLoginAsync(string login)
+        {
+            return await _groupService.GetUserGroupsByLogin(login);
+        }
+
+        [HttpPost]
+        [Route("AddGroup")]
+        public async Task AddGroup(GroupDto gr)
+        {
+            await _groupService.AddGroud(gr);
+        }
+
+        [HttpPost]
+        [Route("EditGroup")]
+        public async Task<bool> EditGroup(GroupDto gr)
+        {
+            return await _groupService.EditGroud(gr);
+        }
+
+        [HttpPost]
+        [Route("RemoveGroup")]
+        public async Task RemoveGroup(GroupDto gr)
+        {
+            await _groupService.RemoveGroud(gr);
         }
     }
 }
