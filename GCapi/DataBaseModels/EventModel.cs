@@ -17,6 +17,6 @@ namespace gcapi.Models
 
 
         [NotMapped] public List<ReactionModel>? Reactions { get; set; } = new List<ReactionModel>();
-        [NotMapped] public ThemeData ThemeData { get; set; } = new ThemeData(); // мне кажется я сделал супер тупо
+        [NotMapped] public EventStyleData ThemeData { get; set; } = new EventStyleData(); // мне кажется я сделал супер тупо
     }
 }

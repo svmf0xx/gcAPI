@@ -18,7 +18,7 @@ namespace gcapi.DataBase
         {
             modelBuilder.Entity<ReactionModel>()
                 .HasNoKey();
-            modelBuilder.Entity<ThemeData>()
+            modelBuilder.Entity<EventStyleData>()
                 .HasNoKey();
 
             modelBuilder.Entity<EventModel>()
