@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using gcapi.Models;
+using gcapi.DataBaseModels;
 
 namespace gcapi.DataBase
 {

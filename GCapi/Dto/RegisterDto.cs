@@ -15,11 +15,12 @@ namespace gcapi.Dto
         [EmailAddress]
         public string? Email { get; set; }
         public string? Phone { get; set; }
-        public string? TelegramId { get; set; }
+        public long? TgId { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(16)]
         public string Login { get; set; }
+
 
         [Required]
         [MaxLength(50)]

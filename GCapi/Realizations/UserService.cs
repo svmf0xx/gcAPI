@@ -1,4 +1,5 @@
 ﻿using gcapi.DataBase;
+using gcapi.DataBaseModels;
 using gcapi.Dto;
 using gcapi.Interfaces;
 using gcapi.Models;
@@ -64,7 +65,7 @@ namespace gcapi.Realizations
                 SecondName = user.SecondName,
                 Email = user.Email,
                 Phone = user.Phone,
-                TelegramId = user.TelegramId
+                TgId = user.TgId
             };
 
             _context.UserTable.Add(newUser);
@@ -80,7 +81,7 @@ namespace gcapi.Realizations
                 existingUser.SecondName = user.SecondName;
                 existingUser.Email = user.Email;
                 existingUser.Phone = user.Phone;
-                existingUser.TelegramId = user.TelegramId;
+                existingUser.TgId = user.TgId;
                 await _context.SaveChangesAsync();
                 return true;
             }

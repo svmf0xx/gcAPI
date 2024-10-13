@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using Microsoft.AspNetCore.SignalR;
 using gcapi.Interfaces;
 using gcapi.Dto;
+using gcapi.DataBaseModels;
 
 namespace gcapi.Controllers
 {

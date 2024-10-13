@@ -6,11 +6,12 @@ namespace gcapi.Dto
     {
         public string Login { get; set; }
         public string FirstName { get; set; }
-        public string SecondName { get; set; }
+        public string? SecondName { get; set; }
+
         [EmailAddress]
         public string? Email { get; set; }
         public string? Phone { get; set; }
-        public string? TelegramId { get; set; }
-        public List<Guid> UserGroupsIds { get; set; } = new List<Guid>();
+        public long? TgId { get; set; }
+        public List<Guid> UserGroupsIds { get; set; } = [];
     }
 }

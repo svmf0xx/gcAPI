@@ -4,6 +4,7 @@ using gcapi.Models;
 using Microsoft.EntityFrameworkCore;
 using gcapi.Dto;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using gcapi.DataBaseModels;
 
 namespace gcapi.Realizations
 {
