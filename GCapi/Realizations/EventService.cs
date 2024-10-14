@@ -25,8 +25,8 @@ namespace gcapi.Realizations
         {
             var newEv = new EventModel
             {
-                EventHeader = ev.EventHeader,
-                EventDescription = ev.EventDescription,
+                Name = ev.Name,
+                Description = ev.Description,
                 EventUsersLogins = ev.EventUsersLogins
             };
             var eventUsers = await _context.UserTable
@@ -52,8 +52,8 @@ namespace gcapi.Realizations
 
             if (existingEv != null)
             {
-                existingEv.EventHeader = ev.EventHeader;
-                existingEv.EventDescription = ev.EventDescription;
+                existingEv.Name = ev.Name;
+                existingEv.Description = ev.Description;
                 existingEv.EventUsersLogins = ev.EventUsersLogins;
                 var currentUsers = await _context.UserTable
                                 .Where(u => u.UserEventsId.Contains(existingEv.Id))

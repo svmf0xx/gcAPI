@@ -71,8 +71,8 @@ namespace gcapi.Controllers
         {
             var newEv = new EventModel
             {
-                EventHeader = ev.EventHeader,
-                EventDescription = ev.EventDescription,
+                Name = ev.Name,
+                Description = ev.Description,
                 EventUsersLogins = ev.EventUsersLogins,
             };
 

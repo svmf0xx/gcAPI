@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using gcapi.Models;
 using gcapi.DataBaseModels;
+using gcapi.Interfaces;
 
 namespace gcapi.DataBase
 {
@@ -19,7 +20,7 @@ namespace gcapi.DataBase
         {
             modelBuilder.Entity<ReactionModel>()
                 .HasNoKey();
-            modelBuilder.Entity<EventStyleData>()
+            modelBuilder.Entity<IEventStyle>()
                 .HasNoKey();
 
             modelBuilder.Entity<EventModel>()
