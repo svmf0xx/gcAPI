@@ -22,9 +22,9 @@ namespace gcapi.Realizations
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<UserModel>> GetAllUsersAsync()
+        async public Task<IEnumerable<UserModel>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.UserTable.ToListAsync();
         }
 
         public Task<bool> LogInCheck(string login, string passwd)
