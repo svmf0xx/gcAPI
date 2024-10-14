@@ -23,35 +23,14 @@ namespace gcapi.DataBaseModels
         public string? Phone { get; set; }
         public long? TgId { get; set; }
 
-        /// <summary>
-        /// DEPRICATED!!!
-        /// </summary>
-        public List<Guid> UserEventsId { get; set; } = []; //а зачем
-
-        /// <summary>
-        /// DEPRICATED!!!
-        /// </summary>
-        public List<Guid> UserGroupsIds { get; set; } = []; //типа если указать модель, в базу и так вставится ссылка на элемент
-
-
-
         public List<GroupModel> Groups { get; set; } = [];
-
         public List<ICalendarObject> CalendarObjects { get; set; } = [];
-
-
 
         //Аккаунт
         [Required]
         [MaxLength(16)]
-        public required string Login { get; set; }
+        public required string Username { get; set; } //@vlad
 
-
-        [Required]
-        [MaxLength(50)]
-        public required string PasswordHash { get; set; } //мб вообще отказаться от пароля, сделать вход только по одноразовым кодам, это +100 к крутости и безопасности
-
-        public string? Salt { get; set; } //обычно же соль является частью пароля, а не отдельная записб
         public Roles? Role { get; set; } = Roles.User;
     }
 }
