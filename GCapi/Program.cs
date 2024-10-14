@@ -1,9 +1,11 @@
 using gcapi.DataBase;
 using gcapi.Interfaces;
 using gcapi.Realizations;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +39,6 @@ builder.Services.AddTransient<IEventService, EventService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IGroupService, GroupService>();
 
-
 var app = builder.Build();
 
 
@@ -51,6 +52,7 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 
