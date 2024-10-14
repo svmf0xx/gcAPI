@@ -18,11 +18,11 @@ namespace gcapi.Models
         public DateTime DateTimeFrom { get; set; }
         public DateTime DateTimeTo { get; set; }
         public required string Name { get; set; }
-        public required IEventStyle Style { get; set; }
 
         public string? Description { get; set; }
         
         public required Visible Visible { get; set; }
-
+        public EventColor Color { get; set; }
+        public string Emoji { get; set; }
     }
 }

@@ -1,10 +1,13 @@
-﻿using System.Drawing;
+﻿using gcapi.Enums;
+using System.Drawing;
 
 namespace gcapi.Interfaces
 {
     public class IEventStyle
     {
-        public Color Color { get; set; } = Color.White;
+        public EventColor Color { get; set; } = EventColor.White; //блин, Color не хочет сохраняться в базе напрямую, пришлось поменять на енум
+
+
         public string Emoji { get; set; } = "🎉"; // хмм
         //а зачем? Это типа настройки внешнего вида, которые вообще могут храниться в куки, а не в бд
         //плюс тут не должна храниться аватарка пользователя

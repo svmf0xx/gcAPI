@@ -24,7 +24,8 @@ namespace gcapi.DataBaseModels
         public long? TgId { get; set; }
 
         public List<GroupModel> Groups { get; set; } = [];
-        public List<ICalendarObject> CalendarObjects { get; set; } = [];
+        public List<PlanModel> Plans { get; set; } = [];
+        public List<EventModel> Events { get; set; } = [];
 
         //Аккаунт
         [Required]

@@ -14,17 +14,29 @@ using Microsoft.AspNetCore.SignalR;
 using gcapi.Interfaces;
 using gcapi.Dto;
 using gcapi.DataBaseModels;
+using gcapi.Realizations;
 
 namespace gcapi.Controllers
 {
     [Route("api/")]
     [ApiController]
-    public class ApiController : ControllerBase
+    public class ApiController(IEventService eventRepository, ILogger<ApiController> logger, IUserService userService, IGroupService groupService) : ControllerBase
     {
-        private readonly ILogger<ApiController> _logger;
-        private readonly IEventService _eventRepository;
-        private readonly IUserService _userService;
-        private readonly IGroupService _groupService;
+        private readonly ILogger<ApiController> _logger = logger;
+        private readonly IEventService _eventRepository = eventRepository;
+        private readonly IUserService _userService = userService;
+        private readonly IGroupService _groupService = groupService;
+
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public async Task<IEnumerable<UserModel>> GetUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return users;
+        }
 
     }
+
+
+   
 }

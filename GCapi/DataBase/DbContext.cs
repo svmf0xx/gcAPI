@@ -2,6 +2,7 @@
 using gcapi.Models;
 using gcapi.DataBaseModels;
 using gcapi.Interfaces;
+using System.Reflection.Metadata;
 
 namespace gcapi.DataBase
 {
@@ -18,15 +19,20 @@ namespace gcapi.DataBase
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ReactionModel>()
-                .HasNoKey();
-            modelBuilder.Entity<IEventStyle>()
-                .HasNoKey();
+            modelBuilder.Entity<UserModel>()
+            .HasMany(e => e.Groups)
+            .WithMany(e => e.GroupUsers);
 
-            modelBuilder.Entity<EventModel>()
-                .HasOne(e => e.Group)
-                .WithMany(g => g.GroupEvents)
-                .HasForeignKey(e => e.Id);
+
+            //modelBuilder.Entity<ReactionModel>()
+            //    .HasNoKey();
+            //modelBuilder.Entity<IEventStyle>()
+            //    .HasNoKey();
+
+            //modelBuilder.Entity<EventModel>()
+            //    .HasOne(e => e.Group)
+            //    .WithMany(g => g.GroupEvents)
+            //    .HasForeignKey(e => e.Id);
 
             base.OnModelCreating(modelBuilder);
         }
