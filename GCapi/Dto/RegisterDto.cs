@@ -19,11 +19,6 @@ namespace gcapi.Dto
 
         [Required]
         [MaxLength(16)]
-        public string Login { get; set; }
-
-
-        [Required]
-        [MaxLength(50)]
-        public string Password { get; set; }
+        public string Username { get; set; }
     }
 }

@@ -11,19 +11,19 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.SignalR;
-using gcapi.Interfaces;
 using gcapi.Dto;
 using gcapi.DataBaseModels;
 using gcapi.Realizations;
+using gcapi.Interfaces.Services;
 
 namespace gcapi.Controllers
 {
-    [Route("api/")]
+    [Route("api/Users")]
     [ApiController]
-    public class ApiController(IEventService eventRepository, ILogger<ApiController> logger, IUserService userService, IGroupService groupService) : ControllerBase
+    public class UsersController(ICalendarObjectService eventRepository, ILogger<UsersController> logger, IUserService userService, IGroupService groupService) : ControllerBase
     {
-        private readonly ILogger<ApiController> _logger = logger;
-        private readonly IEventService _eventRepository = eventRepository;
+        private readonly ILogger<UsersController> _logger = logger;
+        private readonly ICalendarObjectService _eventRepository = eventRepository;
         private readonly IUserService _userService = userService;
         private readonly IGroupService _groupService = groupService;
 

@@ -1,11 +1,9 @@
 using gcapi.DataBase;
-using gcapi.Interfaces;
+using gcapi.Interfaces.Services;
 using gcapi.Realizations;
-using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,9 +33,10 @@ builder.Services.AddDbContext<gContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //DI Containers
-builder.Services.AddTransient<IEventService, EventService>();
+builder.Services.AddTransient<ICalendarObjectService, CalendarObjectService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IGroupService, GroupService>();
+
 
 var app = builder.Build();
 
@@ -52,7 +51,6 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 
 app.MapControllers();
 

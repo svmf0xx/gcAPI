@@ -4,7 +4,7 @@ namespace gcapi.Dto
 {
     public class UpdateUserDto
     {
-        public string Login { get; set; }
+        public string Username { get; set; }
         public string FirstName { get; set; }
         public string? SecondName { get; set; }
 
@@ -12,6 +12,5 @@ namespace gcapi.Dto
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public long? TgId { get; set; }
-        public List<Guid> UserGroupsIds { get; set; } = [];
     }
 }

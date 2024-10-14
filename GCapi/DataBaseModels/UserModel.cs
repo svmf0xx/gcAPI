@@ -20,7 +20,7 @@ namespace gcapi.DataBaseModels
 
         [EmailAddress]
         public string? Email { get; set; }
-        public string? Phone { get; set; }
+       // public string? Phone { get; set; } а зачем телефон вообще
         public long? TgId { get; set; }
 
         public List<GroupModel> Groups { get; set; } = [];

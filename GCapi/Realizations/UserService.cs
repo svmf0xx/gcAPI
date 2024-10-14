@@ -1,11 +1,8 @@
 ﻿using gcapi.DataBase;
 using gcapi.DataBaseModels;
 using gcapi.Dto;
-using gcapi.Interfaces;
-using gcapi.Models;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using gcapi.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace gcapi.Realizations
 {
@@ -17,9 +14,19 @@ namespace gcapi.Realizations
             _context = context;
         }
 
-        public Task<bool> EditUser(UpdateUserDto user)
+        public async Task<bool> EditUser(UpdateUserDto user)
         {
-            throw new NotImplementedException();
+            var theUser = await _context.UserTable.FindAsync(user.Username);
+            if (theUser != null)
+            {
+                theUser.FirstName = user.FirstName;
+                theUser.SecondName = user.SecondName;
+                theUser.Email = user.Email;
+                //theUser.Phone = user.Phone;
+                theUser.TgId = user.TgId;
+                return true;
+            }
+            return false;
         }
 
         async public Task<IEnumerable<UserModel>> GetAllUsersAsync()
@@ -27,19 +34,31 @@ namespace gcapi.Realizations
             return await _context.UserTable.ToListAsync();
         }
 
-        public Task<bool> LogInCheck(string login, string passwd)
+        public async Task RemoveUser(Guid userId)
         {
-            throw new NotImplementedException();
-        }
+            UserModel theUser = await _context.UserTable.FindAsync(userId);
+            if (theUser != null)
+            {
+                var theGroups = await _context.GroupsTable.Where(g => theUser.Groups.Contains(g)).ToListAsync();
+                var theEvents = await _context.EventTable.Where(ev => theUser.Events.Contains(ev)).ToListAsync();
+                foreach (var ev in theEvents)
+                {
+                    var r = ev.Reactions.Find(r => r.OwnerId == theUser.Id);
+                    if (r != null)
+                    {
+                        ev.Reactions.Remove(r);
+                        _context.Update(ev);
+                    }
 
-        public Task RegisterUser(RegisterDto user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveUser(UpdateUserDto user)
-        {
-            throw new NotImplementedException();
+                }
+                foreach (var gr in theGroups)
+                {
+                    gr.GroupUsers.Remove(theUser);
+                    _context.Update(gr);
+                }
+                
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

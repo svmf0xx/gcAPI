@@ -14,6 +14,7 @@ namespace gcapi.Models
     {
         [Key]
         public Guid Id { get; set; }
+        public CalendarObjectType Type { get; set; } = CalendarObjectType.Plan; //ладно это не будет работать так как я хотел
         public required UserModel Owner { get; set; }
         public DateTime DateTimeFrom { get; set; }
         public DateTime DateTimeTo { get; set; }
