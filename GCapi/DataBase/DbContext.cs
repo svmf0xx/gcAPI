@@ -26,7 +26,7 @@ namespace gcapi.DataBase
             modelBuilder.Entity<EventModel>()
                 .HasOne(e => e.Group)
                 .WithMany(g => g.GroupEvents)
-                .HasForeignKey(e => e.GroupId);
+                .HasForeignKey(e => e.Id);
 
             base.OnModelCreating(modelBuilder);
         }
