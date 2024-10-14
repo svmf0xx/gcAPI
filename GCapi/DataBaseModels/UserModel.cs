@@ -31,6 +31,8 @@ namespace gcapi.DataBaseModels
         [MaxLength(16)]
         public required string Username { get; set; } //@vlad
 
+        public string Secret { get; set; } //эта штука будет использоватсья для генерации одноразовых паролей через пакет OTP.NET, он тут самый популярный
+
         public Roles? Role { get; set; } = Roles.User;
     }
 }
