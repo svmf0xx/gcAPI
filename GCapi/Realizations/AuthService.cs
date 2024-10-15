@@ -17,6 +17,11 @@ namespace gcapi.Realizations
 
         public async Task<bool> RegisterUser(UserModel user)
         {
+            //ты типа сам не догадался сюда это вставить
+            if (user == null || user.Username == null || user.FirstName == null)
+            {
+                return false;
+            }
             try
             {
                 await _context.AddAsync(user);

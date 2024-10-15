@@ -6,11 +6,11 @@ namespace gcapi.Interfaces.Services
 {
     public interface IGroupService
     {
-        Task AddGroud(GroupDto gr);
-        Task<bool> EditGroud(GroupDto gr);
+        Task AddGroup(GroupDto gr);
+        Task<bool> EditGroup(GroupDto gr);
         Task<List<GroupModel>> GetAllGroups();
         Task<List<GroupModel>> GetUserGroups(string username);
         Task<List<UserModel>> GetUsersFromGroup(Guid id);
-        Task<bool> RemoveGroup(GroupDto gr);
+        Task<bool> RemoveGroup(Guid id);
     }
 }

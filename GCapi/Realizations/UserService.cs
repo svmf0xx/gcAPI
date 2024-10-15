@@ -9,8 +9,6 @@ namespace gcapi.Realizations
     public class UserService : IUserService
     {
         private readonly gContext _context;
-
-
         public UserService(gContext context)
         {
             _context = context;
@@ -24,7 +22,6 @@ namespace gcapi.Realizations
                 theUser.FirstName = user.FirstName;
                 theUser.SecondName = user.SecondName;
                 theUser.Email = user.Email;
-                //theUser.Phone = user.Phone;
                 theUser.TgId = user.TgId;
                 return true;
             }
@@ -41,8 +38,9 @@ namespace gcapi.Realizations
             UserModel theUser = await _context.UserTable.FindAsync(userId);
             if (theUser != null)
             {
-                var theGroups = await _context.GroupsTable.Where(g => theUser.Groups.Contains(g)).ToListAsync();
+                var theGroups = await _context.GroupTable.Where(g => theUser.Groups.Contains(g)).ToListAsync();
                 var theEvents = await _context.EventTable.Where(ev => theUser.Events.Contains(ev)).ToListAsync();
+                var thePlans = await _context.PlanTable.Where(p => theUser.Plans.Contains(p)).ToListAsync();
                 foreach (var ev in theEvents)
                 {
                     var r = ev.Reactions.Find(r => r.OwnerId == theUser.Id);
@@ -53,6 +51,12 @@ namespace gcapi.Realizations
                     }
 
                 }
+
+                foreach (var p in thePlans)
+                {
+                    _context.Remove(p);
+                }
+
                 foreach (var gr in theGroups)
                 {
                     gr.GroupUsers.Remove(theUser);

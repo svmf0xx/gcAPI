@@ -1,16 +1,12 @@
 ﻿using gcapi.DataBaseModels;
 using gcapi.Enums;
-using gcapi.Interfaces;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Net;
+using gcapi.Models;
 
-namespace gcapi.Models
+namespace gcapi.Dto
 {
-    public class EventModel : ICalendarObject
+    public class CalendarObjectDto
     {
-        [Key]
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public required UserModel Owner { get; set; }
         public DateTime DateTimeFrom { get; set; }
         public DateTime DateTimeTo { get; set; }
@@ -21,16 +17,9 @@ namespace gcapi.Models
         public required GroupModel Group { get; set; }
 
         public string? Description { get; set; }
-        
+
         public List<ReactionModel> Reactions { get; set; } = [];
 
         public required Visible Visible { get; set; }
-
-        //public List<string>? EventUsersLogins { get; set; } = new List<string>(); DEPRICATED
-
-
-        //[NotMapped]  // мне кажется я сделал супер тупо
-        //да не
-
     }
 }

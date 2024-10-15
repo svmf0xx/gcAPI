@@ -21,13 +21,10 @@ namespace gcapi.Controllers
 {
     [Route("api/Users")]
     [ApiController]
-    public class UsersController(ICalendarObjectService eventRepository, ILogger<UsersController> logger, IUserService userService, IAuthService authService, IGroupService groupService) : ControllerBase
+    public class UsersController(ILogger<UsersController> logger, IUserService userService) : ControllerBase
     {
         private readonly ILogger<UsersController> _logger = logger;
-        private readonly ICalendarObjectService _eventRepository = eventRepository;
         private readonly IUserService _userService = userService;
-        private readonly IAuthService _authService = authService;
-        private readonly IGroupService _groupService = groupService;
 
         [HttpGet]
         [Route("GetAllUsers")]
@@ -36,9 +33,19 @@ namespace gcapi.Controllers
             return await _userService.GetAllUsersAsync();
         }
 
+        [HttpPost]
+        [Route("EditUser")]
+        public async Task<bool> EditUser(UpdateUserDto user)
+        {
+            return await _userService.EditUser(user);
+        }
+
+        [HttpPost]
+        [Route("RemoveUser")]
+        public async Task RemoveUser(Guid userId)
+        {
+            await _userService.RemoveUser(userId);
+        }
 
     }
-
-
-   
 }

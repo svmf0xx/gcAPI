@@ -5,6 +5,7 @@ using gcapi.Interfaces.Services;
 using gcapi.Models;
 using Microsoft.EntityFrameworkCore;
 using gcapi.Enums;
+using gcapi.Dto;
 namespace gcapi.Realizations
 {
     public class CalendarObjectService : ICalendarObjectService
@@ -15,20 +16,47 @@ namespace gcapi.Realizations
             _context = context;
         }
 
-        public async Task AddCObjAsync(ICalendarObject obj)
+
+        public async Task AddEventAsync(CalendarObjectDto obj)
         {
-            _context.Add(obj);
+            var newEvent = new EventModel
+            {
+                Name = obj.Name,
+                DateTimeFrom = obj.DateTimeFrom,
+                DateTimeTo = obj.DateTimeTo,
+                Color = obj.Color,
+                Description = obj.Description,
+                Emoji = obj.Emoji,
+                Group = obj.Group,
+                Owner = obj.Owner,
+                Visible = obj.Visible
+            };
+            _context.Add(newEvent);
             await _context.SaveChangesAsync();
         }
 
-        public Task AddEventAsync(EventModel ev)
+        public async Task AddPlanAsync(CalendarObjectDto obj) //на фронте разберемся
         {
-            throw new NotImplementedException();
+            var newEvent = new PlanModel
+            {
+                Name = obj.Name,
+                DateTimeFrom = obj.DateTimeFrom,
+                DateTimeTo = obj.DateTimeTo,
+                Color = obj.Color,
+                Description = obj.Description,
+                Emoji = obj.Emoji,
+                Owner = obj.Owner,
+                Visible = obj.Visible
+            };
+            _context.Add(newEvent);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> EditCObjAsync(ICalendarObject obj)
+        public async Task<bool> EditEventAsync(CalendarObjectDto obj)
         {
+
             var theEvent = await _context.EventTable.FindAsync(obj.Id);
+
             if (theEvent != null)
             {
                 theEvent.Name = obj.Name;
@@ -44,27 +72,42 @@ namespace gcapi.Realizations
             return false;
         }
 
-        public Task<bool> EditEventAsync(EventModel ev)
+        public async Task<bool> EditPlanAsync(CalendarObjectDto obj)
         {
-            throw new NotImplementedException();
+
+            var thePlan = await _context.PlanTable.FindAsync(obj.Id);
+
+            if (thePlan != null)
+            {   
+                thePlan.Name = obj.Name;
+                thePlan.Description = obj.Description;
+                thePlan.DateTimeFrom = obj.DateTimeFrom;
+                thePlan.DateTimeTo = obj.DateTimeTo;
+                thePlan.Emoji = obj.Emoji;
+                thePlan.Visible = obj.Visible;
+                _context.Update(thePlan);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public async Task<IEnumerable<ICalendarObject>> GetAllCalObjectsAsync()
+        public async Task<IEnumerable<ICalendarObject>> GetAllEventsAsync()
         {
             return await _context.EventTable.ToListAsync();
         }
-
-        public Task<IEnumerable<EventModel>> GetAllEventsAsync()
+        public async Task<IEnumerable<ICalendarObject>> GetAllPlanAsync()
         {
-            throw new NotImplementedException();
+            return await _context.PlanTable.ToListAsync();
         }
 
         public async Task<IEnumerable<ICalendarObject>> GetAllUserPlansAsync(Guid userId)
         {
-            return await _context.EventTable.Where(o => o.Type == CalendarObjectType.Plan).ToListAsync();
+            var theUser = await _context.UserTable.FindAsync(userId);
+            return await _context.PlanTable.Where(p => p.Owner == theUser).ToListAsync();
         }
 
-        public async Task<EventModel> GetEventByIdAsync(Guid id)
+        public async Task<ICalendarObject> GetEventByIdAsync(Guid id)
         {
             var ev = await _context.EventTable.FindAsync(id);
             if (ev != null)
@@ -74,21 +117,26 @@ namespace gcapi.Realizations
 
         public async Task<List<EventModel>> GetUserEventsAsync(Guid userId)
         {
-            UserModel? theUser = await _context.UserTable.FindAsync(userId);
-            return theUser.Events;
+            var theUser = await _context.UserTable.FindAsync(userId);
+            if (theUser != null)
+                return theUser.Events;
+            else throw new NullReferenceException();
         }
 
         public async Task RemoveEventAsync(Guid id)
         {
-            EventModel? theEvent = await _context.EventTable.FindAsync(id);
+            var theEvent = await _context.EventTable.FindAsync(id);
             if (theEvent != null)
             {
-                var theGroups = await _context.GroupsTable.Where(g => theEvent.Group == g).ToListAsync();
+                var theGroups = await _context.GroupTable.Where(g => theEvent.Group == g).ToListAsync();
                 foreach (var r in theEvent.Reactions)
                 {
-                    UserModel u = await _context.UserTable.FindAsync(r.OwnerId);
-                    u.Events.Remove(theEvent);
-                    _context.Update(u);
+                    var u = await _context.UserTable.FindAsync(r.OwnerId);
+                    if (u != null)
+                    {
+                        u.Events.Remove(theEvent);
+                        _context.Update(u);
+                    }
                 }
                 foreach (var gr in theGroups)
                 {

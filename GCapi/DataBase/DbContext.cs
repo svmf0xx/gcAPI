@@ -14,8 +14,9 @@ namespace gcapi.DataBase
         }
 
         public DbSet<EventModel> EventTable { get; set; }
+        public DbSet<PlanModel> PlanTable { get; set; }
         public DbSet<UserModel> UserTable { get; set; }
-        public DbSet<GroupModel> GroupsTable { get; set; }
+        public DbSet<GroupModel> GroupTable { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

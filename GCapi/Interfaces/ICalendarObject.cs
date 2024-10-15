@@ -9,7 +9,6 @@ namespace gcapi.Interfaces
     {
         [Key]
         public Guid Id { get; set; }
-        public CalendarObjectType Type { get; set; } // надо же их отличать как то
         public UserModel Owner { get; set; }
 
         public DateTime DateTimeFrom { get; set; }

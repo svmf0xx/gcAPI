@@ -8,5 +8,6 @@ namespace gcapi.Models
         public required string Name { get; set; }
         public List<UserModel> GroupUsers { get; set; } = [];
         public List<EventModel> GroupEvents { get; set; } = [];
+        public List<PlanModel> GroupPlans { get; set; } = [];
     }
 }

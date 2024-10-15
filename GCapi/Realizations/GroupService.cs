@@ -6,19 +6,13 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using gcapi.DataBaseModels;
 using Microsoft.Identity.Client;
 using gcapi.Interfaces.Services;
-using System.Net;
 
 namespace gcapi.Realizations
 {
-    public class GroupService : IGroupService
+    public class GroupService(gContext gContext, IUserService userService) : IGroupService
     {
-        private readonly gContext _context;
-        private readonly IUserService _userService;
-
-        public Task AddGroud(GroupDto gr)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly gContext _context = gContext;
+        private readonly IUserService _userService = userService;
 
         public async Task AddGroup(GroupDto gr)
         {
@@ -33,16 +27,11 @@ namespace gcapi.Realizations
             await _context.SaveChangesAsync();
         }
 
-        public Task<bool> EditGroud(GroupDto gr)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> EditGroup(GroupDto gr)
         {
             var users = await _context.UserTable.Where(u => gr.GroupUsers.Contains(u.Username)).ToListAsync();
 
-            var theGroup = await _context.GroupsTable.Where(g => g.Id == gr.Id).FirstOrDefaultAsync();
+            var theGroup = await _context.GroupTable.Where(g => g.Id == gr.Id).FirstOrDefaultAsync();
             if (theGroup != null)
             {
                 theGroup.Name = gr.Name;
@@ -56,21 +45,22 @@ namespace gcapi.Realizations
 
         public async Task<List<GroupModel>> GetAllGroups()
         {
-            return await _context.GroupsTable.ToListAsync();
+            return await _context.GroupTable.ToListAsync();
         }
 
         public async Task<List<GroupModel>> GetUserGroups(string username)
         {
-            var user = await _context.UserTable.LastAsync(u => u.Username == username);
-            return user.Groups ?? [];
-            //мне кажется, лучше просто вернуть ничего, чем бить тревогу эксепшном 
-            //эксепшены нужно пускать, если что-то идёт ну прям совсем плохо, а тут просто рядовое предсказуемое событие
+            var theUser = await _context.UserTable.FindAsync(username);
 
+            if (theUser != null)
+                return await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
+
+            else throw new NullReferenceException();
         }
 
         public async Task<List<UserModel>> GetUsersFromGroup(Guid id)
         {
-            var theGroup = await _context.GroupsTable.FindAsync(id);
+            var theGroup = await _context.GroupTable.FindAsync(id);
             if (theGroup != null)
                 return theGroup.GroupUsers;
 
@@ -79,10 +69,11 @@ namespace gcapi.Realizations
 
         public async Task<bool> RemoveGroup(Guid id)
         {
-            var theGroup = await _context.GroupsTable.FindAsync(id);
+            var theGroup = await _context.GroupTable.FindAsync(id);
             if (theGroup != null)
             {
                 var theEvents = await _context.EventTable.Where(ev => theGroup.GroupEvents.Contains(ev)).ToListAsync();
+                var thePlans = await _context.PlanTable.Where(p => theGroup.GroupPlans.Contains(p)).ToListAsync();
                 var theUsers = await _context.UserTable.Where(u => theGroup.GroupUsers.Contains(u)).ToListAsync();
 
                 foreach (var theUser in theUsers)
@@ -93,6 +84,12 @@ namespace gcapi.Realizations
                         _context.Remove(theEvent);
                         _context.Update(theUser);
                     }
+                    foreach (var thePlan in thePlans)
+                    {
+                        theUser.Plans.Remove(thePlan);
+                        _context.Remove(thePlan);
+                        _context.Update(theUser);
+                    }
                     theUser.Groups.Remove(theGroup);
                 }
                 await _context.SaveChangesAsync();
@@ -100,11 +97,6 @@ namespace gcapi.Realizations
             }
             else throw new NullReferenceException();
             
-        }
-
-        public Task<bool> RemoveGroup(GroupDto gr)
-        {
-            throw new NotImplementedException();
         }
     }
 }
