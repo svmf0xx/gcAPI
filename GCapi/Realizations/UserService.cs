@@ -9,6 +9,8 @@ namespace gcapi.Realizations
     public class UserService : IUserService
     {
         private readonly gContext _context;
+
+
         public UserService(gContext context)
         {
             _context = context;

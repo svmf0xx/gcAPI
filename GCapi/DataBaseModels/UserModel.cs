@@ -21,7 +21,7 @@ namespace gcapi.DataBaseModels
         [EmailAddress]
         public string? Email { get; set; }
        // public string? Phone { get; set; } а зачем телефон вообще
-        public long? TgId { get; set; }
+        public required long TgId { get; set; }
 
         public List<GroupModel> Groups { get; set; } = [];
         public List<PlanModel> Plans { get; set; } = [];
@@ -34,6 +34,6 @@ namespace gcapi.DataBaseModels
 
         public string Secret { get; set; } //эта штука будет использоватсья для генерации одноразовых паролей через пакет OTP.NET, он тут самый популярный
 
-        public Roles? Role { get; set; } = Roles.User;
+        public Roles Role { get; set; } = Roles.User;
     }
 }

@@ -15,25 +15,27 @@ using gcapi.Dto;
 using gcapi.DataBaseModels;
 using gcapi.Realizations;
 using gcapi.Interfaces.Services;
+using gcapi.Interfaces;
 
 namespace gcapi.Controllers
 {
     [Route("api/Users")]
     [ApiController]
-    public class UsersController(ICalendarObjectService eventRepository, ILogger<UsersController> logger, IUserService userService, IGroupService groupService) : ControllerBase
+    public class UsersController(ICalendarObjectService eventRepository, ILogger<UsersController> logger, IUserService userService, IAuthService authService, IGroupService groupService) : ControllerBase
     {
         private readonly ILogger<UsersController> _logger = logger;
         private readonly ICalendarObjectService _eventRepository = eventRepository;
         private readonly IUserService _userService = userService;
+        private readonly IAuthService _authService = authService;
         private readonly IGroupService _groupService = groupService;
 
         [HttpGet]
         [Route("GetAllUsers")]
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
-            var users = await _userService.GetAllUsersAsync();
-            return users;
+            return await _userService.GetAllUsersAsync();
         }
+
 
     }
 

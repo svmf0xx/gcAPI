@@ -21,6 +21,11 @@ namespace gcapi.Realizations
             await _context.SaveChangesAsync();
         }
 
+        public Task AddEventAsync(EventModel ev)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> EditCObjAsync(ICalendarObject obj)
         {
             var theEvent = await _context.EventTable.FindAsync(obj.Id);
@@ -39,10 +44,21 @@ namespace gcapi.Realizations
             return false;
         }
 
+        public Task<bool> EditEventAsync(EventModel ev)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<ICalendarObject>> GetAllCalObjectsAsync()
         {
             return await _context.EventTable.ToListAsync();
         }
+
+        public Task<IEnumerable<EventModel>> GetAllEventsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<ICalendarObject>> GetAllUserPlansAsync(Guid userId)
         {
             return await _context.EventTable.Where(o => o.Type == CalendarObjectType.Plan).ToListAsync();

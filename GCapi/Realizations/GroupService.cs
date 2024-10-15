@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using gcapi.DataBaseModels;
 using Microsoft.Identity.Client;
 using gcapi.Interfaces.Services;
+using System.Net;
 
 namespace gcapi.Realizations
 {
@@ -13,6 +14,11 @@ namespace gcapi.Realizations
     {
         private readonly gContext _context;
         private readonly IUserService _userService;
+
+        public Task AddGroud(GroupDto gr)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task AddGroup(GroupDto gr)
         {
@@ -25,6 +31,11 @@ namespace gcapi.Realizations
             };
             _context.Add(newGroup);
             await _context.SaveChangesAsync();
+        }
+
+        public Task<bool> EditGroud(GroupDto gr)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> EditGroup(GroupDto gr)
@@ -50,12 +61,11 @@ namespace gcapi.Realizations
 
         public async Task<List<GroupModel>> GetUserGroups(string username)
         {
-            var theUser = await _context.UserTable.FindAsync(username);
+            var user = await _context.UserTable.LastAsync(u => u.Username == username);
+            return user.Groups ?? [];
+            //мне кажется, лучше просто вернуть ничего, чем бить тревогу эксепшном 
+            //эксепшены нужно пускать, если что-то идёт ну прям совсем плохо, а тут просто рядовое предсказуемое событие
 
-            if (theUser != null)
-                return await _context.GroupsTable.Where(g => g.GroupUsers.Contains(theUser));
-
-            else throw new NullReferenceException();
         }
 
         public async Task<List<UserModel>> GetUsersFromGroup(Guid id)
@@ -90,6 +100,11 @@ namespace gcapi.Realizations
             }
             else throw new NullReferenceException();
             
+        }
+
+        public Task<bool> RemoveGroup(GroupDto gr)
+        {
+            throw new NotImplementedException();
         }
     }
 }
