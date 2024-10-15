@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Configuration;
 using System.Reflection;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,10 +48,14 @@ builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddAuthentication(
     CertificateAuthenticationDefaults.AuthenticationScheme)
     .AddCertificate(options =>
+    {
+        options.ChainTrustValidationMode = X509ChainTrustMode.CustomRootTrust;
         options.CustomTrustStore = new X509Certificate2Collection(new X509Certificate2(
-        builder.Configuration.GetSection("Cert")["File"],
-        builder.Configuration.GetSection("Cert")["Password"]))
-    );
+            builder.Configuration.GetSection("Cert")["File"]));
+
+       options.RevocationMode = X509RevocationMode.NoCheck;
+
+    });
 
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
