@@ -18,7 +18,7 @@ namespace gcapi.Controllers
             return await _objService.GetAllEventsAsync();
         }
 
-        [HttpPost] //зачем????
+        [HttpGet] //зачем???? 
         [Route("GetEventById")]
         public async Task<ICalendarObject> GetEventById(Guid evId)
         {
@@ -32,14 +32,14 @@ namespace gcapi.Controllers
             return await _objService.GetAllPlanAsync();
         }
 
-        [HttpPost] //тут????
+        [HttpPut] //тут???? тут пут
         [Route("AddEvent")]
-        public async Task AddEvent(CalendarObjectDto ev)
+        public async Task<IActionResult> AddEvent(CalendarObjectDto ev)
         {
-            await _objService.AddEventAsync(ev);
+            return await _objService.AddEventAsync(ev);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("AddPlan")]
         public async Task AddPlan(CalendarObjectDto ev)
         {
@@ -48,19 +48,19 @@ namespace gcapi.Controllers
 
         [HttpPost]
         [Route("EditEvent")]
-        public async Task<bool> EditEvent(CalendarObjectDto ev)
+        public async Task<IActionResult> EditEvent(CalendarObjectDto ev)
         {
             return await _objService.EditEventAsync(ev);
         }
 
         [HttpPost]
         [Route("EditPlan")]
-        public async Task<bool> EditPlan(CalendarObjectDto ev)
+        public async Task<IActionResult> EditPlan(CalendarObjectDto ev)
         {
             return await _objService.EditPlanAsync(ev);
         }
 
-        [HttpPost] //пост???? (это же буквально геттеры)
+        [HttpGet] //пост???? (это же буквально геттеры) ну туда же постится id
         [Route("GetUserPlans")]
         public async Task<IEnumerable<ICalendarObject>> EditPlan(Guid userId)
         {

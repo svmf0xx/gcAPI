@@ -18,16 +18,16 @@ namespace gcapi.Controllers
             return await _groupService.GetAllGroups();
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("AddGroup")]
-        public async Task AddGroup(GroupDto gr)
+        public async Task<IActionResult> AddGroup(GroupDto gr)
         {
-            await _groupService.AddGroup(gr);
+            return await _groupService.AddGroup(gr);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("EditGroup")]
-        public async Task<bool> EditGroup(GroupDto gr)
+        public async Task<IActionResult> EditGroup(GroupDto gr)
         {
             return await _groupService.EditGroup(gr);
         }
@@ -48,9 +48,9 @@ namespace gcapi.Controllers
 
         [HttpPost]
         [Route("RemoveGroup")]
-        public async Task RemoveGroup(Guid grId)
+        public async Task<IActionResult> RemoveGroup(Guid grId)
         {
-            await _groupService.RemoveGroup(grId);
+            return await _groupService.RemoveGroup(grId);
         }
 
     }

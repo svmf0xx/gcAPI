@@ -3,6 +3,7 @@ using gcapi.Models;
 using Microsoft.EntityFrameworkCore;
 using gcapi.Dto;
 using gcapi.Interfaces.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace gcapi.Realizations
 {
@@ -11,20 +12,28 @@ namespace gcapi.Realizations
         private readonly gContext _context = gContext;
         private readonly IUserService _userService = userService;
 
-        public async Task AddGroup(GroupDto gr)
+        public async Task<IActionResult> AddGroup(GroupDto gr)
         {
-            var users = await _context.UserTable.Where(u => gr.GroupUsers.Contains(u.Username)).ToListAsync();
-
-            var newGroup = new GroupModel
+            try
             {
-                Name = gr.Name,
-                GroupUsers = users
-            };
-            _context.Add(newGroup);
-            await _context.SaveChangesAsync();
+                var users = await _context.UserTable.Where(u => gr.GroupUsers.Contains(u.Username)).ToListAsync();
+
+                var newGroup = new GroupModel
+                {
+                    Name = gr.Name,
+                    GroupUsers = users
+                };
+                _context.Add(newGroup);
+                await _context.SaveChangesAsync();
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
         }
 
-        public async Task<bool> EditGroup(GroupDto gr)
+        public async Task<IActionResult> EditGroup(GroupDto gr)
         {
             var users = await _context.UserTable.Where(u => gr.GroupUsers.Contains(u.Username)).ToListAsync();
 
@@ -35,9 +44,9 @@ namespace gcapi.Realizations
                 theGroup.GroupUsers = users;
                 _context.Update(theGroup);
                 await _context.SaveChangesAsync();
-                return true;
+                return new OkResult();
             }
-            return false;
+            return new BadRequestObjectResult("Группы не существует");
         }
 
         public async Task<List<GroupModel>> GetAllGroups()
@@ -64,7 +73,7 @@ namespace gcapi.Realizations
             else throw new NullReferenceException();
         }
 
-        public async Task<bool> RemoveGroup(Guid id)
+        public async Task<IActionResult> RemoveGroup(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);
             if (theGroup != null)
@@ -90,10 +99,10 @@ namespace gcapi.Realizations
                     theUser.Groups.Remove(theGroup);
                 }
                 await _context.SaveChangesAsync();
-                return true;
+                return new OkResult();
             }
-            else throw new NullReferenceException();
-            
+            else return new BadRequestObjectResult("Группы не существует");
+
         }
     }
 }
