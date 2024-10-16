@@ -18,21 +18,21 @@ namespace gcapi.Controllers
             return await _objService.GetAllEventsAsync();
         }
 
-        [HttpPost]
+        [HttpPost] //зачем????
         [Route("GetEventById")]
         public async Task<ICalendarObject> GetEventById(Guid evId)
         {
             return await _objService.GetEventByIdAsync(evId);
         }
 
-        [HttpGet]
+        [HttpGet] 
         [Route("GetAllPlans")]
         public async Task<IEnumerable<ICalendarObject>> GetAllPlanss()
         {
             return await _objService.GetAllPlanAsync();
         }
 
-        [HttpPost]
+        [HttpPost] //тут????
         [Route("AddEvent")]
         public async Task AddEvent(CalendarObjectDto ev)
         {
@@ -60,7 +60,7 @@ namespace gcapi.Controllers
             return await _objService.EditPlanAsync(ev);
         }
 
-        [HttpPost]
+        [HttpPost] //пост???? (это же буквально геттеры)
         [Route("GetUserPlans")]
         public async Task<IEnumerable<ICalendarObject>> EditPlan(Guid userId)
         {

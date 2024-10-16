@@ -32,14 +32,14 @@ namespace gcapi.Controllers
             return await _groupService.EditGroup(gr);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetAllGroupUsers")]
         public async Task<IEnumerable<UserModel>> GetAllGroupUsers(Guid grId)
         {
             return await _groupService.GetUsersFromGroup(grId);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetAllUserGroups")]
         public async Task<IEnumerable<GroupModel>> GetAllUserGroups(Guid userId)
         {
