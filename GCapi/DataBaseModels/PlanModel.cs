@@ -1,9 +1,6 @@
-﻿using gcapi.DataBaseModels;
-using gcapi.Enums;
+﻿using gcapi.Enums;
 using gcapi.Interfaces;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Net;
 
 namespace gcapi.Models
 {

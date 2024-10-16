@@ -1,5 +1,4 @@
-﻿using gcapi.DataBaseModels;
-using gcapi.Dto;
+﻿using gcapi.Dto;
 using gcapi.Models;
 
 namespace gcapi.Interfaces.Services
@@ -9,7 +8,7 @@ namespace gcapi.Interfaces.Services
         Task AddGroup(GroupDto gr);
         Task<bool> EditGroup(GroupDto gr);
         Task<List<GroupModel>> GetAllGroups();
-        Task<List<GroupModel>> GetUserGroups(string username);
+        Task<List<GroupModel>> GetUserGroups(Guid userId);
         Task<List<UserModel>> GetUsersFromGroup(Guid id);
         Task<bool> RemoveGroup(Guid id);
     }

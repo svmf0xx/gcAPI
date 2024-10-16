@@ -1,6 +1,5 @@
-﻿using gcapi.DataBaseModels;
+﻿using gcapi.Models;
 using gcapi.Enums;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace gcapi.Interfaces

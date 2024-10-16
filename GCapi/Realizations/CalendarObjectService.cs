@@ -1,10 +1,8 @@
 ﻿using gcapi.DataBase;
-using gcapi.DataBaseModels;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using gcapi.Models;
 using Microsoft.EntityFrameworkCore;
-using gcapi.Enums;
 using gcapi.Dto;
 namespace gcapi.Realizations
 {

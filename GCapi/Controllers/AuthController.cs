@@ -1,18 +1,15 @@
-﻿using gcapi.DataBaseModels;
-using gcapi.Interfaces.Services;
-using gcapi.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using gcapi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using gcapi.Models;
 
 namespace gcapi.Controllers
 {
     [Route("api/Auth")]
     [Produces("application/json")]
     [ApiController]
-    public class AuthController(ICalendarObjectService eventRepository, ILogger<UsersController> logger, IAuthService authService) : ControllerBase
+    public class AuthController(ILogger<UsersController> logger, IAuthService authService) : ControllerBase
     {
         private readonly ILogger<UsersController> _logger = logger;
-        private readonly ICalendarObjectService _eventRepository = eventRepository; //возможно он тут никогда не пригодится
         private readonly IAuthService _authService = authService;
 
         [HttpPost]

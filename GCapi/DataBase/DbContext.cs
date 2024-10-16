@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using gcapi.Models;
-using gcapi.DataBaseModels;
+using gcapi.Models;
 using gcapi.Interfaces;
 using System.Reflection.Metadata;
 

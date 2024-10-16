@@ -1,5 +1,5 @@
 ﻿using gcapi.DataBase;
-using gcapi.DataBaseModels;
+using gcapi.Models;
 using gcapi.Dto;
 using gcapi.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +35,7 @@ namespace gcapi.Realizations
 
         public async Task RemoveUser(Guid userId)
         {
-            UserModel theUser = await _context.UserTable.FindAsync(userId);
+            var theUser = await _context.UserTable.FindAsync(userId);
             if (theUser != null)
             {
                 var theGroups = await _context.GroupTable.Where(g => theUser.Groups.Contains(g)).ToListAsync();

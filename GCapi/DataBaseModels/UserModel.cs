@@ -1,11 +1,7 @@
 ﻿using gcapi.Enums;
-using gcapi.Interfaces;
-using gcapi.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace gcapi.DataBaseModels
+namespace gcapi.Models
 {
     public class UserModel
     {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.SignalR;
 using gcapi.Dto;
-using gcapi.DataBaseModels;
+using gcapi.Models;
 using gcapi.Realizations;
 using gcapi.Interfaces.Services;
 using gcapi.Interfaces;

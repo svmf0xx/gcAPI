@@ -1,5 +1,4 @@
-﻿using gcapi.DataBaseModels;
-using gcapi.Enums;
+﻿using gcapi.Enums;
 using gcapi.Models;
 
 namespace gcapi.Dto

@@ -1,11 +1,7 @@
 ﻿using gcapi.DataBase;
-using gcapi.DataBaseModels;
 using gcapi.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OtpNet;
+using gcapi.Models;
 namespace gcapi.Realizations
 {
     public class AuthService(gContext context) : IAuthService

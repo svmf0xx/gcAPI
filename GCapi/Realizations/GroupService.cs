@@ -2,9 +2,6 @@
 using gcapi.Models;
 using Microsoft.EntityFrameworkCore;
 using gcapi.Dto;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using gcapi.DataBaseModels;
-using Microsoft.Identity.Client;
 using gcapi.Interfaces.Services;
 
 namespace gcapi.Realizations
@@ -48,9 +45,9 @@ namespace gcapi.Realizations
             return await _context.GroupTable.ToListAsync();
         }
 
-        public async Task<List<GroupModel>> GetUserGroups(string username)
+        public async Task<List<GroupModel>> GetUserGroups(Guid userId)
         {
-            var theUser = await _context.UserTable.FindAsync(username);
+            var theUser = await _context.UserTable.FindAsync(userId);
 
             if (theUser != null)
                 return await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();

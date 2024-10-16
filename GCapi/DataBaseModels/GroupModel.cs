@@ -1,4 +1,4 @@
-﻿using gcapi.DataBaseModels;
+﻿using gcapi.Models;
 
 namespace gcapi.Models
 {

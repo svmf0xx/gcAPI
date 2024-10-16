@@ -1,4 +1,4 @@
-﻿using gcapi.DataBaseModels;
+﻿using gcapi.Models;
 using gcapi.Enums;
 using gcapi.Interfaces;
 using System.ComponentModel.DataAnnotations;

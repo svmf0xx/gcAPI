@@ -1,4 +1,4 @@
-﻿using gcapi.DataBaseModels;
+﻿using gcapi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gcapi.Interfaces

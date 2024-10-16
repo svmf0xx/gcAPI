@@ -1,4 +1,4 @@
-﻿using gcapi.DataBaseModels;
+﻿using gcapi.Models;
 using gcapi.Dto;
 
 namespace gcapi.Interfaces.Services
