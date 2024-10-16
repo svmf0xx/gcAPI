@@ -2,6 +2,7 @@
 using gcapi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using gcapi.Models;
+using gcapi.Dto;
 namespace gcapi.Realizations
 {
     public class AuthService(gContext context) : IAuthService
@@ -14,7 +15,7 @@ namespace gcapi.Realizations
             throw new NotImplementedException();
         } 
 
-        public async Task<IActionResult> RegisterUser(UserModel user)
+        public async Task<IActionResult> RegisterUser(RegisterDto user)
         {
 
             //ты типа сам не догадался сюда это вставить
@@ -26,9 +27,18 @@ namespace gcapi.Realizations
             //}
             //ну конкретно эта проверка не обязательна, конечно, модель сама проверяет свои поля
 
+            var userModel = new UserModel
+            {
+                FirstName = user.FirstName,
+                SecondName = user.SecondName,
+                Email = user.Email,
+                TgId = user.TgId,
+                Username = user.Username
+            };
+
             try
             {
-                await _context.AddAsync(user);
+                await _context.AddAsync(userModel);
                 await _context.SaveChangesAsync();
                 return new OkResult();
             }

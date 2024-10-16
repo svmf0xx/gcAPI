@@ -8,17 +8,15 @@ namespace gcapi.Dto
         [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [Required]
         [MaxLength(50)]
-        public string SecondName { get; set; }
+        public string? SecondName { get; set; }
 
         [EmailAddress]
         public string? Email { get; set; }
-        public string? Phone { get; set; }
-        public long? TgId { get; set; }
+        public long TgId { get; set; }
 
         [Required]
-        [MaxLength(16)]
+        [MaxLength(16), MinLength(4)]
         public string Username { get; set; }
     }
 }

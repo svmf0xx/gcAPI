@@ -1,6 +1,7 @@
 ﻿using gcapi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using gcapi.Models;
+using gcapi.Dto;
 
 namespace gcapi.Controllers
 {
@@ -14,7 +15,7 @@ namespace gcapi.Controllers
 
         [HttpPost]
         [Route("CreateUser")]
-        public async Task<IActionResult> CreateUser(UserModel user)
+        public async Task<IActionResult> CreateUser(RegisterDto user)
         {
             //типа проверки всякие
             //хз, может перенесёшь их куда-нибудь, не знаю, какой структуре проекта
