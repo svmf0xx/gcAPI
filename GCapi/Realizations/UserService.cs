@@ -30,7 +30,11 @@ namespace gcapi.Realizations
 
         async public Task<IEnumerable<UserModel>> GetAllUsersAsync()
         {
-            return await _context.UserTable.ToListAsync();
+            return await _context.UserTable
+                    .Include(u => u.Groups)
+                    .Include(u => u.Plans)
+                    .Include(u => u.Events)
+                    .ToListAsync();
         }
 
         public async Task RemoveUser(Guid userId)

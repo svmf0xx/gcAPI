@@ -42,7 +42,7 @@ namespace gcapi.Realizations
 
         public async Task<List<GroupModel>> GetAllGroups()
         {
-            return await _context.GroupTable.ToListAsync();
+            return await _context.GroupTable.Include(g => g.GroupUsers).ToListAsync();
         }
 
         public async Task<List<GroupModel>> GetUserGroups(Guid userId)
