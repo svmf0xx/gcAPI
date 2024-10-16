@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace gcapi.Controllers
 {
     [Route("api/Auth")]
+    [Produces("application/json")]
     [ApiController]
     public class AuthController(ICalendarObjectService eventRepository, ILogger<UsersController> logger, IAuthService authService) : ControllerBase
     {
@@ -16,7 +17,7 @@ namespace gcapi.Controllers
 
         [HttpPost]
         [Route("CreateUser")]
-        public async Task<bool> CreateUser(UserModel user)
+        public async Task<IActionResult> CreateUser(UserModel user)
         {
             //типа проверки всякие
             //хз, может перенесёшь их куда-нибудь, не знаю, какой структуре проекта

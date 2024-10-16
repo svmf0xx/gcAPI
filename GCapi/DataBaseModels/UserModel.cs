@@ -1,6 +1,7 @@
 ﻿using gcapi.Enums;
 using gcapi.Interfaces;
 using gcapi.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,10 +30,10 @@ namespace gcapi.DataBaseModels
 
         //Аккаунт
         [Required]
-        [MaxLength(16)]
+        [MaxLength(16), MinLength(4)]
         public required string Username { get; set; } //@vlad
 
-        public string Secret { get; set; } //эта штука будет использоватсья для генерации одноразовых паролей через пакет OTP.NET, он тут самый популярный
+        public string? Secret { get; set; } //эта штука будет использоватсья для генерации одноразовых паролей через пакет OTP.NET, он тут самый популярный
 
         public Roles Role { get; set; } = Roles.User;
     }

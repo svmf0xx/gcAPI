@@ -24,6 +24,13 @@ namespace gcapi.DataBase
             .HasMany(e => e.Groups)
             .WithMany(e => e.GroupUsers);
 
+            modelBuilder.Entity<UserModel>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<UserModel>()
+                .HasIndex(u => u.TgId)
+                .IsUnique();
 
             //modelBuilder.Entity<ReactionModel>()
             //    .HasNoKey();

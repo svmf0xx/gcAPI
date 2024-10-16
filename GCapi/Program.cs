@@ -1,4 +1,6 @@
+using gcapi.Controllers;
 using gcapi.DataBase;
+using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using gcapi.Realizations;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,7 @@ builder.Services.AddDbContext<gContext>(options =>
 builder.Services.AddTransient<ICalendarObjectService, CalendarObjectService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IGroupService, GroupService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 
 
 var app = builder.Build();
