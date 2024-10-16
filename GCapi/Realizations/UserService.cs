@@ -3,6 +3,7 @@ using gcapi.Models;
 using gcapi.Dto;
 using gcapi.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
+using Humanizer;
 
 namespace gcapi.Realizations
 {
@@ -34,8 +35,24 @@ namespace gcapi.Realizations
                     .Include(u => u.Groups)
                     .Include(u => u.Plans)
                     .Include(u => u.Events)
-                    .ToListAsync();
+                    .ToListAsync(); //с базой в >10 это будет очень глупый метод (миллион данных за один запрос)
         }
+
+        public async Task<UserDto?> GetUserByTgId(long tgid)
+        {
+            UserModel? user = await _context.UserTable.LastOrDefaultAsync(u => u.TgId == tgid);
+            if (user == null) 
+                return null;
+            return new UserDto(user);
+        }
+        public async Task<UserDto?> GetUserByUsername(string username)
+        {
+            UserModel? user = await _context.UserTable.LastOrDefaultAsync(u => u.Username == username);
+            if (user == null)
+                return null;
+            return new UserDto(user);
+        }
+
 
         public async Task RemoveUser(Guid userId)
         {

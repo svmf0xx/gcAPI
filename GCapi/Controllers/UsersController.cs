@@ -35,9 +35,16 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("GetByTgId")]
-        public async Task<UserDto> GetUserByTgId(long tgid)
+        public async Task<UserDto?> GetUserByTgId(long tgid)
         {
             return await _userService.GetUserByTgId(tgid);
+        }
+
+        [HttpGet]
+        [Route("GetByUsername")]
+        public async Task<UserDto?> GetUserByUsername(string username)
+        {
+            return await _userService.GetUserByUsername(username);
         }
 
         [HttpPost]

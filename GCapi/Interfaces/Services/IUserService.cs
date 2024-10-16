@@ -7,7 +7,8 @@ namespace gcapi.Interfaces.Services
     {
         Task<IEnumerable<UserModel>> GetAllUsersAsync();
 
-        Task<UserDto> GetUserByTgId(long tgid);
+        Task<UserDto?> GetUserByTgId(long tgid);
+        Task<UserDto?> GetUserByUsername(string username);
         Task<bool> EditUser(UpdateUserDto user);
         Task RemoveUser(Guid userId);
     }
