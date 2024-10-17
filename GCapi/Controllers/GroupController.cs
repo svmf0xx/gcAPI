@@ -46,7 +46,7 @@ namespace gcapi.Controllers
             return await _groupService.GetUserGroups(userId);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("RemoveGroup")]
         public async Task<IActionResult> RemoveGroup(Guid grId)
         {

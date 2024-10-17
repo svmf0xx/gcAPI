@@ -40,7 +40,7 @@ namespace gcapi.Controllers
             return await _userService.EditUser(user);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("RemoveUser")]
         public async Task<IActionResult> RemoveUser(Guid userId)
         {

@@ -67,7 +67,7 @@ namespace gcapi.Controllers
             return await _objService.GetAllUserPlansAsync(userId);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("RemoveEvent")]
         public async Task RemoveEvent(Guid evId)
         {
