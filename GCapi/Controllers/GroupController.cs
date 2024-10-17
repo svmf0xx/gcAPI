@@ -53,5 +53,23 @@ namespace gcapi.Controllers
             return await _groupService.RemoveGroup(grId);
         }
 
+        [HttpGet]
+        [Route("GetInvite")]
+        public async Task<string> GetInvite(Guid grId)
+        {
+            //либо берётся из базы существующий инвайт для данного пользователя, обновлется ExpiredAt
+            //либо создается новый
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Route("CheckInvite")]
+        public async Task<Guid> CheckInvite(string invite)
+        {
+            //Если инвайт существует, пользователь добавляется в группу, пользователю добавляется группа
+            //высылается guid группы
+            throw new NotImplementedException();
+        }
+
     }
 }
