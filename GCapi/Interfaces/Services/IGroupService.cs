@@ -15,6 +15,6 @@ namespace gcapi.Interfaces.Services
 
         //invite
         Task<string> GetInvite(Guid grId, Guid userId);
-        Task<Guid> CheckInvite(string code);
+        Task<Guid> CheckInvite(string code, Guid userId);
     }
 }

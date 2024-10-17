@@ -161,11 +161,19 @@ namespace gcapi.Realizations
             }
         }
 
-        public async Task<Guid> CheckInvite(string code)
+        public async Task<Guid> CheckInvite(string code, Guid userId)
         {
+            var user = await _context.UserTable.FindAsync(userId);
             var inv = await _context.InviteCodeTable.FindAsync(code);
-            if (inv != null)
+            if (inv != null && user != null)
             {
+                user.Groups.Add(inv.Group);
+                inv.Group.GroupUsers.Add(user);
+
+                _context.UserTable.Update(user);
+                _context.GroupTable.Update(inv.Group);
+
+                await _context.SaveChangesAsync();
                 return inv.Group.Id;
             }
             else

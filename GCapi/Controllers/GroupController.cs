@@ -66,11 +66,11 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("CheckInvite")]
-        public async Task<Guid> CheckInvite(string invite)
+        public async Task<Guid> CheckInvite(string invite, Guid userId)
         {
             //Если инвайт существует, пользователь добавляется в группу, пользователю добавляется группа
             //высылается guid группы
-            return await _groupService.CheckInvite(invite);
+            return await _groupService.CheckInvite(invite, userId);
         }
     }
 }
