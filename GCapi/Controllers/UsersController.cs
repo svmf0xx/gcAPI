@@ -5,7 +5,7 @@ using gcapi.Interfaces.Services;
 
 namespace gcapi.Controllers
 {
-    [Route("api/Users")]
+    [Route("api/User")]
     [ApiController]
     public class UsersController(ILogger<UsersController> logger, IUserService userService) : ControllerBase
     {
