@@ -6,7 +6,7 @@ namespace gcapi.Interfaces
 {
     public interface IAuthService
     {
-        public Task AuthorizeUser();
+        public Task<IActionResult> CheckAuth(AuthDto authData);
         public Task<IActionResult> RegisterUser(RegisterDto user);
     }
 }

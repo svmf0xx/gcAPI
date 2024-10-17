@@ -36,17 +36,17 @@ namespace gcapi.Controllers
         }
 
         [HttpPost]
-        [Route("CreateUserTg")]
+        [Route("CreateUser")]
         public async Task<IActionResult> CreateUser(RegisterDto user)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); // потом сам короче сделаешь уже полностью через отп
         }
 
         [HttpGet]
         [Route("CheckAuth")]
         public async Task<IActionResult> CheckAuth(AuthDto user)
         {
-            throw new NotImplementedException();
+            return await _authService.CheckAuth(user);
         }
     }
 }
