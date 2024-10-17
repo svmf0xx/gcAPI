@@ -12,5 +12,9 @@ namespace gcapi.Interfaces.Services
         Task<List<GroupModel>> GetUserGroups(Guid userId);
         Task<List<UserModel>> GetUsersFromGroup(Guid id);
         Task<IActionResult> RemoveGroup(Guid id);
+
+        //invite
+        Task<string> GetInvite(Guid grId, Guid userId);
+        Task<Guid> CheckInvite(string code);
     }
 }

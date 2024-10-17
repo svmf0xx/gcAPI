@@ -9,7 +9,8 @@ namespace gcapi.Models
         public long? TgId { get; set; } //пу-пу-пу... че-то поздно догадался это добавить
         public List<UserModel> GroupUsers { get; set; } = [];
         public List<EventModel> GroupEvents { get; set; } = [];
-        public List<PlanModel> GroupPlans { get; set; } = []; //так, стоп
+        //public List<PlanModel> GroupPlans { get; set; } = []; //так, стоп
                                                               //А нахуя тут это?
+                                                              //ладно...
     }
 }

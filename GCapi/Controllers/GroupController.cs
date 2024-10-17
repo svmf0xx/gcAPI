@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using gcapi.Models;
 using gcapi.Dto;
+using AspNetCore;
 namespace gcapi.Controllers
 {
     [Route("api/Group")]
@@ -55,11 +56,13 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("GetInvite")]
-        public async Task<string> GetInvite(Guid grId)
+        public async Task<string> GetInvite(Guid grId, Guid userId)
         {
             //либо берётся из базы существующий инвайт для данного пользователя, обновлется ExpiredAt
             //либо создается новый
-            throw new NotImplementedException();
+            //ну если вышло время то новый, а если нет то обновляется ExpiredAt
+            return await _groupService.GetInvite(grId, userId);
+            
         }
 
         [HttpGet]
@@ -68,8 +71,7 @@ namespace gcapi.Controllers
         {
             //Если инвайт существует, пользователь добавляется в группу, пользователю добавляется группа
             //высылается guid группы
-            throw new NotImplementedException();
+            return await _groupService.CheckInvite(invite);
         }
-
     }
 }

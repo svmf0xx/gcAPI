@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using gcapi.Dto;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace gcapi.Realizations
 {
@@ -103,6 +104,81 @@ namespace gcapi.Realizations
             }
             else return new BadRequestObjectResult("Группы не существует");
 
+        }
+
+
+
+
+
+        //invite code
+        static string GenerateInvite(int length = 12)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder result = new StringBuilder(length);
+            Random random = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(chars[random.Next(chars.Length)]);
+            }
+
+            return result.ToString();
+        }
+
+        public async Task<string> GetInvite(Guid grId, Guid userId)
+        {
+            string rcode;
+            try
+            {
+                var gr = await _context.GroupTable.FindAsync(grId);
+                var user = await _context.UserTable.FindAsync(userId);
+
+                var inv = await _context.InviteCodeTable.FindAsync(gr);
+
+                if (user == null || inv == null)
+                {
+                    return String.Empty;
+                }
+                if (inv == null)
+                {
+                    var code = GenerateInvite();
+                    var newInv = new InviteCodeModel
+                    {
+                        Code = code,
+                        Owner = user,
+                        Group = gr,
+                        CreatedAt = DateTime.Now,
+                        ExpiredAt = DateTime.Now.AddDays(3)
+                    };
+                    _context.InviteCodeTable.Add(newInv);
+                    rcode = code;
+                }
+                else
+                {
+                    inv.ExpiredAt = DateTime.Now.AddDays(3);
+                    _context.InviteCodeTable.Update(inv);
+                    rcode = inv.Code;
+                }
+                await _context.SaveChangesAsync();
+                return rcode;
+            }
+            catch (Exception ex)
+            {
+                return String.Empty;
+            }
+        }
+
+        public async Task<Guid> CheckInvite(string code)
+        {
+            var inv = await _context.InviteCodeTable.FindAsync(code);
+            if (inv != null)
+            {
+                return inv.Group.Id;
+            }
+            else
+            {
+                return Guid.Empty;
+            }
         }
     }
 }

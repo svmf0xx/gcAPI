@@ -9,7 +9,6 @@ namespace gcapi.Models
         public GroupModel Group { get; set; }
         public string Code { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        public DateTime ExspiredAt { get; set; }
+        public DateTime ExpiredAt { get; set; }
     }
 }
