@@ -80,7 +80,7 @@ namespace gcapi.Realizations
             if (theGroup != null)
             {
                 var theEvents = await _context.EventTable.Where(ev => theGroup.GroupEvents.Contains(ev)).ToListAsync();
-                var thePlans = await _context.PlanTable.Where(p => theGroup.GroupPlans.Contains(p)).ToListAsync();
+                //var thePlans = await _context.PlanTable.Where(p => theGroup.GroupPlans.Contains(p)).ToListAsync();
                 var theUsers = await _context.UserTable.Where(u => theGroup.GroupUsers.Contains(u)).ToListAsync();
 
                 foreach (var theUser in theUsers)
