@@ -16,6 +16,7 @@ namespace gcapi.Realizations
             if (user == null)
             {
                 return new BadRequestObjectResult("Пользователь не найден"); //ну тебе проще самому тут все делать
+                //ладно я забыл что ты просил меня инвайты сделать
             }
             return new OkResult();
          }
