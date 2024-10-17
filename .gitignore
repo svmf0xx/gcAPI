@@ -364,3 +364,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /gcapi/Properties/launchSettings.json
 /gcapi/Properties/launchSettings.json
+/GCapi/Properties/launchSettings.json
