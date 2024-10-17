@@ -121,44 +121,37 @@ namespace gcapi.Realizations
         public async Task<string> GetInvite(Guid grId, Guid userId)
         {
             string rcode;
-            try
-            {
-                var gr = await _context.GroupTable.FindAsync(grId);
-                var user = await _context.UserTable.FindAsync(userId);
+            var gr = await _context.GroupTable.FindAsync(grId);
+            var user = await _context.UserTable.FindAsync(userId);
 
-                var inv = await _context.InviteCodeTable.FindAsync(gr);
+            var inv = await _context.InviteCodeTable.Where(c => c.Group == gr && c.Owner == user).FirstOrDefaultAsync();
 
-                if (user == null || inv == null)
-                {
-                    return String.Empty;
-                }
-                if (inv == null)
-                {
-                    var code = GenerateInvite();
-                    var newInv = new InviteCodeModel
-                    {
-                        Code = code,
-                        Owner = user,
-                        Group = gr,
-                        CreatedAt = DateTime.Now,
-                        ExpiredAt = DateTime.Now.AddDays(3)
-                    };
-                    _context.InviteCodeTable.Add(newInv);
-                    rcode = code;
-                }
-                else
-                {
-                    inv.ExpiredAt = DateTime.Now.AddDays(3);
-                    _context.InviteCodeTable.Update(inv);
-                    rcode = inv.Code;
-                }
-                await _context.SaveChangesAsync();
-                return rcode;
-            }
-            catch (Exception ex)
+            if (user == null || gr == null)
             {
                 return String.Empty;
             }
+            if (inv == null)
+            {
+                var code = GenerateInvite();
+                var newInv = new InviteCodeModel
+                {
+                    Code = code,
+                    Owner = user,
+                    Group = gr,
+                    CreatedAt = DateTime.UtcNow,
+                    ExpiredAt = DateTime.UtcNow.AddDays(3)
+                };
+                _context.InviteCodeTable.Add(newInv);
+                rcode = code;
+            }
+            else
+            {
+                inv.ExpiredAt = DateTime.UtcNow.AddDays(3);
+                _context.InviteCodeTable.Update(inv);
+                rcode = inv.Code;
+            }
+            await _context.SaveChangesAsync();
+            return rcode;
         }
 
         public async Task<Guid> CheckInvite(string code, Guid userId)
