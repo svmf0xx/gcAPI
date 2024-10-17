@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using gcapi.Models;
 using gcapi.Dto;
-using AspNetCore;
 namespace gcapi.Controllers
 {
     [Route("api/Group")]
