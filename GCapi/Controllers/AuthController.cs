@@ -14,8 +14,8 @@ namespace gcapi.Controllers
         private readonly IAuthService _authService = authService;
 
         [HttpPost]
-        [Route("CreateUser")]
-        public async Task<IActionResult> CreateUser(RegisterDto user)
+        [Route("CreateUserTg")]
+        public async Task<IActionResult> CreateUserTg(RegisterDto user)
         {
             //типа проверки всякие
             //хз, может перенесёшь их куда-нибудь, не знаю, какой структуре проекта
@@ -34,5 +34,18 @@ namespace gcapi.Controllers
             return await _authService.RegisterUser(user);
 
         }
+
+        [HttpPost]
+        [Route("CreateUserTg")]
+        public async Task<IActionResult> CreateUser(RegisterDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [Route("CheckAuth")]
+        public async Task<IActionResult> CheckAuth(AuthDto user)
+        {
+            throw new NotImplementedException();
+        }
     }
-}
