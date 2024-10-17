@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gcapi.Controllers
 {
-    [Route("api/CalendarObjects")]
+    [Route("api/Calendar")]
     [ApiController]
     public class CalendarObjectController(ICalendarObjectService objService)
     {

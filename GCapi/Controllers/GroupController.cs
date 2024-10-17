@@ -4,7 +4,7 @@ using gcapi.Models;
 using gcapi.Dto;
 namespace gcapi.Controllers
 {
-    [Route("api/Groups")]
+    [Route("api/Group")]
     [ApiController]
     public class GroupController(ILogger<UsersController> logger, IGroupService groupService)
     {
