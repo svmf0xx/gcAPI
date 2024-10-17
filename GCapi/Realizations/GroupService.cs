@@ -157,7 +157,7 @@ namespace gcapi.Realizations
         public async Task<Guid> CheckInvite(string code, Guid userId)
         {
             var user = await _context.UserTable.FindAsync(userId);
-            var inv = await _context.InviteCodeTable.FindAsync(code);
+            var inv = await _context.InviteCodeTable.Include(c => c.Group).Where(c => c.Code == code).FirstOrDefaultAsync();
             if (inv != null && user != null)
             {
                 user.Groups.Add(inv.Group);
