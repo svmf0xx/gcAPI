@@ -56,7 +56,7 @@ namespace gcapi.Realizations
         }
         public async Task<UserDto?> GetUserByUsername(string username)
         {
-            UserModel? user = await _context.UserTable.LastOrDefaultAsync(u => u.Username == username);
+            UserModel? user = await _context.UserTable.FirstOrDefaultAsync(u => u.Username == username);
             if (user == null)
                 return null;
             return new UserDto(user);
