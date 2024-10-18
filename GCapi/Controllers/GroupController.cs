@@ -48,9 +48,9 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("GetAllUserGroups")]
-        public async Task<IEnumerable<GroupModel>> GetAllUserGroups(Guid userId)
+        public async Task<IEnumerable<GroupModel>> GetAllUserGroups(Guid userId, bool includeAll = false)
         {
-            return await _groupService.GetUserGroups(userId);
+            return await _groupService.GetUserGroups(userId, includeAll);
         }
 
         [HttpDelete]

@@ -9,7 +9,7 @@ namespace gcapi.Interfaces.Services
         Task<IActionResult> AddGroup(GroupDto gr);
         Task<IActionResult> EditGroup(GroupDto gr);
         Task<List<GroupModel>> GetAllGroups();
-        Task<List<GroupModel>> GetUserGroups(Guid userId);
+        Task<List<GroupModel>> GetUserGroups(Guid userId, bool includeAll = false);
         Task<List<UserModel>> GetUsersFromGroup(Guid id);
         Task<IActionResult> RemoveGroup(Guid id);
         public Task<GroupModel?> GetGroup(Guid grId);
