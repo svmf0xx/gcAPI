@@ -49,7 +49,7 @@ namespace gcapi.Realizations
 
         public async Task<UserDto?> GetUserByTgId(long tgid)
         {
-            UserModel? user = await _context.UserTable.LastOrDefaultAsync(u => u.TgId == tgid);
+            UserModel? user = await _context.UserTable.FirstOrDefaultAsync(u => u.TgId == tgid);
             if (user == null)
                 return null;
             return new UserDto(user);
