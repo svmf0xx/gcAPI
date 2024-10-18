@@ -154,7 +154,7 @@ namespace gcapi.Realizations
             return rcode;
         }
 
-        public async Task<Guid> CheckInvite(string code, Guid userId)
+        public async Task<Guid?> CheckInvite(string code, Guid userId)
         {
             var user = await _context.UserTable.FindAsync(userId);
             var inv = await _context.InviteCodeTable.Include(c => c.Group).Where(c => c.Code == code).FirstOrDefaultAsync();
@@ -171,7 +171,7 @@ namespace gcapi.Realizations
             }
             else
             {
-                return Guid.Empty;
+                return null;
             }
         }
     }

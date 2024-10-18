@@ -66,7 +66,7 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("CheckInvite")]
-        public async Task<Guid> CheckInvite(string invite, Guid userId)
+        public async Task<Guid?> CheckInvite(string invite, Guid userId)
         {
             //Если инвайт существует, пользователь добавляется в группу, пользователю добавляется группа
             //высылается guid группы
