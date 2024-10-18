@@ -50,26 +50,42 @@ namespace gcapi.Realizations
             return new BadRequestObjectResult("Группы не существует");
         }
 
-        public async Task<List<GroupModel>> GetAllGroups()
+        public async Task<List<GroupDto>> GetAllGroups()
         {
-            return await _context.GroupTable.Include(g => g.GroupUsers).ToListAsync();
+            List<GroupDto> result = new List<GroupDto>();
+            var groups = await _context.GroupTable.Include(g => g.GroupUsers).ToListAsync();
+            foreach (var group in groups)
+            {
+                result.Add(new GroupDto
+                {
+                    Id = group.Id,
+                    Name = group.Name,
+                    GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+                });
+            }
+            return result;
         }
 
-        public async Task<List<GroupModel>> GetUserGroups(Guid userId, bool includeAll = false)
+        public async Task<List<GroupDto?>> GetUserGroups(Guid userId)
         {
             var theUser = await _context.UserTable.FindAsync(userId);
 
             if (theUser != null)
-                return 
-                    includeAll ? 
-                        await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser))
-                        .Include(g => g.GroupEvents)
-                        .Include(g => g.GroupUsers)
-                        .ToListAsync()
-
-                    :   await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser)).ToListAsync(); //
-
-            else throw new NullReferenceException();
+            {
+                List<GroupDto?> result = new List<GroupDto?>();
+                var groups = await _context.GroupTable.Include(g => g.GroupUsers.Contains(theUser)).ToListAsync();
+                foreach (var group in groups)
+                {
+                    result.Add(new GroupDto
+                    {
+                        Id = group.Id,
+                        Name = group.Name,
+                        GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+                    });
+                }
+                return result;
+            }
+            else return null;
         }
 
         public async Task<List<UserModel>> GetUsersFromGroup(Guid id)
@@ -107,9 +123,17 @@ namespace gcapi.Realizations
         }
 
 
-        public async Task<GroupModel?> GetGroup(Guid grId)
+        public async Task<GroupDto?> GetGroup(Guid grId)
         {
-            return await _context.GroupTable.FirstOrDefaultAsync(g => g.Id == grId);
+            var group = await _context.GroupTable.Include(g => g.GroupUsers).Where(g => g.Id == grId).FirstOrDefaultAsync();
+            var result = new GroupDto
+            {
+                Id = group.Id,
+                Name = group.Name,
+                GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+            };
+
+            return result;
 
         }
 

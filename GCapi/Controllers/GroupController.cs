@@ -13,7 +13,7 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("GetAllGroups")]
-        public async Task<IEnumerable<GroupModel>> GetAllGroups()
+        public async Task<IEnumerable<GroupDto>> GetAllGroups()
         {
             return await _groupService.GetAllGroups();
         }
@@ -41,16 +41,16 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("GetGroup")]
-        public async Task<GroupModel?> GetGroup(Guid grId)
+        public async Task<GroupDto?> GetGroup(Guid grId)
         {
             return await _groupService.GetGroup(grId);
         }
 
         [HttpGet]
         [Route("GetAllUserGroups")]
-        public async Task<IEnumerable<GroupModel>> GetAllUserGroups(Guid userId, bool includeAll = false)
+        public async Task<IEnumerable<GroupDto>> GetAllUserGroups(Guid userId)
         {
-            return await _groupService.GetUserGroups(userId, includeAll);
+            return await _groupService.GetUserGroups(userId);
         }
 
         [HttpDelete]
