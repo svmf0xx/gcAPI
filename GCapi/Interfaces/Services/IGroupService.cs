@@ -12,7 +12,7 @@ namespace gcapi.Interfaces.Services
         Task<List<GroupModel>> GetUserGroups(Guid userId);
         Task<List<UserModel>> GetUsersFromGroup(Guid id);
         Task<IActionResult> RemoveGroup(Guid id);
-
+        public Task<GroupModel?> GetGroup(Guid grId);
         //invite
         Task<string> GetInvite(Guid grId, Guid userId);
         Task<Guid?> CheckInvite(string code, Guid userId); //при возврате null возвращается StatusCode не 200, а 204, поэтому удобнее работать с апи

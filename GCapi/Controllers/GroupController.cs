@@ -40,6 +40,13 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
+        [Route("GetGroup")]
+        public async Task<GroupModel?> GetGroup(Guid grId)
+        {
+            return await _groupService.GetGroup(grId);
+        }
+
+        [HttpGet]
         [Route("GetAllUserGroups")]
         public async Task<IEnumerable<GroupModel>> GetAllUserGroups(Guid userId)
         {

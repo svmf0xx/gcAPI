@@ -100,7 +100,11 @@ namespace gcapi.Realizations
         }
 
 
+        public async Task<GroupModel?> GetGroup(Guid grId)
+        {
+            return await _context.GroupTable.FirstOrDefaultAsync(g => g.Id == grId);
 
+        }
 
 
         //invite code
