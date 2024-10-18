@@ -55,12 +55,19 @@ namespace gcapi.Realizations
             return await _context.GroupTable.Include(g => g.GroupUsers).ToListAsync();
         }
 
-        public async Task<List<GroupModel>> GetUserGroups(Guid userId)
+        public async Task<List<GroupModel>> GetUserGroups(Guid userId, bool includeAll = false)
         {
             var theUser = await _context.UserTable.FindAsync(userId);
 
             if (theUser != null)
-                return await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
+                return 
+                    includeAll ? 
+                        await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser))
+                        .Include(g => g.GroupEvents)
+                        .Include(g => g.GroupUsers)
+                        .ToListAsync()
+
+                    :   await _context.GroupTable.Where(g => g.GroupUsers.Contains(theUser)).ToListAsync(); //
 
             else throw new NullReferenceException();
         }
