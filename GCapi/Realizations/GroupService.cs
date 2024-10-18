@@ -73,7 +73,7 @@ namespace gcapi.Realizations
             if (theUser != null)
             {
                 List<GroupDto?> result = new List<GroupDto?>();
-                var groups = await _context.GroupTable.Include(g => g.GroupUsers.Contains(theUser)).ToListAsync();
+                var groups = await _context.GroupTable.Include(g => g.GroupUsers).Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
                 foreach (var group in groups)
                 {
                     result.Add(new GroupDto
