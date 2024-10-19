@@ -21,6 +21,7 @@ namespace gcapi.Realizations
         {
             try
             {
+                UserModel theUser = await _context.UserTable.FindAsync(obj.Owner);
                 var newEvent = new EventModel
                 {
                     Name = obj.Name,
@@ -30,7 +31,7 @@ namespace gcapi.Realizations
                     Description = obj.Description,
                     Emoji = obj.Emoji,
                     Group = obj.Group,
-                    Owner = obj.Owner,
+                    Owner = theUser,
                     Visible = obj.Visible
                 };
                 _context.Add(newEvent);
@@ -47,6 +48,7 @@ namespace gcapi.Realizations
         {
             try
             {
+                UserModel theUser = await _context.UserTable.FindAsync(obj.Owner);
                 var newEvent = new PlanModel
                 {
                     Name = obj.Name,
@@ -55,7 +57,7 @@ namespace gcapi.Realizations
                     Color = obj.Color,
                     Description = obj.Description,
                     Emoji = obj.Emoji,
-                    Owner = obj.Owner,
+                    Owner = theUser,
                     Visible = obj.Visible
                 };
                 _context.Add(newEvent);

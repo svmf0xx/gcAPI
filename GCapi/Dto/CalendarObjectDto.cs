@@ -6,9 +6,9 @@ namespace gcapi.Dto
     public class CalendarObjectDto
     {
         public Guid? Id { get; set; }
-        public required UserModel Owner { get; set; }
-        public DateTime DateTimeFrom { get; set; }
-        public DateTime DateTimeTo { get; set; }
+        public required Guid Owner { get; set; }
+        public required DateTime DateTimeFrom { get; set; }
+        public required DateTime DateTimeTo { get; set; }
         public required string Name { get; set; }
         public EventColor Color { get; set; }
         public string Emoji { get; set; }
