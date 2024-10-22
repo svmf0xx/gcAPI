@@ -17,11 +17,10 @@ namespace gcapi.Realizations
         }
 
 
-        public async Task<IActionResult> AddEventAsync(CalendarObjectDto obj)
+        public async Task<IActionResult> AddEventAsync(CalObjectDto obj)
         {
             try
             {
-                UserModel theUser = await _context.UserTable.FindAsync(obj.Owner);
                 var newEvent = new EventModel
                 {
                     Name = obj.Name,
@@ -31,7 +30,7 @@ namespace gcapi.Realizations
                     Description = obj.Description,
                     Emoji = obj.Emoji,
                     Group = obj.Group,
-                    Owner = theUser,
+                    Owner = obj.Owner,
                     Visible = obj.Visible
                 };
                 _context.Add(newEvent);
@@ -44,11 +43,10 @@ namespace gcapi.Realizations
             }
         }
 
-        public async Task<IActionResult> AddPlanAsync(CalendarObjectDto obj) //на фронте разберемся
+        public async Task<IActionResult> AddPlanAsync(CalObjectDto obj) //на фронте разберемся
         {
             try
             {
-                UserModel theUser = await _context.UserTable.FindAsync(obj.Owner);
                 var newEvent = new PlanModel
                 {
                     Name = obj.Name,
@@ -57,7 +55,7 @@ namespace gcapi.Realizations
                     Color = obj.Color,
                     Description = obj.Description,
                     Emoji = obj.Emoji,
-                    Owner = theUser,
+                    Owner = obj.Owner,
                     Visible = obj.Visible
                 };
                 _context.Add(newEvent);
@@ -70,7 +68,7 @@ namespace gcapi.Realizations
             }
         }
 
-        public async Task<IActionResult> EditEventAsync(CalendarObjectDto obj)
+        public async Task<IActionResult> EditEventAsync(CalObjectDto obj)
         {
 
             var theEvent = await _context.EventTable.FindAsync(obj.Id);
@@ -90,7 +88,7 @@ namespace gcapi.Realizations
             return new BadRequestObjectResult("Ивента не существует");
         }
 
-        public async Task<IActionResult> EditPlanAsync(CalendarObjectDto obj)
+        public async Task<IActionResult> EditPlanAsync(CalObjectDto obj)
         {
 
             var thePlan = await _context.PlanTable.FindAsync(obj.Id);
