@@ -6,10 +6,10 @@ namespace gcapi.Interfaces.Services
 {
     public interface ICalendarObjectService
     {
-        public Task<IActionResult> AddEventAsync(CalObjectDto obj);
-        public Task<IActionResult> AddPlanAsync(CalObjectDto obj);
-        public Task<IActionResult> EditEventAsync(CalObjectDto obj);
-        public Task<IActionResult> EditPlanAsync(CalObjectDto obj);
+        public Task<IActionResult> AddEventAsync(EventDto obj);
+        public Task<IActionResult> AddPlanAsync(PlanDto obj);
+        public Task<IActionResult> EditEventAsync(EventDto obj);
+        public Task<IActionResult> EditPlanAsync(PlanDto obj);
         public Task<IEnumerable<ICalendarObject>> GetAllEventsAsync();
         public Task<IEnumerable<ICalendarObject>> GetAllPlanAsync();
         public Task<IEnumerable<ICalendarObject>> GetAllUserPlansAsync(Guid userId);

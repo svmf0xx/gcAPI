@@ -16,22 +16,24 @@ namespace gcapi.Realizations
             _context = context;
         }
 
-
-        public async Task<IActionResult> AddEventAsync(CalObjectDto obj)
+         
+        public async Task<IActionResult> AddEventAsync(EventDto obj)
         {
             try
             {
+                var theUser = await _context.UserTable.FindAsync(obj.CalendarObject.Owner);
+                var theGroup = await _context.GroupTable.FindAsync(obj.GroupId);
                 var newEvent = new EventModel
                 {
-                    Name = obj.Name,
-                    DateTimeFrom = obj.DateTimeFrom,
-                    DateTimeTo = obj.DateTimeTo,
-                    Color = obj.Color,
-                    Description = obj.Description,
-                    Emoji = obj.Emoji,
-                    Group = obj.Group,
-                    Owner = obj.Owner,
-                    Visible = obj.Visible
+                    Name = obj.CalendarObject.Name,
+                    DateTimeFrom = obj.CalendarObject.DateTimeFrom,
+                    DateTimeTo = obj.CalendarObject.DateTimeTo,
+                    Color = obj.CalendarObject.Color,
+                    Description = obj.CalendarObject.Description,
+                    Emoji = obj.CalendarObject.Emoji,
+                    Group = theGroup,
+                    Owner = theUser,
+                    Visible = obj.CalendarObject.Visible //
                 };
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
@@ -43,20 +45,21 @@ namespace gcapi.Realizations
             }
         }
 
-        public async Task<IActionResult> AddPlanAsync(CalObjectDto obj) //на фронте разберемся
+        public async Task<IActionResult> AddPlanAsync(PlanDto obj)
         {
             try
             {
+                var theUser = await _context.UserTable.FindAsync(obj.CalendarObject.Owner);
                 var newEvent = new PlanModel
                 {
-                    Name = obj.Name,
-                    DateTimeFrom = obj.DateTimeFrom,
-                    DateTimeTo = obj.DateTimeTo,
-                    Color = obj.Color,
-                    Description = obj.Description,
-                    Emoji = obj.Emoji,
-                    Owner = obj.Owner,
-                    Visible = obj.Visible
+                    Name = obj.CalendarObject.Name,
+                    DateTimeFrom = obj.CalendarObject.DateTimeFrom,
+                    DateTimeTo = obj.CalendarObject.DateTimeTo,
+                    Color = obj.CalendarObject.Color,
+                    Description = obj.CalendarObject.Description,
+                    Emoji = obj.CalendarObject.Emoji,
+                    Owner = theUser,
+                    Visible = obj.CalendarObject.Visible
                 };
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
@@ -68,19 +71,19 @@ namespace gcapi.Realizations
             }
         }
 
-        public async Task<IActionResult> EditEventAsync(CalObjectDto obj)
+        public async Task<IActionResult> EditEventAsync(EventDto obj)
         {
 
             var theEvent = await _context.EventTable.FindAsync(obj.Id);
 
             if (theEvent != null)
             {
-                theEvent.Name = obj.Name;
-                theEvent.Description = obj.Description;
-                theEvent.DateTimeFrom = obj.DateTimeFrom;
-                theEvent.DateTimeTo = obj.DateTimeTo;
-                theEvent.Emoji = obj.Emoji;
-                theEvent.Visible = obj.Visible;
+                theEvent.Name = obj.CalendarObject.Name;
+                theEvent.Description = obj.CalendarObject.Description;
+                theEvent.DateTimeFrom = obj.CalendarObject.DateTimeFrom;
+                theEvent.DateTimeTo = obj.CalendarObject.DateTimeTo;
+                theEvent.Emoji = obj.CalendarObject.Emoji;
+                theEvent.Visible = obj.CalendarObject.Visible;
                 _context.Update(theEvent);
                 await _context.SaveChangesAsync();
                 return new OkResult();
@@ -88,19 +91,19 @@ namespace gcapi.Realizations
             return new BadRequestObjectResult("Ивента не существует");
         }
 
-        public async Task<IActionResult> EditPlanAsync(CalObjectDto obj)
+        public async Task<IActionResult> EditPlanAsync(PlanDto obj)
         {
 
             var thePlan = await _context.PlanTable.FindAsync(obj.Id);
 
             if (thePlan != null)
             {
-                thePlan.Name = obj.Name;
-                thePlan.Description = obj.Description;
-                thePlan.DateTimeFrom = obj.DateTimeFrom;
-                thePlan.DateTimeTo = obj.DateTimeTo;
-                thePlan.Emoji = obj.Emoji;
-                thePlan.Visible = obj.Visible;
+                thePlan.Name = obj.CalendarObject.Name;
+                thePlan.Description = obj.CalendarObject.Description;
+                thePlan.DateTimeFrom = obj.CalendarObject.DateTimeFrom;
+                thePlan.DateTimeTo = obj.CalendarObject.DateTimeTo;
+                thePlan.Emoji = obj.CalendarObject.Emoji;
+                thePlan.Visible = obj.CalendarObject.Visible;
                 _context.Update(thePlan);
                 await _context.SaveChangesAsync();
                 return new OkResult();

@@ -6,8 +6,8 @@ namespace gcapi.Dto
     public class PlanDto
     {
         public Guid? Id { get; set; }
-        public required Guid Owner { get; set; }
-        public required Visible Visible { get; set; }
+
+        // надеюсь я не нарушаю твой гениальный замысел
         public required CalObjectDto CalendarObject { get; set; }
     }
 }

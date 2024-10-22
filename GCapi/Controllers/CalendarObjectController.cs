@@ -34,28 +34,28 @@ namespace gcapi.Controllers
 
         [HttpPut] //тут???? тут пут
         [Route("AddEvent")]
-        public async Task<IActionResult> AddEvent(CalObjectDto ev)
+        public async Task<IActionResult> AddEvent(EventDto obj)
         {
-            return await _objService.AddEventAsync(ev);
+            return await _objService.AddEventAsync(obj);
         }
 
         [HttpPut]
         [Route("AddPlan")]
-        public async Task AddPlan(CalObjectDto ev)
+        public async Task AddPlan(PlanDto obj)
         {
-            await _objService.AddPlanAsync(ev);
+            await _objService.AddPlanAsync(obj);
         }
 
         [HttpPost]
         [Route("EditEvent")]
-        public async Task<IActionResult> EditEvent(CalObjectDto ev)
+        public async Task<IActionResult> EditEvent(EventDto ev)
         {
             return await _objService.EditEventAsync(ev);
         }
 
         [HttpPost]
         [Route("EditPlan")]
-        public async Task<IActionResult> EditPlan(CalObjectDto ev)
+        public async Task<IActionResult> EditPlan(PlanDto ev)
         {
             return await _objService.EditPlanAsync(ev);
         }
