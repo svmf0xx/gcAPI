@@ -7,7 +7,29 @@ namespace gcapi.Dto
     {
         public Guid? Id { get; set; }
         public List<ReactionModel> Reactions { get; set; } = [];
-        public required Guid GroupId { get; set; }
-        public required CalObjectDto CalendarObject { get; set; }
+        public Guid GroupId { get; set; }
+        public CalObjectDto CalendarObject { get; set; }
+
+        public EventDto(EventModel ev)
+        {
+            Id = ev.Id;
+            Reactions = ev.Reactions;
+            GroupId = ev.Group.Id;
+            CalendarObject = new CalObjectDto()
+            {
+                Owner = ev.Owner.Id,
+                DateTimeFrom = ev.DateTimeFrom,
+                DateTimeTo = ev.DateTimeTo,
+                Name = ev.Name,
+                Visible = ev.Visible,
+                Emoji = ev.Emoji,
+                Color = ev.Color,
+                Description = ev.Description
+            };
+        }
+
+        public EventDto() //без этого всё сломается
+        {                 //ну логично, это как сказать что есть влад которому надо дать инсулин, но нет просто влада
+        }
     }
 }

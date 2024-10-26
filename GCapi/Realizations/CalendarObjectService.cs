@@ -16,7 +16,7 @@ namespace gcapi.Realizations
             _context = context;
         }
 
-         
+
         public async Task<IActionResult> AddEventAsync(EventDto obj)
         {
             try
@@ -111,13 +111,25 @@ namespace gcapi.Realizations
             return new BadRequestObjectResult("Плана не существует");
         }
 
-        public async Task<IEnumerable<ICalendarObject>> GetAllEventsAsync()
+        public async Task<IEnumerable<EventDto>> GetAllEventsAsync()
         {
-            return await _context.EventTable.ToListAsync();
+            var res = new List<EventDto>();
+            var models =  await _context.EventTable.ToListAsync();
+            foreach (var model in models)
+            {
+                res.Add(new EventDto(model));
+            }
+            return res;
         }
-        public async Task<IEnumerable<ICalendarObject>> GetAllPlanAsync()
+        public async Task<IEnumerable<PlanDto>> GetAllPlanAsync()
         {
-            return await _context.PlanTable.ToListAsync();
+            var res = new List<PlanDto>();
+            var models = await _context.PlanTable.ToListAsync();
+            foreach (var model in models)
+            {
+                res.Add(new PlanDto(model));
+            }
+            return res;
         }
 
         public async Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId)
@@ -127,9 +139,10 @@ namespace gcapi.Realizations
             return plans;
         }
 
-        public async Task<ICalendarObject> GetEventByIdAsync(Guid id)
+        public async Task<EventDto> GetEventByIdAsync(Guid id)
         {
-            return await _context.EventTable.FindAsync(id);
+            var model = await _context.EventTable.FindAsync(id);
+            return new EventDto(model);
         }
 
         public async Task<List<EventModel>> GetUserEventsAsync(Guid userId)

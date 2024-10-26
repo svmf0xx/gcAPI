@@ -13,21 +13,21 @@ namespace gcapi.Controllers
 
         [HttpGet]
         [Route("GetAllEvents")]
-        public async Task<IEnumerable<ICalendarObject>> GetAllEvents()
+        public async Task<IEnumerable<EventDto>> GetAllEvents()
         {
             return await _objService.GetAllEventsAsync();
         }
 
         [HttpGet] //зачем???? 
         [Route("GetEventById")]
-        public async Task<ICalendarObject> GetEventById(Guid evId)
+        public async Task<EventDto> GetEventById(Guid evId)
         {
             return await _objService.GetEventByIdAsync(evId);
         }
 
         [HttpGet] 
         [Route("GetAllPlans")]
-        public async Task<IEnumerable<ICalendarObject>> GetAllPlanss()
+        public async Task<IEnumerable<PlanDto>> GetAllPlanss()
         {
             return await _objService.GetAllPlanAsync();
         }
