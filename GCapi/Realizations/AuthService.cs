@@ -39,7 +39,8 @@ namespace gcapi.Realizations
                     SecondName = user.SecondName,
                     Email = user.Email,
                     TgId = user.TgId,
-                    Username = user.Username
+                    Username = user.Username,
+                    TimeZone = user.TimeZone
                 };
                 try
                 {

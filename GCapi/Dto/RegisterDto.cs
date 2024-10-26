@@ -18,5 +18,6 @@ namespace gcapi.Dto
         [Required]
         [MaxLength(16), MinLength(4)]
         public string Username { get; set; }
+        public int? TimeZone { get; set; }
     }
 }

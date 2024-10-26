@@ -14,6 +14,7 @@ namespace gcapi.Dto
         public string Username { get; set; }
         public long TgId { get; set; }
         public Roles Role { get; set; }
+        public int? TimeZone { get; set; }
 
         public UserDto(UserModel user)
         {
@@ -24,6 +25,7 @@ namespace gcapi.Dto
             Username = user.Username;
             TgId = user.TgId;
             Role = user.Role;
+            TimeZone = user.TimeZone;
         }
 
         

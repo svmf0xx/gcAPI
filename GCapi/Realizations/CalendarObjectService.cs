@@ -120,10 +120,11 @@ namespace gcapi.Realizations
             return await _context.PlanTable.ToListAsync();
         }
 
-        public async Task<IEnumerable<ICalendarObject>> GetAllUserPlansAsync(Guid userId)
+        public async Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId)
         {
             var theUser = await _context.UserTable.FindAsync(userId);
-            return await _context.PlanTable.Where(p => p.Owner == theUser).ToListAsync();
+            List<PlanDto> plans = await _context.PlanTable.Where(p => p.Owner == theUser).Select(plan => new PlanDto(plan)).ToListAsync();
+            return plans;
         }
 
         public async Task<ICalendarObject> GetEventByIdAsync(Guid id)

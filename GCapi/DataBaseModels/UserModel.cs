@@ -19,7 +19,7 @@ namespace gcapi.Models
         public string? Email { get; set; }
        // public string? Phone { get; set; } а зачем телефон вообще
         public required long TgId { get; set; }
-
+        public int? TimeZone { get; set; } = 0;
         public List<GroupModel> Groups { get; set; } = [];
         public List<PlanModel> Plans { get; set; } = [];
         public List<EventModel> Events { get; set; } = [];
