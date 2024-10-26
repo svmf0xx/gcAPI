@@ -13,6 +13,22 @@ namespace gcapi.Dto
         // надеюсь я не нарушаю твой гениальный замысел
         public CalObjectDto CalendarObject { get; set; }
 
+        public PlanDto(PlanModel plan, Guid id)
+        {
+            Id = plan.Id;
+            CalendarObject = new CalObjectDto()
+            {
+                Owner = id,
+                DateTimeFrom = plan.DateTimeFrom,
+                DateTimeTo = plan.DateTimeTo,
+                Name = plan.Name,
+                Visible = plan.Visible,
+                Emoji = plan.Emoji,
+                Color = plan.Color,
+                Description = plan.Description
+            };
+        }
+
         public PlanDto(PlanModel plan)
         {
             Id = plan.Id;
