@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /gcapi/Properties/launchSettings.json
 /gcapi/Properties/launchSettings.json
 /GCapi/Properties/launchSettings.json
+/gcapi/gcal_root_ca.crt
