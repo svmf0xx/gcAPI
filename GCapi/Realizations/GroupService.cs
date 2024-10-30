@@ -22,7 +22,8 @@ namespace gcapi.Realizations
                 var newGroup = new GroupModel
                 {
                     Name = gr.Name,
-                    GroupUsers = users
+                    GroupUsers = users,
+                    Emoji = gr.Emoji,
                 };
                 _context.Add(newGroup);
                 await _context.SaveChangesAsync();
@@ -43,6 +44,8 @@ namespace gcapi.Realizations
             {
                 theGroup.Name = gr.Name;
                 theGroup.GroupUsers = users;
+                theGroup.Emoji = gr.Emoji;
+
                 _context.Update(theGroup);
                 await _context.SaveChangesAsync();
                 return new OkResult();
@@ -60,6 +63,7 @@ namespace gcapi.Realizations
                 {
                     Id = group.Id,
                     Name = group.Name,
+                    Emoji = group.Emoji,
                     GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
                 });
             }
@@ -80,6 +84,7 @@ namespace gcapi.Realizations
                     {
                         Id = group.Id,
                         Name = group.Name,
+                        Emoji = group.Emoji,
                         GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
                     });
                 }
@@ -130,6 +135,7 @@ namespace gcapi.Realizations
             {
                 Id = group.Id,
                 Name = group.Name,
+                Emoji = group.Emoji,
                 GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
             };
 

@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace gcapi.Dto
 {
-    
+
     public class UserDto
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string? SecondName { get; set; }
+        public string Emoji { get; set; } = "😘";
         public string? Email { get; set; }
         public string Username { get; set; }
         public long TgId { get; set; }
@@ -26,8 +27,9 @@ namespace gcapi.Dto
             TgId = user.TgId;
             Role = user.Role;
             TimeZone = user.TimeZone;
+            Emoji = user.Emoji;
         }
 
-        
+
     }
 }
