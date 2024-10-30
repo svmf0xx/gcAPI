@@ -7,6 +7,7 @@ namespace gcapi.Models
     {
         [Key]
         public Guid Id { get; set; }
+        public string Emoji { get; set; } = "😘";
 
         [Required]
         [MaxLength(50)]
