@@ -7,6 +7,7 @@ namespace gcapi.Dto
         public string Username { get; set; }
         public string? FirstName { get; set; }
         public string? SecondName { get; set; }
+        public string Emoji { get; set; } = "😘";
 
         [EmailAddress]
         public string? Email { get; set; }

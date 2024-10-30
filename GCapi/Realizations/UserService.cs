@@ -28,6 +28,7 @@ namespace gcapi.Realizations
                     theUser.SecondName = user.SecondName;
                     theUser.Email = user.Email;
                     theUser.TgId = user.TgId;
+                    theUser.Emoji = user.Emoji;
                     return new OkResult();
                 }
                 return new BadRequestObjectResult("Пользователя не существует");
