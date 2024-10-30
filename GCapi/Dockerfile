@@ -3,8 +3,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 7780
-EXPOSE 7781
+EXPOSE 8080
+EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Debug
@@ -20,6 +20,8 @@ ARG BUILD_CONFIGURATION=Debug
 RUN dotnet publish "./gcapi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+COPY ["gcal_root_ca.crt", "/usr/local/share/ca-certificates/"]
+RUN update-ca-certificates -v
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "gcapi.dll"]
