@@ -56,24 +56,24 @@ builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 
 
-builder.Services.AddAuthentication(
-    CertificateAuthenticationDefaults.AuthenticationScheme)
-    .AddCertificate(options =>
-    {
-        options.ChainTrustValidationMode = X509ChainTrustMode.CustomRootTrust;
-        options.CustomTrustStore = new X509Certificate2Collection(new X509Certificate2(
-            builder.Configuration.GetSection("Cert")["File"]));
+//builder.Services.AddAuthentication(
+//    CertificateAuthenticationDefaults.AuthenticationScheme)
+//    .AddCertificate(options =>
+//    {
+//        options.ChainTrustValidationMode = X509ChainTrustMode.CustomRootTrust;
+//        options.CustomTrustStore = new X509Certificate2Collection(new X509Certificate2(
+//            builder.Configuration.GetSection("Cert")["File"]));
 
-       options.RevocationMode = X509RevocationMode.NoCheck;
+//        options.RevocationMode = X509RevocationMode.NoCheck;
 
-    });
+//    });
 
-builder.Services.Configure<KestrelServerOptions>(options =>
-{
-    options.ConfigureHttpsDefaults(options =>
-        options.ClientCertificateMode = ClientCertificateMode.RequireCertificate);
+//builder.Services.Configure<KestrelServerOptions>(options =>
+//{
+//    options.ConfigureHttpsDefaults(options =>
+//        options.ClientCertificateMode = ClientCertificateMode.RequireCertificate);
 
-});
+//});
 
 var app = builder.Build();
 
@@ -89,7 +89,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
 app.MapControllers();
 
