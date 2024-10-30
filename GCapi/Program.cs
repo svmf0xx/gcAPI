@@ -89,7 +89,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
 app.MapControllers();
 
