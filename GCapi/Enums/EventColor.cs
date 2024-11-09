@@ -8,5 +8,5 @@
         Yellow,
         ItsSoCringeEnum,
         Green
-    }
+    } //а зачем енам
 }

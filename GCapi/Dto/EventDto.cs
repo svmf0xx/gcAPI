@@ -23,7 +23,7 @@ namespace gcapi.Dto
                 Name = ev.Name,
                 Visible = ev.Visible,
                 Emoji = ev.Emoji,
-                Color = ev.Color,
+                HexColor = ev.Color,
                 Description = ev.Description
             };
         }
