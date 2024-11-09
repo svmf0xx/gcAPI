@@ -15,7 +15,7 @@ namespace gcapi.Models
         public DateTime DateTimeFrom { get; set; }
         public DateTime DateTimeTo { get; set; }
         public required string Name { get; set; }
-        public EventColor Color { get; set; }
+        public string HexColor { get; set; } = "0xFFFFFFFF";
         public string Emoji { get; set; }
 
         public required GroupModel Group { get; set; }
