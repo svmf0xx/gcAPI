@@ -24,7 +24,7 @@ namespace gcapi.Dto
                 Name = plan.Name,
                 Visible = plan.Visible,
                 Emoji = plan.Emoji,
-                HexColor = plan.Color,
+                HexColor = plan.HexColor,
                 Description = plan.Description
             };
         }
@@ -40,7 +40,7 @@ namespace gcapi.Dto
                 Name = plan.Name,
                 Visible = plan.Visible,
                 Emoji = plan.Emoji,
-                HexColor = plan.Color,
+                HexColor = plan.HexColor,
                 Description = plan.Description
             };
         }
