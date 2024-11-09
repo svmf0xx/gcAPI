@@ -20,7 +20,7 @@ namespace gcapi.Interfaces
 
         //public IEventStyle Style { get; set; } 
 
-        public EventColor Color { get; set; }
+        public string HexColor { get; set; }
 
         public string Emoji { get; set; }
 
