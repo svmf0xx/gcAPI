@@ -1,13 +1,15 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+COPY ["gcal_root_ca.crt", "/usr/local/share/ca-certificates/"]
+RUN update-ca-certificates -v
 USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Debug
 WORKDIR /src
 COPY ["gcapi/gcapi.csproj", "gcapi/"]
 RUN dotnet restore "./gcapi/gcapi.csproj"
@@ -16,7 +18,7 @@ COPY . .
 RUN dotnet build "./gcapi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Debug
 RUN dotnet publish "./gcapi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
