@@ -19,7 +19,7 @@ namespace gcapi.Models
         public string? Description { get; set; }
         
         public required Visible Visible { get; set; }
-        public string HexColor { get; set; } = "0xFFFFFFFF";
-        public string Emoji { get; set; }
+        public string? HexColor { get; set; } = "0xFFFFFFFF";
+        public string? Emoji { get; set; }
     }
 }
