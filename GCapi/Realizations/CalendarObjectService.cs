@@ -114,7 +114,7 @@ namespace gcapi.Realizations
         public async Task<IEnumerable<EventDto>> GetAllEventsAsync()
         {
             var res = new List<EventDto>();
-            var models =  await _context.EventTable.ToListAsync();
+            var models =  await _context.EventTable.Include(e => e.Owner).Include(e => e.Group).ToListAsync();
             foreach (var model in models)
             {
                 res.Add(new EventDto(model));
@@ -147,7 +147,13 @@ namespace gcapi.Realizations
         public async Task<List<EventDto>> GetEventsByGroupAsync(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);
-            var events = await _context.EventTable.Where(e => e.Group == theGroup).Select(e => new EventDto(e)).ToListAsync();
+            var events = await _context.EventTable
+                .Include(e => e.Owner)
+                .Include(e => e.Group)
+                .Where(e => e.Group == theGroup)
+                .Select(e => new EventDto(e))
+                .ToListAsync();
+
             return events;
         }
         public async Task<List<EventModel>> GetUserEventsAsync(Guid userId)
