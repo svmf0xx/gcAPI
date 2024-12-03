@@ -31,6 +31,6 @@ namespace gcapi.Models
 
         //[NotMapped]  // мне кажется я сделал супер тупо
         //да не
-
+        
     }
 }
