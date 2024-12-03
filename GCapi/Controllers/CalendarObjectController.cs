@@ -26,7 +26,7 @@ namespace gcapi.Controllers
         }
 
         [HttpGet] //зачем???? 
-        [Route("GetEventById")]
+        [Route("GetEventsByGroup")]
         public async Task<List<EventDto>> GetEventsByGroup(Guid gId)
         {
             return await _objService.GetEventsByGroupAsync(gId);
