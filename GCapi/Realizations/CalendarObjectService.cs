@@ -144,7 +144,12 @@ namespace gcapi.Realizations
             var model = await _context.EventTable.FindAsync(id);
             return new EventDto(model);
         }
-
+        public async Task<List<EventDto>> GetEventsByGroupAsync(Guid id)
+        {
+            var theGroup = await _context.GroupTable.FindAsync(id);
+            var events = await _context.EventTable.Where(e => e.Group == theGroup).Select(e => new EventDto(e)).ToListAsync();
+            return events;
+        }
         public async Task<List<EventModel>> GetUserEventsAsync(Guid userId)
         {
             var theUser = await _context.UserTable.FindAsync(userId);

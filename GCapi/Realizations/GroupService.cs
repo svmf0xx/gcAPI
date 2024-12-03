@@ -101,17 +101,6 @@ namespace gcapi.Realizations
 
             else throw new NullReferenceException(); 
         }
-        public async Task<List<EventDto>> GetEventsFromGroup(Guid id)
-        {
-            var theGroup = await _context.GroupTable.FindAsync(id);
-            if (theGroup != null)
-            {
-                var dtos = theGroup.GroupEvents.Select(x => new EventDto(x)).ToList();
-                return dtos;
-            }
-
-            else throw new NullReferenceException();
-        }
         public async Task<IActionResult> RemoveGroup(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);

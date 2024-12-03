@@ -40,13 +40,6 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllGroupEvents")]
-        public async Task<IEnumerable<EventDto>> GetAllGroupEvents(Guid grId)
-        {
-            return await _groupService.GetEventsFromGroup(grId);
-        }
-
-        [HttpGet]
         [Route("GetGroup")]
         public async Task<GroupDto?> GetGroup(Guid grId)
         {
