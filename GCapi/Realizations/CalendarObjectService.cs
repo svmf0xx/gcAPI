@@ -161,7 +161,15 @@ namespace gcapi.Realizations
             var theUser = await _context.UserTable.FindAsync(userId);
             return theUser.Events;
         }
-
+        public async Task<List<EventDto>> GetUserEventsByDate(Guid userId, DateTime date)
+        {
+            var theUser = await _context.UserTable.FindAsync(userId);
+            var events = await _context.EventTable.Include(e => e.Owner).Include(e => e.Group)
+                .Where(e => e.DateTimeFrom == date && e.Reactions.Any(r => r.OwnerId == userId))
+                .Select(e => new EventDto(e))
+                .ToListAsync();
+            return events;
+        }
         public async Task<IActionResult> RemoveEventAsync(Guid id)
         {
             var theEvent = await _context.EventTable.FindAsync(id);
@@ -181,7 +189,6 @@ namespace gcapi.Realizations
                 {
                     gr.GroupEvents.Remove(theEvent);
                     _context.Update(gr);
-
                 }
 
                 await _context.SaveChangesAsync();

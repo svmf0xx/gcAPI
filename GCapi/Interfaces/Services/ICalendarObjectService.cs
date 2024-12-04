@@ -16,6 +16,7 @@ namespace gcapi.Interfaces.Services
         Task<EventDto> GetEventByIdAsync(Guid id);
         Task<List<EventDto>> GetEventsByGroupAsync(Guid id);
         Task<List<EventModel>> GetUserEventsAsync(Guid userId);
+        Task<List<EventDto>> GetUserEventsByDate(Guid userId, DateTime date);
         Task<IActionResult> RemoveEventAsync(Guid id);
     }
 }
