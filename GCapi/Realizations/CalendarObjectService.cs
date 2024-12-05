@@ -171,6 +171,15 @@ namespace gcapi.Realizations
                 .ToListAsync();
             return events;
         }
+        public async Task<List<EventDto>> GetUserEventsByMonth(Guid userId, DateTime date)
+        {
+            var theUser = await _context.UserTable.FindAsync(userId);
+            var events = await _context.EventTable.Include(e => e.Owner).Include(e => e.Group)
+                .Where(e => e.DateTimeFrom.Month == date.Month && e.Reactions.Any(r => r.OwnerId == userId))
+                .Select(e => new EventDto(e))
+                .ToListAsync();
+            return events;
+        }
         public async Task<IActionResult> RemoveEventAsync(Guid id)
         {
             var theEvent = await _context.EventTable.FindAsync(id);

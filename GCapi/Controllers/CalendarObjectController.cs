@@ -39,6 +39,13 @@ namespace gcapi.Controllers
             return await _objService.GetUserEventsByDate(uId, date);
         }
 
+        [HttpGet] //зачем???? 
+        [Route("GetUserEventsByMonth")]
+        public async Task<List<EventDto>> GetUserEventsByMonth(Guid uId, DateTime date)
+        {
+            return await _objService.GetUserEventsByMonth(uId, date);
+        }
+
         [HttpGet]
         [Route("GetAllPlans")]
         public async Task<IEnumerable<PlanDto>> GetAllPlanss()
