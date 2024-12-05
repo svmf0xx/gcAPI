@@ -33,8 +33,9 @@ namespace gcapi.Realizations
                     Emoji = obj.CalendarObject.Emoji,
                     Group = theGroup,
                     Owner = theUser,
-                    Visible = obj.CalendarObject.Visible //
+                    Visible = obj.CalendarObject.Visible
                 };
+                newEvent.Reactions.Add(new ReactionModel { OwnerId = theUser.Id, Reaction = Enums.Reaction.None });
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
                 return new OkResult();
@@ -165,7 +166,7 @@ namespace gcapi.Realizations
         {
             var theUser = await _context.UserTable.FindAsync(userId);
             var events = await _context.EventTable.Include(e => e.Owner).Include(e => e.Group)
-                .Where(e => e.DateTimeFrom == date && e.Reactions.Any(r => r.OwnerId == userId))
+                .Where(e => e.DateTimeFrom.Date == date.Date && e.Reactions.Any(r => r.OwnerId == userId))
                 .Select(e => new EventDto(e))
                 .ToListAsync();
             return events;
