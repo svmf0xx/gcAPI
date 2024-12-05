@@ -84,6 +84,7 @@ namespace gcapi.Realizations
                 theEvent.DateTimeFrom = obj.CalendarObject.DateTimeFrom;
                 theEvent.DateTimeTo = obj.CalendarObject.DateTimeTo;
                 theEvent.Emoji = obj.CalendarObject.Emoji;
+                theEvent.HexColor = obj.CalendarObject.HexColor;
                 theEvent.Visible = obj.CalendarObject.Visible;
                 _context.Update(theEvent);
                 await _context.SaveChangesAsync();
@@ -104,6 +105,7 @@ namespace gcapi.Realizations
                 thePlan.DateTimeFrom = obj.CalendarObject.DateTimeFrom;
                 thePlan.DateTimeTo = obj.CalendarObject.DateTimeTo;
                 thePlan.Emoji = obj.CalendarObject.Emoji;
+                thePlan.HexColor = obj.CalendarObject.HexColor;
                 thePlan.Visible = obj.CalendarObject.Visible;
                 _context.Update(thePlan);
                 await _context.SaveChangesAsync();
@@ -115,7 +117,7 @@ namespace gcapi.Realizations
         public async Task<IEnumerable<EventDto>> GetAllEventsAsync()
         {
             var res = new List<EventDto>();
-            var models =  await _context.EventTable.Include(e => e.Owner).Include(e => e.Group).ToListAsync();
+            var models = await _context.EventTable.Include(e => e.Owner).Include(e => e.Group).ToListAsync();
             foreach (var model in models)
             {
                 res.Add(new EventDto(model));
@@ -182,29 +184,52 @@ namespace gcapi.Realizations
         }
         public async Task<IActionResult> RemoveEventAsync(Guid id)
         {
-            var theEvent = await _context.EventTable.FindAsync(id);
-            if (theEvent != null)
+            try
             {
-                var theGroups = await _context.GroupTable.Where(g => theEvent.Group == g).ToListAsync();
-                foreach (var r in theEvent.Reactions)
-                {
-                    var u = await _context.UserTable.FindAsync(r.OwnerId);
-                    if (u != null)
-                    {
-                        u.Events.Remove(theEvent);
-                        _context.Update(u);
-                    }
-                }
-                foreach (var gr in theGroups)
-                {
-                    gr.GroupEvents.Remove(theEvent);
-                    _context.Update(gr);
-                }
+                var theEvent = await _context.EventTable
+                    .Include(e => e.Group)
+                    .Include(e => e.Owner)
+                    .Include(e => e.Reactions)
+                    .Where(e => e.Id == id)
+                    .FirstOrDefaultAsync();
 
-                await _context.SaveChangesAsync();
-                return new OkResult();
+                if (theEvent != null)
+                {
+                    foreach (var reaction in theEvent.Reactions.ToList())
+                    {
+                        _context.Remove(reaction);
+                    }
+
+                    var theGroups = await _context.GroupTable
+                        .Where(g => theEvent.Group == g)
+                        .ToListAsync();
+
+                    foreach (var r in theEvent.Reactions)
+                    {
+                        var u = await _context.UserTable.FindAsync(r.OwnerId);
+                        if (u != null)
+                        {
+                            u.Events.Remove(theEvent);
+                            _context.Update(u);
+                        }
+                    }
+
+                    foreach (var gr in theGroups)
+                    {
+                        gr.GroupEvents.Remove(theEvent);
+                        _context.Update(gr);
+                    }
+
+                    _context.EventTable.Remove(theEvent);
+                    await _context.SaveChangesAsync();
+                    return new OkResult();
+                }
+                else return new BadRequestObjectResult("Ивента не существует");
             }
-            else return new BadRequestObjectResult("Ивента не существует");
+            catch
+            {
+                return new BadRequestObjectResult("Ивента не существует");
+            }
         }
     }
 }
