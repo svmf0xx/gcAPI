@@ -144,6 +144,11 @@ namespace gcapi.Realizations
             var model = await _context.EventTable.FindAsync(id);
             return new EventDto(model);
         }
+        public async Task<PlanDto> GetPlanByIdAsync(Guid id)
+        {
+            var model = await _context.PlanTable.FindAsync(id);
+            return new PlanDto(model);
+        }
 
         public async Task<List<EventModel>> GetUserEventsAsync(Guid userId)
         {

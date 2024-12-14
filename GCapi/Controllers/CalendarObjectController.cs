@@ -25,6 +25,13 @@ namespace gcapi.Controllers
             return await _objService.GetEventByIdAsync(evId);
         }
 
+        [HttpGet] //зачем???? 
+        [Route("GetPlanById")]
+        public async Task<PlanDto> GetPlanById(Guid evId)
+        {
+            return await _objService.GetPlanByIdAsync(evId);
+        }
+
         [HttpGet] 
         [Route("GetAllPlans")]
         public async Task<IEnumerable<PlanDto>> GetAllPlanss()

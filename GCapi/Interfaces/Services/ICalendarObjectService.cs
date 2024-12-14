@@ -14,6 +14,7 @@ namespace gcapi.Interfaces.Services
         Task<IEnumerable<PlanDto>> GetAllPlanAsync();
         Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId);
         Task<EventDto> GetEventByIdAsync(Guid id);
+        Task<PlanDto> GetPlanByIdAsync(Guid id);
         Task<List<EventModel>> GetUserEventsAsync(Guid userId);
         Task<IActionResult> RemoveEventAsync(Guid id);
     }
