@@ -15,8 +15,6 @@ namespace gcapi.Models
 
         [MaxLength(50)]
         public string? SecondName { get; set; }
-
-        [EmailAddress]
         public string? Email { get; set; }
        // public string? Phone { get; set; } а зачем телефон вообще
         public required long TgId { get; set; }

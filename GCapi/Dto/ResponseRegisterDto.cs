@@ -1,8 +1,8 @@
 ﻿namespace gcapi.Dto
 {
-    public class LogInDto
+    public class ResponseRegisterDto
     {
         public string Username {  get; set; }
-        public string Code {  get; set; }
+        public string UrlToken { get; set; }
     }
 }

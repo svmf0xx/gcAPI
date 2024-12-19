@@ -3,6 +3,9 @@ using gcapi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using gcapi.Models;
 using gcapi.Dto;
+using deniszykov.BaseN;
+using Microsoft.EntityFrameworkCore;
+using OtpNet;
 namespace gcapi.Realizations
 {
     public class AuthService(gContext context) : IAuthService
@@ -10,50 +13,69 @@ namespace gcapi.Realizations
 
         private readonly gContext _context = context;
 
-        public async Task<IActionResult> CheckAuth(AuthDto authData)
+
+        public async Task<ResponseRegisterDto> RegisterUser(RegisterDto user)
         {
-            var user = await _context.UserTable.FindAsync(authData.Username);
+
+            var userModel = new UserModel
+            {
+                FirstName = user.FirstName,
+                SecondName = user.SecondName,
+                Email = user.Email,
+                TgId = user.TgId,
+                Username = user.Username,
+                TimeZone = user.TimeZone,
+                Secret = GenerateToken(64)
+            };
+            try
+            {
+                await _context.AddAsync(userModel);
+                await _context.SaveChangesAsync();
+
+                var urlToken = new OtpUri(OtpType.Totp, Base32Convert.ToBytes(userModel.Secret), userModel.Username).ToString();
+                return new ResponseRegisterDto { Username = user.Username, UrlToken = urlToken };
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
+        public bool CheckLogin(string login) => _context.UserTable.Where(u => u.Username == login).ToList().Any();
+
+        public static string GenerateToken(int N)
+        {
+
+            string AllowChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string token = "";
+            Random rnd = new();
+            int index;
+            for (int i = 0; i < N; i++)
+            {
+                index = rnd.Next(0, AllowChars.Length);
+                token += (AllowChars[index]);
+            }
+
+            return token;
+        }
+
+
+        public async Task<UserDto?> LoginUser(LogInDto logindata)
+        {
+            var user = await _context.UserTable.Where(u => logindata.Username == u.Username).FirstOrDefaultAsync();
             if (user == null)
             {
-                return new BadRequestObjectResult("Пользователь не найден"); //ну тебе проще самому тут все делать
-                //ладно я забыл что ты просил меня инвайты сделать
+                return null;
             }
-            return new OkResult();
-         }
-
-            public async Task<IActionResult> RegisterUser(RegisterDto user)
+            var totp = new Totp(Base32Convert.ToBytes(user.Secret));
+            var code = totp.ComputeTotp();
+            if (code != logindata.Code)
             {
-
-                //ты типа сам не догадался сюда это вставить
-
-                //ну как будто бы лучше отделить проверку от логики - куда-нибудь вообще в другое место вынести, а то грязно как-то
-                //if (user == null || user.Username == null || user.FirstName == null)
-                //{
-                //    return new APIResponse(false, "Не все обязательные поля заполнены");
-                //}
-                //ну конкретно эта проверка не обязательна, конечно, модель сама проверяет свои поля
-
-                var userModel = new UserModel
-                {
-                    FirstName = user.FirstName,
-                    SecondName = user.SecondName,
-                    Email = user.Email,
-                    TgId = user.TgId,
-                    Username = user.Username,
-                    TimeZone = user.TimeZone
-                };
-                try
-                {
-                    await _context.AddAsync(userModel);
-                    await _context.SaveChangesAsync();
-                    return new OkResult();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    return new BadRequestObjectResult(ex.ToString());//это кринж немного, потом бы переделать, но пока для отладки просто
-                }
-
+                return null;
             }
+
+            return new UserDto(user);
         }
     }
+}
