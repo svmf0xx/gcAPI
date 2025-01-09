@@ -22,7 +22,7 @@ namespace gcapi.Realizations
             try
             {
                 var theUser = await _context.UserTable.FindAsync(obj.CalendarObject.Owner);
-                var theGroup = await _context.GroupTable.FindAsync(obj.GroupId);
+                var theGroup = await _context.GroupTable.Include(g => g.GroupUsers).Where(g => g.Id == obj.GroupId).FirstOrDefaultAsync();
                 var newEvent = new EventModel
                 {
                     Name = obj.CalendarObject.Name,
@@ -35,7 +35,10 @@ namespace gcapi.Realizations
                     Owner = theUser,
                     Visible = obj.CalendarObject.Visible
                 };
-                newEvent.Reactions.Add(new ReactionModel { OwnerId = theUser.Id, Reaction = Enums.Reaction.None });
+                foreach (var react in theGroup.GroupUsers)
+                {
+                    newEvent.Reactions.Add(new ReactionModel { OwnerId = react.Id, Reaction = Enums.Reaction.None });
+                }
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
                 return new OkResult();
@@ -152,6 +155,7 @@ namespace gcapi.Realizations
             var theGroup = await _context.GroupTable.FindAsync(id);
             var events = await _context.EventTable
                 .Include(e => e.Owner)
+                .Include(e => e.Reactions)
                 .Include(e => e.Group)
                 .Where(e => e.Group == theGroup)
                 .Select(e => new EventDto(e))
@@ -181,6 +185,40 @@ namespace gcapi.Realizations
                 .Select(e => new EventDto(e))
                 .ToListAsync();
             return events;
+        }
+
+        public async Task<List<PlanDto>> GetAllPlansByMonth(Guid userId, DateTime date)
+        {
+            var theUser = await _context.UserTable.Include(u => u.Groups).FirstOrDefaultAsync(u => u.Id == userId);
+            var usersFromGroups = await _context.UserTable
+                        .Where(u => u.Groups.Any(g => theUser.Groups.Contains(g)))
+                        .Distinct()
+                        .ToListAsync();
+
+            var plans = await _context.PlanTable
+                .Include(p => p.Owner)
+                .Where(p => p.DateTimeFrom.Month == date.Month && usersFromGroups.Contains(p.Owner))
+                .Select(p => new PlanDto(p))
+                .ToListAsync();
+
+            return plans;
+        }
+
+        public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
+        {
+            var theUser = await _context.UserTable.Include(u => u.Groups).FirstOrDefaultAsync(u => u.Id == userId);
+            var usersFromGroups = await _context.UserTable
+                        .Where(u => u.Groups.Any(g => theUser.Groups.Contains(g)))
+                        .Distinct()
+                        .ToListAsync();
+
+            var plans = await _context.PlanTable
+                .Include(p => p.Owner)
+                .Where(p => p.DateTimeFrom.Day == date.Day && usersFromGroups.Contains(p.Owner))
+                .Select(p => new PlanDto(p))
+                .ToListAsync();
+
+            return plans;
         }
         public async Task<IActionResult> RemoveEventAsync(Guid id)
         {

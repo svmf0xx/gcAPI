@@ -10,7 +10,6 @@ namespace gcapi.Dto
         public Guid GroupId { get; set; }
         public string? GroupName { get; set; }
         public CalObjectDto CalendarObject { get; set; }
-
         public EventDto(EventModel ev)
         {
             Id = ev.Id;

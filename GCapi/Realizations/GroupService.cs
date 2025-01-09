@@ -24,7 +24,9 @@ namespace gcapi.Realizations
                     Name = gr.Name,
                     GroupUsers = users,
                     Emoji = gr.Emoji,
+
                 };
+
                 _context.Add(newGroup);
                 await _context.SaveChangesAsync();
                 return new OkResult();
@@ -99,7 +101,7 @@ namespace gcapi.Realizations
             if (theGroup != null)
                 return theGroup.GroupUsers;
 
-            else throw new NullReferenceException(); 
+            else throw new NullReferenceException();
         }
         public async Task<IActionResult> RemoveGroup(Guid id)
         {
@@ -202,6 +204,10 @@ namespace gcapi.Realizations
             {
                 user.Groups.Add(inv.Group);
                 inv.Group.GroupUsers.Add(user);
+                foreach (var ev in inv.Group.GroupEvents)
+                {
+                    user.Events.Add(ev);
+                }
 
                 _context.UserTable.Update(user);
                 _context.GroupTable.Update(inv.Group);

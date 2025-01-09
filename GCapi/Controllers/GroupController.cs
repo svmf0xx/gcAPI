@@ -70,7 +70,7 @@ namespace gcapi.Controllers
             return await _groupService.GetInvite(grId, userId);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("CheckInvite")]
         public async Task<Guid?> CheckInvite(string invite, Guid userId)
         {

@@ -9,13 +9,15 @@ namespace gcapi.Dto
     public class PlanDto
     {
         public Guid? Id { get; set; }
-
-        // надеюсь я не нарушаю твой гениальный замысел
+        public string? ownerName { get; set; }
+        public string? ownerUsername { get; set; }
         public CalObjectDto CalendarObject { get; set; }
 
         public PlanDto(PlanModel plan, Guid id)
         {
             Id = plan.Id;
+            ownerName = $"{plan.Owner.FirstName} {plan.Owner.SecondName}";
+            ownerUsername = plan.Owner.Username;
             CalendarObject = new CalObjectDto()
             {
                 Owner = id,
@@ -32,6 +34,8 @@ namespace gcapi.Dto
         public PlanDto(PlanModel plan)
         {
             Id = plan.Id;
+            ownerName = $"{plan.Owner.FirstName} {plan.Owner.SecondName}";
+            ownerUsername = plan.Owner.Username;
             CalendarObject = new CalObjectDto()
             {
                 Owner = plan.Owner.Id,

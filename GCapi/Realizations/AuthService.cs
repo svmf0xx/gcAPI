@@ -16,28 +16,35 @@ namespace gcapi.Realizations
 
         public async Task<ResponseRegisterDto> RegisterUser(RegisterDto user)
         {
-
-            var userModel = new UserModel
+            var usernameExist = await _context.UserTable.Where(u => u.Username == user.Username).AnyAsync();
+            if (!usernameExist)
             {
-                FirstName = user.FirstName,
-                SecondName = user.SecondName,
-                Email = user.Email,
-                TgId = user.TgId,
-                Username = user.Username,
-                TimeZone = user.TimeZone,
-                Secret = GenerateToken(64)
-            };
-            try
-            {
-                await _context.AddAsync(userModel);
-                await _context.SaveChangesAsync();
+                var userModel = new UserModel
+                {
+                    FirstName = user.FirstName,
+                    SecondName = user.SecondName,
+                    Email = user.Email,
+                    TgId = user.TgId,
+                    Username = user.Username,
+                    TimeZone = user.TimeZone,
+                    Secret = GenerateToken(64)
+                };
+                try
+                {
+                    await _context.AddAsync(userModel);
+                    await _context.SaveChangesAsync();
 
-                var urlToken = new OtpUri(OtpType.Totp, Base32Convert.ToBytes(userModel.Secret), userModel.Username).ToString();
-                return new ResponseRegisterDto { Username = user.Username, UrlToken = urlToken };
+                    var urlToken = new OtpUri(OtpType.Totp, Base32Convert.ToBytes(userModel.Secret), userModel.Username).ToString();
+                    return new ResponseRegisterDto { Username = user.Username, UrlToken = urlToken };
+                }
+                catch
+                {
+                    return null;
+                }
             }
-            catch
+            else
             {
-                return null;
+                return new ResponseRegisterDto { isUsernameExist = true };
             }
 
         }
