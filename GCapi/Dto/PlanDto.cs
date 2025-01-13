@@ -9,36 +9,41 @@ namespace gcapi.Dto
     public class PlanDto
     {
         public Guid? Id { get; set; }
-        public string? ownerName { get; set; }
-        public string? ownerUsername { get; set; }
         public CalObjectDto CalendarObject { get; set; }
-
-        public PlanDto(PlanModel plan, Guid id)
-        {
-            Id = plan.Id;
-            ownerName = $"{plan.Owner.FirstName} {plan.Owner.SecondName}";
-            ownerUsername = plan.Owner.Username;
-            CalendarObject = new CalObjectDto()
-            {
-                Owner = id,
-                DateTimeFrom = plan.DateTimeFrom,
-                DateTimeTo = plan.DateTimeTo,
-                Name = plan.Name,
-                Visible = plan.Visible,
-                Emoji = plan.Emoji,
-                HexColor = plan.HexColor,
-                Description = plan.Description
-            };
-        }
+        //public PlanDto(PlanModel plan, Guid id)
+        //{
+        //    Id = plan.Id;
+        //    CalendarObject = new CalObjectDto()
+        //    {
+        //        Owner = new OwnerDto
+        //        {
+        //            Id = plan.Owner.Id,
+        //            FirstName = plan.Owner.FirstName,
+        //            SecondName = plan.Owner.SecondName,
+        //            Username = plan.Owner.Username
+        //        },
+        //        DateTimeFrom = plan.DateTimeFrom,
+        //        DateTimeTo = plan.DateTimeTo,
+        //        Name = plan.Name,
+        //        Visible = plan.Visible,
+        //        Emoji = plan.Emoji,
+        //        HexColor = plan.HexColor,
+        //        Description = plan.Description
+        //    };
+        //}
 
         public PlanDto(PlanModel plan)
         {
             Id = plan.Id;
-            ownerName = $"{plan.Owner.FirstName} {plan.Owner.SecondName}";
-            ownerUsername = plan.Owner.Username;
             CalendarObject = new CalObjectDto()
             {
                 Owner = plan.Owner.Id,
+                OwnerData = new OwnerDto
+                {
+                    FirstName = plan.Owner.FirstName,
+                    SecondName = plan.Owner.SecondName,
+                    Username = plan.Owner.Username
+                },
                 DateTimeFrom = plan.DateTimeFrom,
                 DateTimeTo = plan.DateTimeTo,
                 Name = plan.Name,

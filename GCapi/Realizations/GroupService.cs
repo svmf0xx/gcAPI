@@ -121,6 +121,7 @@ namespace gcapi.Realizations
                     }
                     theUser.Groups.Remove(theGroup);
                 }
+                _context.GroupTable.Remove(theGroup);
                 await _context.SaveChangesAsync();
                 return new OkResult();
             }

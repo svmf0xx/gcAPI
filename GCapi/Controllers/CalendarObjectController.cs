@@ -108,5 +108,26 @@ namespace gcapi.Controllers
         {
            return await _objService.GetAllPlansByDay(userId, date);
         }
+
+        [HttpGet]
+        [Route("GetUserPlansByDay")]
+        public async Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date)
+        {
+            return await _objService.GetUserPlansByDay(userId, date);
+        }
+
+        [HttpGet]
+        [Route("GetUserPlansByWeek")]
+        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
+        {
+            return await _objService.GetUserPlansByWeek(userId, date);
+        }
+
+        [HttpGet]
+        [Route("CheckPlansOverlapEvent")]
+        public async Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to)
+        {
+            return await _objService.CheckPlansOverlapEvent(groupId, from, to);
+        }
     }
 }

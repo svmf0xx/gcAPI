@@ -8,6 +8,7 @@ namespace gcapi.Interfaces.Services
     {
         Task<IActionResult> AddEventAsync(EventDto obj);
         Task<IActionResult> AddPlanAsync(PlanDto obj);
+        Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to);
         Task<IActionResult> EditEventAsync(EventDto obj);
         Task<IActionResult> EditPlanAsync(PlanDto obj);
         Task<IEnumerable<EventDto>> GetAllEventsAsync();
@@ -20,6 +21,8 @@ namespace gcapi.Interfaces.Services
         Task<List<EventModel>> GetUserEventsAsync(Guid userId);
         Task<List<EventDto>> GetUserEventsByDate(Guid userId, DateTime date);
         Task<List<EventDto>> GetUserEventsByMonth(Guid userId, DateTime date);
+        Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date);
+        Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date);
         Task<IActionResult> RemoveEventAsync(Guid id);
     }
 }

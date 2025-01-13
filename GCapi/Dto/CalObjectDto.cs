@@ -6,6 +6,7 @@ namespace gcapi.Dto
     public class CalObjectDto
     {
         public required Guid Owner { get; set; }
+        public OwnerDto? OwnerData { get; set; }
         public required DateTime DateTimeFrom { get; set; }
         public required DateTime DateTimeTo { get; set; }
         public required string Name { get; set; }

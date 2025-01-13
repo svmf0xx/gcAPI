@@ -19,6 +19,12 @@ namespace gcapi.Dto
             CalendarObject = new CalObjectDto()
             {
                 Owner = ev.Owner.Id,
+                OwnerData = new OwnerDto
+                {
+                    FirstName = ev.Owner.FirstName,
+                    SecondName = ev.Owner.SecondName,
+                    Username = ev.Owner.Username
+                },
                 DateTimeFrom = ev.DateTimeFrom,
                 DateTimeTo = ev.DateTimeTo,
                 Name = ev.Name,

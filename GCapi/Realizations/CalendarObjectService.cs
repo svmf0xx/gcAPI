@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using gcapi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
+using gcapi.Enums;
 namespace gcapi.Realizations
 {
     public class CalendarObjectService : ICalendarObjectService
@@ -49,6 +50,21 @@ namespace gcapi.Realizations
             }
         }
 
+        public async Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to)
+        {
+            var theGroup = await _context.GroupTable.Include(g => g.GroupUsers).FirstOrDefaultAsync(g => g.Id == groupId);
+            if (theGroup != null)
+            {
+                var plans = await _context.PlanTable
+                    .Include(p => p.Owner)
+                    .Where(p => theGroup.GroupUsers.Contains(p.Owner) && p.DateTimeFrom < to && p.DateTimeTo > from) // && p.Visible != Visible.Private
+                    .Select(p => new PlanDto(p))
+                    .ToListAsync();
+
+                return plans;
+            }
+            return null;
+        }
         public async Task<IActionResult> AddPlanAsync(PlanDto obj)
         {
             try
@@ -141,7 +157,7 @@ namespace gcapi.Realizations
         public async Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId)
         {
             //var theUser = await _context.UserTable.FindAsync(userId);
-            List<PlanDto> plans = await _context.PlanTable.Where(p => p.Owner.Id == userId).Select(plan => new PlanDto(plan, userId)).ToListAsync();
+            List<PlanDto> plans = await _context.PlanTable.Where(p => p.Owner.Id == userId).Select(plan => new PlanDto(plan)).ToListAsync();
             return plans;
         }
 
@@ -185,6 +201,26 @@ namespace gcapi.Realizations
                 .Select(e => new EventDto(e))
                 .ToListAsync();
             return events;
+        }
+
+        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
+        {
+            var theUser = await _context.UserTable.FindAsync(userId);
+            var plans = await _context.PlanTable.Include(p => p.Owner)
+                .Where(p => p.DateTimeFrom.Day >= date.AddDays(-1).Day && p.DateTimeFrom.Day <= date.AddDays(7).Day && p.Owner.Id == userId)
+                .Select(p => new PlanDto(p))
+                .ToListAsync();
+            return plans;
+        }
+
+        public async Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date)
+        {
+            var theUser = await _context.UserTable.FindAsync(userId);
+            var plans = await _context.PlanTable.Include(p => p.Owner)
+                .Where(p => p.DateTimeFrom.Day == date.Day && p.Owner.Id == userId)
+                .Select(p => new PlanDto(p))
+                .ToListAsync();
+            return plans;
         }
 
         public async Task<List<PlanDto>> GetAllPlansByMonth(Guid userId, DateTime date)
