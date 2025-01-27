@@ -95,6 +95,13 @@ namespace gcapi.Controllers
             await _objService.RemoveEventAsync(evId);
         }
 
+        [HttpDelete]
+        [Route("RemovePlan")]
+        public async Task RemovePlan(Guid plId)
+        {
+            await _objService.RemovePlanAsync(plId);
+        }
+
         [HttpGet]
         [Route("GetAllPlansByMonth")]
         public async Task GetAllPlansByMonth(Guid userId, DateTime date)

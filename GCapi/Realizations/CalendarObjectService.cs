@@ -207,7 +207,7 @@ namespace gcapi.Realizations
         {
             var theUser = await _context.UserTable.FindAsync(userId);
             var plans = await _context.PlanTable.Include(p => p.Owner)
-                .Where(p => p.DateTimeFrom.Day >= date.AddDays(-1).Day && p.DateTimeFrom.Day <= date.AddDays(7).Day && p.Owner.Id == userId)
+                .Where(p => p.DateTimeFrom >= date && p.DateTimeFrom <= date.AddDays(8) && p.Owner.Id == userId)
                 .Select(p => new PlanDto(p))
                 .ToListAsync();
             return plans;
@@ -217,7 +217,7 @@ namespace gcapi.Realizations
         {
             var theUser = await _context.UserTable.FindAsync(userId);
             var plans = await _context.PlanTable.Include(p => p.Owner)
-                .Where(p => p.DateTimeFrom.Day == date.Day && p.Owner.Id == userId)
+                .Where(p => p.DateTimeFrom == date && p.Owner.Id == userId)
                 .Select(p => new PlanDto(p))
                 .ToListAsync();
             return plans;
@@ -269,6 +269,8 @@ namespace gcapi.Realizations
 
                 if (theEvent != null)
                 {
+                    theEvent.Owner.Events.Remove(theEvent);
+
                     foreach (var reaction in theEvent.Reactions.ToList())
                     {
                         _context.Remove(reaction);
@@ -294,6 +296,7 @@ namespace gcapi.Realizations
                         _context.Update(gr);
                     }
 
+                    _context.UserTable.Update(theEvent.Owner);
                     _context.EventTable.Remove(theEvent);
                     await _context.SaveChangesAsync();
                     return new OkResult();
@@ -303,6 +306,31 @@ namespace gcapi.Realizations
             catch
             {
                 return new BadRequestObjectResult("Ивента не существует");
+            }
+        }
+
+        public async Task<IActionResult> RemovePlanAsync(Guid id)
+        {
+            try
+            {
+                var thePlan = await _context.PlanTable
+                    .Include(e => e.Owner)
+                    .Where(e => e.Id == id)
+                    .FirstOrDefaultAsync();
+
+                if (thePlan != null)
+                {
+                    thePlan.Owner.Plans.Remove(thePlan);
+                    _context.UserTable.Update(thePlan.Owner);
+                    _context.PlanTable.Remove(thePlan);
+                    await _context.SaveChangesAsync();
+                    return new OkResult();
+                }
+                else return new BadRequestObjectResult("Плана не существует");
+            }
+            catch
+            {
+                return new BadRequestObjectResult("Плана не существует");
             }
         }
     }

@@ -47,6 +47,13 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
+        [Route("GetGroupStatistic")]
+        public async Task<GroupStatisticDto?> GetGroupStatistic(Guid groupId)
+        {
+            return await _groupService.GetGroupStatistic(groupId);
+        }
+
+        [HttpGet]
         [Route("GetAllUserGroups")]
         public async Task<IEnumerable<GroupDto>> GetAllUserGroups(Guid userId)
         {

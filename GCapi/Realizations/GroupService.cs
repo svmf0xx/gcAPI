@@ -5,6 +5,7 @@ using gcapi.Dto;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace gcapi.Realizations
 {
@@ -79,15 +80,17 @@ namespace gcapi.Realizations
             if (theUser != null)
             {
                 List<GroupDto?> result = new List<GroupDto?>();
-                var groups = await _context.GroupTable.Include(g => g.GroupUsers).Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
+                var groups = await _context.GroupTable.Include(g => g.GroupUsers).Include(g => g.GroupEvents).Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
                 foreach (var group in groups)
                 {
+                    
                     result.Add(new GroupDto
                     {
                         Id = group.Id,
                         Name = group.Name,
                         Emoji = group.Emoji,
-                        GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+                        GroupUsers = group.GroupUsers.Select(u => u.Username).ToList(),
+                        GroupStatistic = GetGroupStatistic(group.GroupEvents),
                     });
                 }
                 return result;
@@ -95,6 +98,38 @@ namespace gcapi.Realizations
             else return null;
         }
 
+        public async Task<GroupStatisticDto?> GetGroupStatistic(Guid groupId)
+        {
+            var group = await _context.GroupTable.Include(g => g.GroupEvents).FirstOrDefaultAsync(g => g.Id == groupId);
+            if (group == null) return null;
+
+            var events = group.GroupEvents;
+
+            var forDay = events.Where(e => e.DateTimeFrom.Date == DateTime.Now.Date).Count();
+            var forWeek = events.Where(e => e.DateTimeFrom.Date >= DateTime.Now.Date && e.DateTimeFrom.Date <= DateTime.Now.AddDays(7).Date).Count();
+            var forMonth = events.Where(e => e.DateTimeFrom.Date.Month == DateTime.Now.Date.Month && e.DateTimeFrom.Date.Year == DateTime.Now.Date.Year).Count();
+
+            return new GroupStatisticDto()
+            {
+                EventsForDay = forDay,
+                EventsForMonth = forMonth,
+                EventsForWeek = forWeek,
+            };
+        }
+
+        public GroupStatisticDto GetGroupStatistic(List<EventModel> groupEvents)
+        {
+            var forDay = groupEvents.Where(e => e.DateTimeFrom.Date == DateTime.Now.Date).Count();
+            var forWeek = groupEvents.Where(e => e.DateTimeFrom.Date >= DateTime.Now.Date && e.DateTimeFrom.Date <= DateTime.Now.AddDays(7).Date).Count();
+            var forMonth = groupEvents.Where(e => e.DateTimeFrom.Date.Month == DateTime.Now.Date.Month && e.DateTimeFrom.Date.Year == DateTime.Now.Date.Year).Count();
+
+            return new GroupStatisticDto()
+            {
+                EventsForDay = forDay,
+                EventsForMonth = forMonth,
+                EventsForWeek = forWeek,
+            };
+        }
         public async Task<List<UserModel>> GetUsersFromGroup(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);
