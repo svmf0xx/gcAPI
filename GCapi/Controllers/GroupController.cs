@@ -47,6 +47,13 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
+        [Route("GetGroupStatistic")]
+        public async Task<GroupStatisticDto?> GetGroupStatistic(Guid groupId)
+        {
+            return await _groupService.GetGroupStatistic(groupId);
+        }
+
+        [HttpGet]
         [Route("GetAllUserGroups")]
         public async Task<IEnumerable<GroupDto>> GetAllUserGroups(Guid userId)
         {
@@ -68,10 +75,9 @@ namespace gcapi.Controllers
             //либо создается новый
             //ну если вышло время то новый, а если нет то обновляется ExpiredAt
             return await _groupService.GetInvite(grId, userId);
-            
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("CheckInvite")]
         public async Task<Guid?> CheckInvite(string invite, Guid userId)
         {

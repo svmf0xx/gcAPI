@@ -3,16 +3,9 @@ using gcapi.DataBase;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using gcapi.Realizations;
-using Microsoft.AspNetCore.Authentication.Certificate;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
-using System.Configuration;
 using System.Reflection;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -56,25 +49,6 @@ builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 
 
-builder.Services.AddAuthentication(
-    CertificateAuthenticationDefaults.AuthenticationScheme)
-    .AddCertificate(options =>
-    {
-        options.ChainTrustValidationMode = X509ChainTrustMode.CustomRootTrust;
-        options.CustomTrustStore = new X509Certificate2Collection(new X509Certificate2(
-            builder.Configuration.GetSection("Cert")["File"]));
-
-        options.RevocationMode = X509RevocationMode.NoCheck;
-
-    });
-
-builder.Services.Configure<KestrelServerOptions>(options =>
-{
-    options.ConfigureHttpsDefaults(options =>
-        options.ClientCertificateMode = ClientCertificateMode.RequireCertificate);
-
-});
-
 var app = builder.Build();
 
 
@@ -88,8 +62,6 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.UseAuthentication();
 
 app.MapControllers();
 

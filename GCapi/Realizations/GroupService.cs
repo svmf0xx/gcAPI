@@ -5,6 +5,7 @@ using gcapi.Dto;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace gcapi.Realizations
 {
@@ -25,6 +26,7 @@ namespace gcapi.Realizations
                     GroupUsers = users,
                     Emoji = gr.Emoji,
                 };
+
                 _context.Add(newGroup);
                 await _context.SaveChangesAsync();
                 return new OkResult();
@@ -77,15 +79,17 @@ namespace gcapi.Realizations
             if (theUser != null)
             {
                 List<GroupDto?> result = new List<GroupDto?>();
-                var groups = await _context.GroupTable.Include(g => g.GroupUsers).Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
+                var groups = await _context.GroupTable.Include(g => g.GroupUsers).Include(g => g.GroupEvents).Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
                 foreach (var group in groups)
                 {
+                    
                     result.Add(new GroupDto
                     {
                         Id = group.Id,
                         Name = group.Name,
                         Emoji = group.Emoji,
-                        GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+                        GroupUsers = group.GroupUsers.Select(u => u.Username).ToList(),
+                        GroupStatistic = GetGroupStatistic(group.GroupEvents),
                     });
                 }
                 return result;
@@ -93,6 +97,38 @@ namespace gcapi.Realizations
             else return null;
         }
 
+        public async Task<GroupStatisticDto?> GetGroupStatistic(Guid groupId)
+        {
+            var group = await _context.GroupTable.Include(g => g.GroupEvents).FirstOrDefaultAsync(g => g.Id == groupId);
+            if (group == null) return null;
+
+            var events = group.GroupEvents;
+
+            var forDay = events.Where(e => e.DateTimeFrom.Date == DateTime.Now.Date).Count();
+            var forWeek = events.Where(e => e.DateTimeFrom.Date >= DateTime.Now.Date && e.DateTimeFrom.Date <= DateTime.Now.AddDays(7).Date).Count();
+            var forMonth = events.Where(e => e.DateTimeFrom.Date.Month == DateTime.Now.Date.Month && e.DateTimeFrom.Date.Year == DateTime.Now.Date.Year).Count();
+
+            return new GroupStatisticDto()
+            {
+                EventsForDay = forDay,
+                EventsForMonth = forMonth,
+                EventsForWeek = forWeek,
+            };
+        }
+
+        public GroupStatisticDto GetGroupStatistic(List<EventModel> groupEvents)
+        {
+            var forDay = groupEvents.Where(e => e.DateTimeFrom.Date == DateTime.Now.Date).Count();
+            var forWeek = groupEvents.Where(e => e.DateTimeFrom.Date >= DateTime.Now.Date && e.DateTimeFrom.Date <= DateTime.Now.AddDays(7).Date).Count();
+            var forMonth = groupEvents.Where(e => e.DateTimeFrom.Date.Month == DateTime.Now.Date.Month && e.DateTimeFrom.Date.Year == DateTime.Now.Date.Year).Count();
+
+            return new GroupStatisticDto()
+            {
+                EventsForDay = forDay,
+                EventsForMonth = forMonth,
+                EventsForWeek = forWeek,
+            };
+        }
         public async Task<List<UserModel>> GetUsersFromGroup(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);
@@ -101,7 +137,6 @@ namespace gcapi.Realizations
 
             else throw new NullReferenceException();
         }
-
         public async Task<IActionResult> RemoveGroup(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);
@@ -120,6 +155,7 @@ namespace gcapi.Realizations
                     }
                     theUser.Groups.Remove(theGroup);
                 }
+                _context.GroupTable.Remove(theGroup);
                 await _context.SaveChangesAsync();
                 return new OkResult();
             }
@@ -203,6 +239,10 @@ namespace gcapi.Realizations
             {
                 user.Groups.Add(inv.Group);
                 inv.Group.GroupUsers.Add(user);
+                foreach (var ev in inv.Group.GroupEvents)
+                {
+                    user.Events.Add(ev);
+                }
 
                 _context.UserTable.Update(user);
                 _context.GroupTable.Update(inv.Group);

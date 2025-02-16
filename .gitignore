@@ -11,7 +11,6 @@
 *.sln.docstates
 appsettings.json
 appsettings.Development.json
-*.pfx
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -366,5 +365,3 @@ FodyWeavers.xsd
 /gcapi/Properties/launchSettings.json
 /gcapi/Properties/launchSettings.json
 /GCapi/Properties/launchSettings.json
-/gcapi/gcal_root_ca.crt
-/gcapi/appsettings.developement.json

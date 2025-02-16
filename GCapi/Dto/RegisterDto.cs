@@ -10,8 +10,6 @@ namespace gcapi.Dto
 
         [MaxLength(50)]
         public string? SecondName { get; set; }
-
-        [EmailAddress]
         public string? Email { get; set; }
         public long TgId { get; set; }
 

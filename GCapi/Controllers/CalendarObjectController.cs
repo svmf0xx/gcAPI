@@ -1,4 +1,4 @@
-﻿using gcapi.Dto;
+using gcapi.Dto;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,13 +26,34 @@ namespace gcapi.Controllers
         }
 
         [HttpGet] //зачем???? 
+        [Route("GetEventsByGroup")]
+        public async Task<List<EventDto>> GetEventsByGroup(Guid gId)
+        {
+            return await _objService.GetEventsByGroupAsync(gId);
+        }
+
+        [HttpGet] //зачем???? 
+        [Route("GetUserEventsByDate")]
+        public async Task<List<EventDto>> GetUserEventsByDate(Guid uId, DateTime date)
+        {
+            return await _objService.GetUserEventsByDate(uId, date);
+        }
+
+        [HttpGet] //зачем???? 
+        [Route("GetUserEventsByMonth")]
+        public async Task<List<EventDto>> GetUserEventsByMonth(Guid uId, DateTime date)
+        {
+            return await _objService.GetUserEventsByMonth(uId, date);
+        }
+
+        [HttpGet]
         [Route("GetPlanById")]
         public async Task<PlanDto> GetPlanById(Guid evId)
         {
             return await _objService.GetPlanByIdAsync(evId);
         }
 
-        [HttpGet] 
+        [HttpGet]
         [Route("GetAllPlans")]
         public async Task<IEnumerable<PlanDto>> GetAllPlanss()
         {
@@ -81,5 +102,46 @@ namespace gcapi.Controllers
             await _objService.RemoveEventAsync(evId);
         }
 
+        [HttpDelete]
+        [Route("RemovePlan")]
+        public async Task RemovePlan(Guid plId)
+        {
+            await _objService.RemovePlanAsync(plId);
+        }
+
+        [HttpGet]
+        [Route("GetAllPlansByMonth")]
+        public async Task GetAllPlansByMonth(Guid userId, DateTime date)
+        {
+            await _objService.GetAllPlansByMonth(userId, date);
+        }
+
+        [HttpGet]
+        [Route("GetAllPlansByDay")]
+        public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
+        {
+           return await _objService.GetAllPlansByDay(userId, date);
+        }
+
+        [HttpGet]
+        [Route("GetUserPlansByDay")]
+        public async Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date)
+        {
+            return await _objService.GetUserPlansByDay(userId, date);
+        }
+
+        [HttpGet]
+        [Route("GetUserPlansByWeek")]
+        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
+        {
+            return await _objService.GetUserPlansByWeek(userId, date);
+        }
+
+        [HttpGet]
+        [Route("CheckPlansOverlapEvent")]
+        public async Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to)
+        {
+            return await _objService.CheckPlansOverlapEvent(groupId, from, to);
+        }
     }
 }

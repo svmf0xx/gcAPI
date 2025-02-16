@@ -15,7 +15,7 @@ namespace gcapi.Controllers
 
         [HttpPost]
         [Route("CreateUserTg")]
-        public async Task<IActionResult> CreateUserTg(RegisterDto user)
+        public async Task<ResponseRegisterDto> CreateUserTg(RegisterDto user)
         {
             //типа проверки всякие
             //хз, может перенесёшь их куда-нибудь, не знаю, какой структуре проекта
@@ -32,21 +32,28 @@ namespace gcapi.Controllers
             //оставим ради истории
 
             return await _authService.RegisterUser(user);
-
+            //надеюсь я не поломал авторизацию в тг
         }
 
         [HttpPost]
         [Route("CreateUser")]
-        public async Task<IActionResult> CreateUser(RegisterDto user)
+        public async Task<ResponseRegisterDto> CreateUser(RegisterDto user)
         {
-            throw new NotImplementedException(); // потом сам короче сделаешь уже полностью через отп
+            return await _authService.RegisterUser(user);
+        }
+
+        [HttpPost]
+        [Route("LoginUser")]
+        public async Task<UserDto?> LoginUser(LogInDto user)
+        {
+            return await _authService.LoginUser(user);
         }
 
         [HttpGet]
-        [Route("CheckAuth")]
-        public async Task<IActionResult> CheckAuth(AuthDto user)
+        [Route("CheckLogin")]
+        public bool CheckLogin(string login)
         {
-            return await _authService.CheckAuth(user);
+            return _authService.CheckLogin(login);
         }
     }
 }

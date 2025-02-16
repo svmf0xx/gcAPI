@@ -29,10 +29,6 @@ namespace gcapi.DataBase
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
-            modelBuilder.Entity<UserModel>()
-                .HasIndex(u => u.TgId)
-                .IsUnique();
-
             //modelBuilder.Entity<ReactionModel>()
             //    .HasNoKey();
             //modelBuilder.Entity<IEventStyle>()
