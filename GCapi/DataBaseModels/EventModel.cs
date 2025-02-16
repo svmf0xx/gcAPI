@@ -18,6 +18,7 @@ namespace gcapi.Models
         public string HexColor { get; set; } = "0xFFFFFFFF";
         public string Emoji { get; set; }
 
+
         public required GroupModel Group { get; set; }
 
         public string? Description { get; set; }

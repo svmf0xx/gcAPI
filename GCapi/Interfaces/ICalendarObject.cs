@@ -22,7 +22,8 @@ namespace gcapi.Interfaces
 
         public string HexColor { get; set; }
 
-        public string Emoji { get; set; }
+
+        public string? Emoji { get; set; }
 
         public Visible Visible { get; set; }
         

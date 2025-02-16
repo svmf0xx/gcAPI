@@ -25,7 +25,6 @@ namespace gcapi.Realizations
                     Name = gr.Name,
                     GroupUsers = users,
                     Emoji = gr.Emoji,
-
                 };
 
                 _context.Add(newGroup);

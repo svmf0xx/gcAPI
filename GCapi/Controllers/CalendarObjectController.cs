@@ -1,4 +1,4 @@
-﻿using gcapi.Dto;
+using gcapi.Dto;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +44,13 @@ namespace gcapi.Controllers
         public async Task<List<EventDto>> GetUserEventsByMonth(Guid uId, DateTime date)
         {
             return await _objService.GetUserEventsByMonth(uId, date);
+        }
+
+        [HttpGet]
+        [Route("GetPlanById")]
+        public async Task<PlanDto> GetPlanById(Guid evId)
+        {
+            return await _objService.GetPlanByIdAsync(evId);
         }
 
         [HttpGet]

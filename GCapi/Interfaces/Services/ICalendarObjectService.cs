@@ -18,6 +18,7 @@ namespace gcapi.Interfaces.Services
         Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId);
         Task<EventDto> GetEventByIdAsync(Guid id);
         Task<List<EventDto>> GetEventsByGroupAsync(Guid id);
+
         Task<List<EventModel>> GetUserEventsAsync(Guid userId);
         Task<List<EventDto>> GetUserEventsByDate(Guid userId, DateTime date);
         Task<List<EventDto>> GetUserEventsByMonth(Guid userId, DateTime date);
