@@ -12,10 +12,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["gcapi.csproj", "."]
-RUN dotnet restore "./gcapi.csproj"
+COPY ["gcapi/gcapi.csproj", "gcapi/"]
+RUN dotnet restore "./gcapi/gcapi.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/gcapi"
 RUN dotnet build "./gcapi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
