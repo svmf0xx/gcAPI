@@ -14,8 +14,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["gcapi/gcapi.csproj", "gcapi/"]
 RUN dotnet restore "./gcapi/gcapi.csproj"
-COPY . .
 WORKDIR "/src/gcapi"
+COPY . .
 RUN dotnet build "./gcapi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
