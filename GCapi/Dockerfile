@@ -14,7 +14,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["gcapi/gcapi.csproj", "gcapi/"]
 RUN dotnet restore "./gcapi/gcapi.csproj"
-RUN dotnet add package deniszykov.BaseN
+RUN dotnet "add" package deniszykov.BaseN
 WORKDIR "/src/gcapi"
 COPY . .
 RUN dotnet build "./gcapi.csproj" -c $BUILD_CONFIGURATION -o /app/build
