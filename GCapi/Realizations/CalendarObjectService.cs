@@ -157,7 +157,7 @@ namespace gcapi.Realizations
         public async Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId)
         {
             //var theUser = await _context.UserTable.FindAsync(userId);
-            List<PlanDto> plans = await _context.PlanTable.Where(p => p.Owner.Id == userId).Select(plan => new PlanDto(plan)).ToListAsync();
+            List<PlanDto> plans = await _context.PlanTable.Include(p=>p.Owner).Where(p => p.Owner.Id == userId).Select(plan => new PlanDto(plan)).ToListAsync();
             return plans;
         }
 

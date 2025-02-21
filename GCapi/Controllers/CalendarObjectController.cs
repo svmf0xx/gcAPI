@@ -83,7 +83,7 @@ namespace gcapi.Controllers
 
         [HttpGet] //пост???? (это же буквально геттеры) ну туда же постится id
         [Route("GetUserPlans")]
-        public async Task<IEnumerable<PlanDto>> EditPlan(Guid userId)
+        public async Task<IEnumerable<PlanDto>> GetUserPlans(Guid userId)
         {
             return await _objService.GetAllUserPlansAsync(userId);
         }
