@@ -83,7 +83,7 @@ namespace gcapi.Controllers
 
         [HttpGet] //пост???? (это же буквально геттеры) ну туда же постится id
         [Route("GetUserPlans")]
-        public async Task<IEnumerable<PlanDto>> EditPlan(Guid userId)
+        public async Task<IEnumerable<PlanDto>> GetUserPlans(Guid userId)
         {
             return await _objService.GetAllUserPlansAsync(userId);
         }
@@ -113,8 +113,9 @@ namespace gcapi.Controllers
         [Route("GetAllPlansByDay")]
         public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
         {
-           return await _objService.GetAllPlansByDay(userId, date);
+            return await _objService.GetAllPlansByDay(userId, date);
         }
+
 
         [HttpGet]
         [Route("GetUserPlansByDay")]
@@ -128,6 +129,13 @@ namespace gcapi.Controllers
         public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
         {
             return await _objService.GetUserPlansByWeek(userId, date);
+        }
+
+        [HttpGet]
+        [Route("GetUserPlansByRange")]
+        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime dateFrom, DateTime dateTo)
+        {
+            return await _objService.GetUserPlansByTimerange(userId, dateFrom, dateTo);
         }
 
         [HttpGet]
