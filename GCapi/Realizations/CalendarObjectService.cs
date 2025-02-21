@@ -223,6 +223,17 @@ namespace gcapi.Realizations
             return plans;
         }
 
+        public async Task<List<PlanDto>> GetUserPlansByTimerange(Guid userId, DateTime dateFrom, DateTime dateTo)
+        {
+            var theUser = await _context.UserTable.FindAsync(userId);
+            var plans = await _context.PlanTable.Include(p => p.Owner)
+                .Where(p => p.Owner.Id == userId && 
+                (p.DateTimeFrom >= dateFrom && p.DateTimeFrom <= dateTo || p.DateTimeTo >= dateFrom && p.DateTimeTo <= dateTo))
+                .Select(p => new PlanDto(p))
+                .ToListAsync();
+            return plans;
+        }
+
         public async Task<List<PlanDto>> GetAllPlansByMonth(Guid userId, DateTime date)
         {
             var theUser = await _context.UserTable.Include(u => u.Groups).FirstOrDefaultAsync(u => u.Id == userId);
@@ -256,6 +267,7 @@ namespace gcapi.Realizations
 
             return plans;
         }
+
         public async Task<IActionResult> RemoveEventAsync(Guid id)
         {
             try

@@ -22,6 +22,7 @@ namespace gcapi.Interfaces.Services
         Task<List<EventDto>> GetUserEventsByDate(Guid userId, DateTime date);
         Task<List<EventDto>> GetUserEventsByMonth(Guid userId, DateTime date);
         Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date);
+        Task<List<PlanDto>> GetUserPlansByTimerange(Guid userId, DateTime dateFrom, DateTime dateTo);
         Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date);
         Task<IActionResult> RemoveEventAsync(Guid id);
         Task<IActionResult> RemovePlanAsync(Guid id);

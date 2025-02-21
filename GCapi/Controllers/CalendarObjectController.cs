@@ -102,19 +102,19 @@ namespace gcapi.Controllers
             await _objService.RemovePlanAsync(plId);
         }
 
-        [HttpGet]
-        [Route("GetAllPlansByMonth")]
-        public async Task GetAllPlansByMonth(Guid userId, DateTime date)
-        {
-            await _objService.GetAllPlansByMonth(userId, date);
-        }
+        //[HttpGet]
+        //[Route("GetAllPlansByMonth")]
+        //public async Task GetAllPlansByMonth(Guid userId, DateTime date)
+        //{
+        //    await _objService.GetAllPlansByMonth(userId, date);
+        //}
 
-        [HttpGet]
-        [Route("GetAllPlansByDay")]
-        public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
-        {
-           return await _objService.GetAllPlansByDay(userId, date);
-        }
+        //[HttpGet]
+        //[Route("GetAllPlansByDay")]
+        //public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
+        //{
+        //   return await _objService.GetAllPlansByDay(userId, date);
+        //} давай это удалим пжпжпжпжп
 
         [HttpGet]
         [Route("GetUserPlansByDay")]
@@ -128,6 +128,13 @@ namespace gcapi.Controllers
         public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
         {
             return await _objService.GetUserPlansByWeek(userId, date);
+        }
+
+        [HttpGet]
+        [Route("GetUserPlansByRange")]
+        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime dateFrom, DateTime dateTo)
+        {
+            return await _objService.GetUserPlansByRange(userId, dateFrom, dateTo);
         }
 
         [HttpGet]
