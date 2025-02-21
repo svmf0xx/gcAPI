@@ -134,7 +134,7 @@ namespace gcapi.Controllers
         [Route("GetUserPlansByRange")]
         public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime dateFrom, DateTime dateTo)
         {
-            return await _objService.GetUserPlansByRange(userId, dateFrom, dateTo);
+            return await _objService.GetUserPlansByTimerange(userId, dateFrom, dateTo);
         }
 
         [HttpGet]
