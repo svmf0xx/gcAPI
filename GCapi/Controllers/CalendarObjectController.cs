@@ -110,39 +110,17 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllPlansByDay")]
-        public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
-        {
-            return await _objService.GetAllPlansByDay(userId, date);
-        }
-
-
-        [HttpGet]
-        [Route("GetUserPlansByDay")]
-        public async Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date)
-        {
-            return await _objService.GetUserPlansByDay(userId, date);
-        }
-
-        [HttpGet]
-        [Route("GetUserPlansByWeek")]
-        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
-        {
-            return await _objService.GetUserPlansByWeek(userId, date);
-        }
-
-        [HttpGet]
         [Route("GetUserPlansByRange")]
-        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime dateFrom, DateTime dateTo)
+        public async Task<List<PlanDto>> GetUserPlansByRange(Guid userId, DateTime dateFrom, DateTime dateTo)
         {
             return await _objService.GetUserPlansByTimerange(userId, dateFrom, dateTo);
         }
 
         [HttpGet]
-        [Route("CheckPlansOverlapEvent")]
-        public async Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to)
+        [Route("GetGroupPlansByTimerange")]
+        public async Task<List<PlanDto>> GetGroupPlansByTimerange(Guid groupId, DateTime from, DateTime to)
         {
-            return await _objService.CheckPlansOverlapEvent(groupId, from, to);
+            return await _objService.GetGroupPlansByTimerange(groupId, from, to);
         }
     }
 }
