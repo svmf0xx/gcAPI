@@ -55,5 +55,19 @@ namespace gcapi.Controllers
         {
             return _authService.CheckLogin(login);
         }
+
+        [HttpGet]
+        [Route("RecoverUserTokenSigned")]
+        public async Task<RecoverUserTokenDto> RecoverUserToken(Guid userId)
+        {
+            return await _authService.RecoverUserToken(userId);
+        }
+
+        [HttpGet]
+        [Route("RecoverUserTokenLogin")]
+        public async Task<RecoverUserTokenDto> RecoverUserToken(string name)
+        {
+            return await _authService.RecoverUserToken(name);
+        }
     }
 }

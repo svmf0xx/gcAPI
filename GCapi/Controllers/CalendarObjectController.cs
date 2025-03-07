@@ -1,4 +1,5 @@
 ﻿using gcapi.Dto;
+using gcapi.Enums;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -79,6 +80,13 @@ namespace gcapi.Controllers
         public async Task<IActionResult> EditPlan(PlanDto ev)
         {
             return await _objService.EditPlanAsync(ev);
+        }
+
+        [HttpPost]
+        [Route("AddReactionToEvent")]
+        public async Task<IActionResult> AddReactionToEvent(AddReactionDto reaction)
+        {
+            return await _objService.AddReactionAsync(reaction);
         }
 
         [HttpGet] //пост???? (это же буквально геттеры) ну туда же постится id

@@ -8,6 +8,8 @@ namespace gcapi.Interfaces
     {
         bool CheckLogin(string login);
         Task<UserDto?> LoginUser(LogInDto logindata);
+        Task<RecoverUserTokenDto> RecoverUserToken(Guid userId);
+        Task<RecoverUserTokenDto> RecoverUserToken(string name);
         public Task<ResponseRegisterDto> RegisterUser(RegisterDto user);
     }
 }

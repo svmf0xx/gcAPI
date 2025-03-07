@@ -18,7 +18,10 @@ namespace gcapi.Realizations
         {
             try
             {
-                var users = await _context.UserTable.Where(u => gr.GroupUsers.Contains(u.Username)).ToListAsync();
+                var userIds = gr.GroupUsers.Select(gu => gu.Id).ToList();
+                var users = await _context.UserTable
+                          .Where(u => userIds.Contains(u.Id))
+                          .ToListAsync();
 
                 var newGroup = new GroupModel
                 {
@@ -40,7 +43,10 @@ namespace gcapi.Realizations
 
         public async Task<IActionResult> EditGroup(GroupDto gr)
         {
-            var users = await _context.UserTable.Where(u => gr.GroupUsers.Contains(u.Username)).ToListAsync();
+            var userIds = gr.GroupUsers.Select(gu => gu.Id).ToList();
+            var users = await _context.UserTable
+                      .Where(u => userIds.Contains(u.Id))
+                      .ToListAsync();
 
             var theGroup = await _context.GroupTable.Where(g => g.Id == gr.Id).FirstOrDefaultAsync();
             if (theGroup != null)
@@ -67,7 +73,7 @@ namespace gcapi.Realizations
                     Id = group.Id,
                     Name = group.Name,
                     Emoji = group.Emoji,
-                    GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+                    GroupUsers = group.GroupUsers.Select(u => new UserDto(u)).ToList()
                 });
             }
             return result;
@@ -83,13 +89,13 @@ namespace gcapi.Realizations
                 var groups = await _context.GroupTable.Include(g => g.GroupUsers).Include(g => g.GroupEvents).Where(g => g.GroupUsers.Contains(theUser)).ToListAsync();
                 foreach (var group in groups)
                 {
-                    
+
                     result.Add(new GroupDto
                     {
                         Id = group.Id,
                         Name = group.Name,
                         Emoji = group.Emoji,
-                        GroupUsers = group.GroupUsers.Select(u => u.Username).ToList(),
+                        GroupUsers = group.GroupUsers.Select(u => new UserDto(u)).ToList(),
                         GroupStatistic = GetGroupStatistic(group.GroupEvents),
                     });
                 }
@@ -138,12 +144,14 @@ namespace gcapi.Realizations
 
             else throw new NullReferenceException();
         }
+
+
         public async Task<IActionResult> RemoveGroup(Guid id)
         {
             var theGroup = await _context.GroupTable.FindAsync(id);
             if (theGroup != null)
             {
-                var theEvents = await _context.EventTable.Where(ev => theGroup.GroupEvents.Contains(ev)).ToListAsync();
+                var theEvents = await _context.EventTable.Include(e => e.Reactions).Where(ev => theGroup.GroupEvents.Contains(ev)).ToListAsync();
                 var theUsers = await _context.UserTable.Where(u => theGroup.GroupUsers.Contains(u)).ToListAsync();
 
                 foreach (var theUser in theUsers)
@@ -151,6 +159,10 @@ namespace gcapi.Realizations
                     foreach (var theEvent in theEvents)
                     {
                         theUser.Events.Remove(theEvent);
+                        foreach (var r in theEvent.Reactions)
+                        {
+                            _context.Remove(r);
+                        }
                         _context.Remove(theEvent);
                         _context.Update(theUser);
                     }
@@ -173,7 +185,7 @@ namespace gcapi.Realizations
                 Id = group.Id,
                 Name = group.Name,
                 Emoji = group.Emoji,
-                GroupUsers = group.GroupUsers.Select(u => u.Username).ToList()
+                GroupUsers = group.GroupUsers.Select(u => new UserDto(u)).ToList()
             };
 
             return result;
@@ -240,9 +252,12 @@ namespace gcapi.Realizations
             {
                 user.Groups.Add(inv.Group);
                 inv.Group.GroupUsers.Add(user);
-                foreach (var ev in inv.Group.GroupEvents)
+                var events = await _context.EventTable.Include(e => e.Reactions).Where(e => e.Group == inv.Group).ToListAsync();
+                foreach (var ev in events)
                 {
                     user.Events.Add(ev);
+                    ev.Reactions.Add(new ReactionModel { OwnerId = user.Id, Reaction = Enums.Reaction.None });
+                    _context.Update(ev);
                 }
 
                 _context.UserTable.Update(user);

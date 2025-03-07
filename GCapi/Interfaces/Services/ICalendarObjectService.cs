@@ -8,6 +8,7 @@ namespace gcapi.Interfaces.Services
     {
         Task<IActionResult> AddEventAsync(EventDto obj);
         Task<IActionResult> AddPlanAsync(PlanDto obj);
+        Task<IActionResult> AddReactionAsync(AddReactionDto reaction);
         Task<IActionResult> EditEventAsync(EventDto obj);
         Task<IActionResult> EditPlanAsync(PlanDto obj);
         Task<IEnumerable<EventDto>> GetAllEventsAsync();

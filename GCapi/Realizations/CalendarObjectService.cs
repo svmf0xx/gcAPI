@@ -38,7 +38,7 @@ namespace gcapi.Realizations
                 };
                 foreach (var react in theGroup.GroupUsers)
                 {
-                    newEvent.Reactions.Add(new ReactionModel { OwnerId = react.Id, Reaction = Enums.Reaction.None });
+                    newEvent.Reactions.Add(new ReactionModel { OwnerId = react.Id, Reaction = Reaction.None });
                 }
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
@@ -110,6 +110,21 @@ namespace gcapi.Realizations
                 return new OkResult();
             }
             return new BadRequestObjectResult("Ивента не существует");
+        }
+
+        public async Task<IActionResult> AddReactionAsync(AddReactionDto reaction)
+        {
+            var theEvent = await _context.EventTable.Include(e => e.Reactions).FirstOrDefaultAsync(e => e.Id == reaction.EventId);
+            if (theEvent != null)
+            {
+                var r = theEvent.Reactions.Find(r => r.OwnerId == reaction.OwnerId);
+                r.Reaction = reaction.Reaction;
+                _context.Update(r);
+                _context.Update(theEvent);
+                await _context.SaveChangesAsync();
+                return new OkResult();
+            }
+            return new BadRequestResult();
         }
 
         public async Task<IActionResult> EditPlanAsync(PlanDto obj)
