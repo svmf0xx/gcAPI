@@ -16,7 +16,6 @@ namespace gcapi.Models
         [MaxLength(50)]
         public string? SecondName { get; set; }
         public string? Email { get; set; }
-       // public string? Phone { get; set; } а зачем телефон вообще
         public required long TgId { get; set; }
         public int? TimeZone { get; set; } = 0;
         public List<GroupModel> Groups { get; set; } = [];
@@ -26,9 +25,9 @@ namespace gcapi.Models
         //Аккаунт
         [Required]
         [MaxLength(16), MinLength(4)]
-        public required string Username { get; set; } //@vlad
+        public required string Username { get; set; }
 
-        public string? Secret { get; set; } //эта штука будет использоватсья для генерации одноразовых паролей через пакет OTP.NET, он тут самый популярный
+        public string? Secret { get; set; }
 
         public Roles Role { get; set; } = Roles.User;
     }

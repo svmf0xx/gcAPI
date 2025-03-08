@@ -17,20 +17,10 @@ namespace gcapi.Models
         public required string Name { get; set; }
         public string HexColor { get; set; } = "0xFFFFFFFF";
         public string Emoji { get; set; }
-
         public required GroupModel Group { get; set; }
-
         public string? Description { get; set; }
-        
         public List<ReactionModel> Reactions { get; set; } = [];
-
         public required Visible Visible { get; set; }
 
-        //public List<string>? EventUsersLogins { get; set; } = new List<string>(); DEPRICATED
-
-
-        //[NotMapped]  // мне кажется я сделал супер тупо
-        //да не
-        
     }
 }

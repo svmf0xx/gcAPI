@@ -19,28 +19,28 @@ namespace gcapi.Controllers
             return await _objService.GetAllEventsAsync();
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetEventById")]
         public async Task<EventDto> GetEventById(Guid evId)
         {
             return await _objService.GetEventByIdAsync(evId);
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetEventsByGroup")]
         public async Task<List<EventDto>> GetEventsByGroup(Guid gId)
         {
             return await _objService.GetEventsByGroupAsync(gId);
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetUserEventsByDate")]
         public async Task<List<EventDto>> GetUserEventsByDate(Guid uId, DateTime date)
         {
             return await _objService.GetUserEventsByDate(uId, date);
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetUserEventsByMonth")]
         public async Task<List<EventDto>> GetUserEventsByMonth(Guid uId, DateTime date)
         {
@@ -54,7 +54,7 @@ namespace gcapi.Controllers
             return await _objService.GetAllPlanAsync();
         }
 
-        [HttpPut] //тут???? тут пут
+        [HttpPut]
         [Route("AddEvent")]
         public async Task<IActionResult> AddEvent(EventDto obj)
         {
@@ -89,7 +89,7 @@ namespace gcapi.Controllers
             return await _objService.AddReactionAsync(reaction);
         }
 
-        [HttpGet] //пост???? (это же буквально геттеры) ну туда же постится id
+        [HttpGet]
         [Route("GetUserPlans")]
         public async Task<IEnumerable<PlanDto>> GetUserPlans(Guid userId)
         {

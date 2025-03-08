@@ -10,27 +10,6 @@ namespace gcapi.Dto
     {
         public Guid? Id { get; set; }
         public CalObjectDto CalendarObject { get; set; }
-        //public PlanDto(PlanModel plan, Guid id)
-        //{
-        //    Id = plan.Id;
-        //    CalendarObject = new CalObjectDto()
-        //    {
-        //        Owner = new OwnerDto
-        //        {
-        //            Id = plan.Owner.Id,
-        //            FirstName = plan.Owner.FirstName,
-        //            SecondName = plan.Owner.SecondName,
-        //            Username = plan.Owner.Username
-        //        },
-        //        DateTimeFrom = plan.DateTimeFrom,
-        //        DateTimeTo = plan.DateTimeTo,
-        //        Name = plan.Name,
-        //        Visible = plan.Visible,
-        //        Emoji = plan.Emoji,
-        //        HexColor = plan.HexColor,
-        //        Description = plan.Description
-        //    };
-        //}
 
         public PlanDto(PlanModel plan)
         {
@@ -54,8 +33,8 @@ namespace gcapi.Dto
             };
         }
 
-        public PlanDto() //без этого всё сломается
-        {                //ну логично, это как сказать что есть влад которому надо дать инсулин, но нет просто влада
+        public PlanDto()
+        {
         }
     }
 }

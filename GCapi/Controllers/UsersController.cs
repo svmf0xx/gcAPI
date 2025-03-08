@@ -13,7 +13,7 @@ namespace gcapi.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpGet]
-        [Route("GetAllUsers")] //зачем в каждом методе писать Users, если вся эта ветка называется api/Users
+        [Route("GetAllUsers")]
         public async Task<IEnumerable<UserModel>> GetUsers()
         {
             return await _userService.GetAllUsersAsync();

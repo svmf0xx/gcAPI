@@ -15,7 +15,7 @@ namespace gcapi.Interfaces.Services
         public Task<GroupDto?> GetGroup(Guid grId);
         //invite
         Task<string> GetInvite(Guid grId, Guid userId);
-        Task<Guid?> CheckInvite(string code, Guid userId); //при возврате null возвращается StatusCode не 200, а 204, поэтому удобнее работать с апи
+        Task<Guid?> CheckInvite(string code, Guid userId);
         Task<GroupStatisticDto?> GetGroupStatistic(Guid groupId);
     }
 }
