@@ -130,5 +130,13 @@ namespace gcapi.Controllers
         {
             return await _objService.GetGroupPlansByTimerange(groupId, from, to);
         }
+
+        [HttpGet]
+        [Route("GetReactionsForEvent")]
+        public async Task<List<ReactionDto>> GetReactionsForEvent(Guid eventId)
+        {
+            return await _objService.GetReactionsForEvent(eventId);
+        }
     }
 }
+
