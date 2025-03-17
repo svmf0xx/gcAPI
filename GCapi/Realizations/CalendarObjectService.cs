@@ -38,7 +38,7 @@ namespace gcapi.Realizations
                 };
                 foreach (var react in theGroup.GroupUsers)
                 {
-                    newEvent.Reactions.Add(new ReactionModel { OwnerId = react.Id, Reaction = Enums.Reaction.None });
+                    newEvent.Reactions.Add(new ReactionModel { OwnerId = react.Id, Reaction = Reaction.None });
                 }
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
@@ -50,14 +50,14 @@ namespace gcapi.Realizations
             }
         }
 
-        public async Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to)
+        public async Task<List<PlanDto>> GetGroupPlansByTimerange(Guid groupId, DateTime dateFrom, DateTime dateTo)
         {
             var theGroup = await _context.GroupTable.Include(g => g.GroupUsers).FirstOrDefaultAsync(g => g.Id == groupId);
             if (theGroup != null)
             {
                 var plans = await _context.PlanTable
                     .Include(p => p.Owner)
-                    .Where(p => theGroup.GroupUsers.Contains(p.Owner) && p.DateTimeFrom < to && p.DateTimeTo > from) // && p.Visible != Visible.Private
+                    .Where(p => theGroup.GroupUsers.Contains(p.Owner) && (p.DateTimeFrom >= dateFrom && p.DateTimeFrom <= dateTo || p.DateTimeTo >= dateFrom && p.DateTimeTo <= dateTo)) // && p.Visible != Visible.Private
                     .Select(p => new PlanDto(p))
                     .ToListAsync();
 
@@ -112,6 +112,21 @@ namespace gcapi.Realizations
             return new BadRequestObjectResult("Ивента не существует");
         }
 
+        public async Task<IActionResult> AddReactionAsync(AddReactionDto reaction)
+        {
+            var theEvent = await _context.EventTable.Include(e => e.Reactions).FirstOrDefaultAsync(e => e.Id == reaction.EventId);
+            if (theEvent != null)
+            {
+                var r = theEvent.Reactions.Find(r => r.OwnerId == reaction.OwnerId);
+                r.Reaction = reaction.Reaction;
+                _context.Update(r);
+                _context.Update(theEvent);
+                await _context.SaveChangesAsync();
+                return new OkResult();
+            }
+            return new BadRequestResult();
+        }
+
         public async Task<IActionResult> EditPlanAsync(PlanDto obj)
         {
 
@@ -157,7 +172,7 @@ namespace gcapi.Realizations
         public async Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId)
         {
             //var theUser = await _context.UserTable.FindAsync(userId);
-            List<PlanDto> plans = await _context.PlanTable.Include(p=>p.Owner).Where(p => p.Owner.Id == userId).Select(plan => new PlanDto(plan)).ToListAsync();
+            List<PlanDto> plans = await _context.PlanTable.Include(p => p.Owner).Where(p => p.Owner.Id == userId).Select(plan => new PlanDto(plan)).ToListAsync();
             return plans;
         }
 
@@ -203,31 +218,11 @@ namespace gcapi.Realizations
             return events;
         }
 
-        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
-        {
-            var theUser = await _context.UserTable.FindAsync(userId);
-            var plans = await _context.PlanTable.Include(p => p.Owner)
-                .Where(p => p.DateTimeFrom >= date && p.DateTimeFrom <= date.AddDays(8) && p.Owner.Id == userId)
-                .Select(p => new PlanDto(p))
-                .ToListAsync();
-            return plans;
-        }
-
-        public async Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date)
-        {
-            var theUser = await _context.UserTable.FindAsync(userId);
-            var plans = await _context.PlanTable.Include(p => p.Owner)
-                .Where(p => p.DateTimeFrom == date && p.Owner.Id == userId)
-                .Select(p => new PlanDto(p))
-                .ToListAsync();
-            return plans;
-        }
-
         public async Task<List<PlanDto>> GetUserPlansByTimerange(Guid userId, DateTime dateFrom, DateTime dateTo)
         {
             var theUser = await _context.UserTable.FindAsync(userId);
             var plans = await _context.PlanTable.Include(p => p.Owner)
-                .Where(p => p.Owner.Id == userId && 
+                .Where(p => p.Owner.Id == userId &&
                 (p.DateTimeFrom >= dateFrom && p.DateTimeFrom <= dateTo || p.DateTimeTo >= dateFrom && p.DateTimeTo <= dateTo))
                 .Select(p => new PlanDto(p))
                 .ToListAsync();
@@ -266,6 +261,27 @@ namespace gcapi.Realizations
                 .ToListAsync();
 
             return plans;
+        }
+
+        public async Task<List<ReactionDto>> GetReactionsForEvent(Guid eventId)
+        {
+            var ev = await _context.EventTable.Include(e => e.Reactions).FirstOrDefaultAsync(e => e.Id == eventId);
+            var ids = ev.Reactions.Select(r => r.OwnerId);
+            var theUsers = await _context.UserTable.Where(u => ids.Contains(u.Id)).ToListAsync();
+            var result = new List<ReactionDto>();
+            foreach (var r in ev.Reactions)
+            {
+                var u = theUsers.Find(u => u.Id == r.OwnerId);
+                result.Add(new ReactionDto
+                {
+                    Reaction = r.Reaction,
+                    OwnerFirstName = u.FirstName,
+                    OwnerSecondName = u.SecondName,
+                    OwnerUsername = u.Username,
+                    OwnerEmoji = u.Emoji,
+                });
+            }
+            return result;
         }
 
         public async Task<IActionResult> RemoveEventAsync(Guid id)

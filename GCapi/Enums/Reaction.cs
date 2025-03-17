@@ -3,9 +3,9 @@
     public enum Reaction
     {
         None = 0,
-        Happy,
-        Angry,
-        Sad,
-        Hmm
+        Positive,
+        Negative,
+        Neutral,
+        Uncertain
     }
 }

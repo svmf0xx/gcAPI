@@ -23,7 +23,7 @@ namespace gcapi.Realizations
         {
             try
             {
-                var theUser = await _context.UserTable.FindAsync(user.Username);
+                var theUser = await _context.UserTable.FirstOrDefaultAsync(u => u.Username == user.Username);
                 if (theUser != null)
                 {
                     theUser.FirstName = user.FirstName;
@@ -31,6 +31,8 @@ namespace gcapi.Realizations
                     theUser.Email = user.Email;
                     theUser.TgId = user.TgId;
                     theUser.Emoji = user.Emoji;
+                    _context.Update(theUser);
+                    await _context.SaveChangesAsync();
                     return new OkResult();
                 }
                 return new BadRequestObjectResult("Пользователя не существует");
@@ -47,7 +49,7 @@ namespace gcapi.Realizations
                     //.Include(u => u.Groups)
                     //.Include(u => u.Plans)
                     //.Include(u => u.Events)
-                    .ToListAsync(); //с базой в >10 это будет очень глупый метод (миллион данных за один запрос)
+                    .ToListAsync();
         }
 
         public async Task<UserDto?> GetUserByTgId(long tgid)

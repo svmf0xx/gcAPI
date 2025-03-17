@@ -51,6 +51,28 @@ namespace gcapi.Realizations
 
         public bool CheckLogin(string login) => _context.UserTable.Where(u => u.Username == login).ToList().Any();
 
+        RecoverUserTokenDto getTokenDto(UserModel theUser)
+        {
+            var secret = new OtpUri(OtpType.Totp, Base32Convert.ToBytes(theUser.Secret), theUser.Username).ToString();
+            return new RecoverUserTokenDto
+            {
+                Email = theUser.Email,
+                Secret = secret,
+                FirstName = theUser.FirstName
+            };
+        }
+        public async Task<RecoverUserTokenDto> RecoverUserToken(Guid userId)
+        {
+            var theUser = await _context.UserTable.FindAsync(userId);
+            return getTokenDto(theUser);
+        }
+
+        public async Task<RecoverUserTokenDto> RecoverUserToken(string name)
+        {
+            var theUser = await _context.UserTable.FirstOrDefaultAsync(u => u.Username == name);
+            return getTokenDto(theUser);
+        }
+
         public static string GenerateToken(int N)
         {
 

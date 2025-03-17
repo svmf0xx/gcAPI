@@ -1,4 +1,5 @@
 ﻿using gcapi.Dto;
+using gcapi.Enums;
 using gcapi.Interfaces;
 using gcapi.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,28 +19,28 @@ namespace gcapi.Controllers
             return await _objService.GetAllEventsAsync();
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetEventById")]
         public async Task<EventDto> GetEventById(Guid evId)
         {
             return await _objService.GetEventByIdAsync(evId);
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetEventsByGroup")]
         public async Task<List<EventDto>> GetEventsByGroup(Guid gId)
         {
             return await _objService.GetEventsByGroupAsync(gId);
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetUserEventsByDate")]
         public async Task<List<EventDto>> GetUserEventsByDate(Guid uId, DateTime date)
         {
             return await _objService.GetUserEventsByDate(uId, date);
         }
 
-        [HttpGet] //зачем???? 
+        [HttpGet]
         [Route("GetUserEventsByMonth")]
         public async Task<List<EventDto>> GetUserEventsByMonth(Guid uId, DateTime date)
         {
@@ -53,7 +54,7 @@ namespace gcapi.Controllers
             return await _objService.GetAllPlanAsync();
         }
 
-        [HttpPut] //тут???? тут пут
+        [HttpPut]
         [Route("AddEvent")]
         public async Task<IActionResult> AddEvent(EventDto obj)
         {
@@ -81,7 +82,14 @@ namespace gcapi.Controllers
             return await _objService.EditPlanAsync(ev);
         }
 
-        [HttpGet] //пост???? (это же буквально геттеры) ну туда же постится id
+        [HttpPost]
+        [Route("AddReactionToEvent")]
+        public async Task<IActionResult> AddReactionToEvent(AddReactionDto reaction)
+        {
+            return await _objService.AddReactionAsync(reaction);
+        }
+
+        [HttpGet]
         [Route("GetUserPlans")]
         public async Task<IEnumerable<PlanDto>> GetUserPlans(Guid userId)
         {
@@ -110,39 +118,25 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllPlansByDay")]
-        public async Task<List<PlanDto>> GetAllPlansByDay(Guid userId, DateTime date)
-        {
-            return await _objService.GetAllPlansByDay(userId, date);
-        }
-
-
-        [HttpGet]
-        [Route("GetUserPlansByDay")]
-        public async Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date)
-        {
-            return await _objService.GetUserPlansByDay(userId, date);
-        }
-
-        [HttpGet]
-        [Route("GetUserPlansByWeek")]
-        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date)
-        {
-            return await _objService.GetUserPlansByWeek(userId, date);
-        }
-
-        [HttpGet]
         [Route("GetUserPlansByRange")]
-        public async Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime dateFrom, DateTime dateTo)
+        public async Task<List<PlanDto>> GetUserPlansByRange(Guid userId, DateTime dateFrom, DateTime dateTo)
         {
             return await _objService.GetUserPlansByTimerange(userId, dateFrom, dateTo);
         }
 
         [HttpGet]
-        [Route("CheckPlansOverlapEvent")]
-        public async Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to)
+        [Route("GetGroupPlansByTimerange")]
+        public async Task<List<PlanDto>> GetGroupPlansByTimerange(Guid groupId, DateTime from, DateTime to)
         {
-            return await _objService.CheckPlansOverlapEvent(groupId, from, to);
+            return await _objService.GetGroupPlansByTimerange(groupId, from, to);
+        }
+
+        [HttpGet]
+        [Route("GetReactionsForEvent")]
+        public async Task<List<ReactionDto>> GetReactionsForEvent(Guid eventId)
+        {
+            return await _objService.GetReactionsForEvent(eventId);
         }
     }
 }
+

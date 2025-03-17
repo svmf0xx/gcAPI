@@ -8,7 +8,7 @@ namespace gcapi.Interfaces.Services
     {
         Task<IActionResult> AddEventAsync(EventDto obj);
         Task<IActionResult> AddPlanAsync(PlanDto obj);
-        Task<List<PlanDto>> CheckPlansOverlapEvent(Guid groupId, DateTime from, DateTime to);
+        Task<IActionResult> AddReactionAsync(AddReactionDto reaction);
         Task<IActionResult> EditEventAsync(EventDto obj);
         Task<IActionResult> EditPlanAsync(PlanDto obj);
         Task<IEnumerable<EventDto>> GetAllEventsAsync();
@@ -18,12 +18,12 @@ namespace gcapi.Interfaces.Services
         Task<IEnumerable<PlanDto>> GetAllUserPlansAsync(Guid userId);
         Task<EventDto> GetEventByIdAsync(Guid id);
         Task<List<EventDto>> GetEventsByGroupAsync(Guid id);
+        Task<List<PlanDto>> GetGroupPlansByTimerange(Guid groupId, DateTime dateFrom, DateTime dateTo);
+        Task<List<ReactionDto>> GetReactionsForEvent(Guid eventId);
         Task<List<EventModel>> GetUserEventsAsync(Guid userId);
         Task<List<EventDto>> GetUserEventsByDate(Guid userId, DateTime date);
         Task<List<EventDto>> GetUserEventsByMonth(Guid userId, DateTime date);
-        Task<List<PlanDto>> GetUserPlansByDay(Guid userId, DateTime date);
         Task<List<PlanDto>> GetUserPlansByTimerange(Guid userId, DateTime dateFrom, DateTime dateTo);
-        Task<List<PlanDto>> GetUserPlansByWeek(Guid userId, DateTime date);
         Task<IActionResult> RemoveEventAsync(Guid id);
         Task<IActionResult> RemovePlanAsync(Guid id);
     }
