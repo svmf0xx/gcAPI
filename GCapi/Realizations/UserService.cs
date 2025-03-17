@@ -49,7 +49,7 @@ namespace gcapi.Realizations
                     //.Include(u => u.Groups)
                     //.Include(u => u.Plans)
                     //.Include(u => u.Events)
-                    .ToListAsync(); //с базой в >10 это будет очень глупый метод (миллион данных за один запрос)
+                    .ToListAsync();
         }
 
         public async Task<UserDto?> GetUserByTgId(long tgid)

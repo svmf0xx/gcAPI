@@ -71,9 +71,6 @@ namespace gcapi.Controllers
         [Route("GetInvite")]
         public async Task<string> GetInvite(Guid grId, Guid userId)
         {
-            //либо берётся из базы существующий инвайт для данного пользователя, обновлется ExpiredAt
-            //либо создается новый
-            //ну если вышло время то новый, а если нет то обновляется ExpiredAt
             return await _groupService.GetInvite(grId, userId);
         }
 
@@ -81,8 +78,6 @@ namespace gcapi.Controllers
         [Route("CheckInvite")]
         public async Task<Guid?> CheckInvite(string invite, Guid userId)
         {
-            //Если инвайт существует, пользователь добавляется в группу, пользователю добавляется группа
-            //высылается guid группы
             return await _groupService.CheckInvite(invite, userId);
         }
     }

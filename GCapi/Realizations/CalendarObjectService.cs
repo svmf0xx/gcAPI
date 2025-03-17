@@ -263,6 +263,27 @@ namespace gcapi.Realizations
             return plans;
         }
 
+        public async Task<List<ReactionDto>> GetReactionsForEvent(Guid eventId)
+        {
+            var ev = await _context.EventTable.Include(e => e.Reactions).FirstOrDefaultAsync(e => e.Id == eventId);
+            var ids = ev.Reactions.Select(r => r.OwnerId);
+            var theUsers = await _context.UserTable.Where(u => ids.Contains(u.Id)).ToListAsync();
+            var result = new List<ReactionDto>();
+            foreach (var r in ev.Reactions)
+            {
+                var u = theUsers.Find(u => u.Id == r.OwnerId);
+                result.Add(new ReactionDto
+                {
+                    Reaction = r.Reaction,
+                    OwnerFirstName = u.FirstName,
+                    OwnerSecondName = u.SecondName,
+                    OwnerUsername = u.Username,
+                    OwnerEmoji = u.Emoji,
+                });
+            }
+            return result;
+        }
+
         public async Task<IActionResult> RemoveEventAsync(Guid id)
         {
             try
