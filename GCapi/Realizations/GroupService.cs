@@ -146,34 +146,40 @@ namespace gcapi.Realizations
         }
 
 
-        public async Task<IActionResult> RemoveGroup(Guid id)
+        public async Task<IActionResult> LeaveGroup(Guid userId, Guid groupId)
         {
-            var theGroup = await _context.GroupTable.FindAsync(id);
-            if (theGroup != null)
+            var theGroup = await _context.GroupTable.Include(g => g.GroupUsers).FirstOrDefaultAsync(g => g.Id == groupId);
+            if (theGroup == null)
             {
-                var theEvents = await _context.EventTable.Include(e => e.Reactions).Where(ev => theGroup.GroupEvents.Contains(ev)).ToListAsync();
-                var theUsers = await _context.UserTable.Where(u => theGroup.GroupUsers.Contains(u)).ToListAsync();
-
-                foreach (var theUser in theUsers)
-                {
-                    foreach (var theEvent in theEvents)
-                    {
-                        theUser.Events.Remove(theEvent);
-                        foreach (var r in theEvent.Reactions)
-                        {
-                            _context.Remove(r);
-                        }
-                        _context.Remove(theEvent);
-                        _context.Update(theUser);
-                    }
-                    theUser.Groups.Remove(theGroup);
-                }
-                _context.GroupTable.Remove(theGroup);
-                await _context.SaveChangesAsync();
-                return new OkResult();
+                return new BadRequestObjectResult("Группы не существует");
             }
-            else return new BadRequestObjectResult("Группы не существует");
 
+            var theUser = await _context.UserTable.Include(u => u.Events).FirstOrDefaultAsync(u => u.Id == userId);
+            if (theUser == null || !theGroup.GroupUsers.Contains(theUser))
+            {
+                return new BadRequestObjectResult("Пользователь не в группе");
+            }
+
+            theGroup.GroupUsers.Remove(theUser);
+            theUser.Groups.Remove(theGroup);
+            _context.Update(theUser);
+            _context.Update(theGroup);
+
+            if (!theGroup.GroupUsers.Any())
+            {
+                var theEvents = await _context.EventTable.Include(e => e.Reactions).Where(ev => ev.Group.Id == theGroup.Id).ToListAsync();
+
+                foreach (var theEvent in theEvents)
+                {
+                    _context.RemoveRange(theEvent.Reactions);
+                    _context.EventTable.Remove(theEvent);
+                }
+
+                _context.GroupTable.Remove(theGroup);
+            }
+
+            await _context.SaveChangesAsync();
+            return new OkResult();
         }
 
 

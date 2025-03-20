@@ -61,10 +61,10 @@ namespace gcapi.Controllers
         }
 
         [HttpDelete]
-        [Route("RemoveGroup")]
-        public async Task<IActionResult> RemoveGroup(Guid grId)
+        [Route("LeaveGroup")]
+        public async Task<IActionResult> LeaveGroup(Guid userId, Guid groupId)
         {
-            return await _groupService.RemoveGroup(grId);
+            return await _groupService.LeaveGroup(userId, groupId);
         }
 
         [HttpGet]
