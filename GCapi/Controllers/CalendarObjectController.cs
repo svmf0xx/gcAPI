@@ -41,10 +41,10 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
-        [Route("GetUserEventsByMonth")]
-        public async Task<List<EventDto>> GetUserEventsByMonth(Guid uId, DateTime date)
+        [Route("GetUserEventsByRange")]
+        public async Task<List<EventDto>> GetUserEventsByRange(Guid uId, DateTime dateFrom, DateTime dateTo)
         {
-            return await _objService.GetUserEventsByMonth(uId, date);
+            return await _objService.GetUserEventsByRange(uId, dateFrom, dateTo);
         }
 
         [HttpGet]
@@ -111,31 +111,10 @@ namespace gcapi.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllPlansByMonth")]
-        public async Task GetAllPlansByMonth(Guid userId, DateTime date)
-        {
-            await _objService.GetAllPlansByMonth(userId, date);
-        }
-
-        [HttpGet]
         [Route("GetUserPlansByRange")]
         public async Task<List<PlanDto>> GetUserPlansByRange(Guid userId, DateTime dateFrom, DateTime dateTo)
         {
             return await _objService.GetUserPlansByTimerange(userId, dateFrom, dateTo);
-        }
-
-        [HttpGet]
-        [Route("GetGroupPlansByTimerange")]
-        public async Task<List<PlanDto>> GetGroupPlansByTimerange(Guid groupId, DateTime from, DateTime to)
-        {
-            return await _objService.GetGroupPlansByTimerange(groupId, from, to);
-        }
-
-        [HttpGet]
-        [Route("GetReactionsForEvent")]
-        public async Task<List<ReactionDto>> GetReactionsForEvent(Guid eventId)
-        {
-            return await _objService.GetReactionsForEvent(eventId);
         }
     }
 }

@@ -208,11 +208,15 @@ namespace gcapi.Realizations
                 .ToListAsync();
             return events;
         }
-        public async Task<List<EventDto>> GetUserEventsByMonth(Guid userId, DateTime date)
+        public async Task<List<EventDto>> GetUserEventsByRange(Guid userId, DateTime dateFrom, DateTime dateTo)
         {
             var theUser = await _context.UserTable.FindAsync(userId);
-            var events = await _context.EventTable.Include(e => e.Owner).Include(e => e.Group)
-                .Where(e => e.DateTimeFrom.Month == date.Month && e.Reactions.Any(r => r.OwnerId == userId))
+            var events = await _context.EventTable
+                .Include(e => e.Owner)
+                .Include(e => e.Reactions)
+                .Include(e => e.Group)
+                .Where(e => e.Owner.Id == userId &&
+                (e.DateTimeFrom >= dateFrom && e.DateTimeFrom <= dateTo || e.DateTimeTo >= dateFrom && e.DateTimeTo <= dateTo))
                 .Select(e => new EventDto(e))
                 .ToListAsync();
             return events;
