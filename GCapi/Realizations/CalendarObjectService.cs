@@ -222,7 +222,7 @@ namespace gcapi.Realizations
                 .Include(e => e.Owner)
                 .Include(e => e.Reactions)
                 .Include(e => e.Group)
-                .Where(e => e.Owner.Id == userId &&
+                .Where(e => e.Reactions.Any(r => r.OwnerId == userId) &&
                 (e.DateTimeFrom >= dateFrom && e.DateTimeFrom <= dateTo || e.DateTimeTo >= dateFrom && e.DateTimeTo <= dateTo))
                 .Select(e => new EventDto(e)).ToListAsync();
             foreach (var ev in events)
