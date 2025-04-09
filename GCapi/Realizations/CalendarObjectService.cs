@@ -289,6 +289,7 @@ namespace gcapi.Realizations
                 result.Add(new ReactionDto
                 {
                     Reaction = r.Reaction,
+                    OwnerId = r.OwnerId,
                     OwnerFirstName = u.FirstName,
                     OwnerSecondName = u.SecondName,
                     OwnerUsername = u.Username,

@@ -8,6 +8,7 @@ namespace gcapi.Dto
     {
         public Reaction Reaction { get; set; } = Reaction.None;
         public string? OwnerFirstName { get; set; }
+        public Guid OwnerId { get; set; }
         public string? OwnerSecondName { get; set; }
         public string? OwnerUsername { get; set; }
         public string? OwnerEmoji { get; set; }
