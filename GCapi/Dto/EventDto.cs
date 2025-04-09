@@ -5,15 +5,14 @@ namespace gcapi.Dto
 {
     public class EventDto
     {
-        public Guid? Id { get; set; }
-        public List<ReactionModel> Reactions { get; set; } = [];
+        public Guid Id { get; set; }
+        public List<ReactionDto> Reactions { get; set; } = [];
         public Guid GroupId { get; set; }
         public string? GroupName { get; set; }
         public CalObjectDto CalendarObject { get; set; }
         public EventDto(EventModel ev)
         {
             Id = ev.Id;
-            Reactions = ev.Reactions;
             GroupId = ev.Group.Id;
             GroupName = ev.Group.Name;
             CalendarObject = new CalObjectDto()

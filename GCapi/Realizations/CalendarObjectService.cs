@@ -191,7 +191,10 @@ namespace gcapi.Realizations
                 .Where(e => e.Group == theGroup)
                 .Select(e => new EventDto(e))
                 .ToListAsync();
-
+            foreach (var ev in events)
+            {
+                ev.Reactions = await GetReactionsForEvent(ev.Id);
+            }
             return events;
         }
         public async Task<List<EventModel>> GetUserEventsAsync(Guid userId)
@@ -206,6 +209,10 @@ namespace gcapi.Realizations
                 .Where(e => e.DateTimeFrom.Date == date.Date && e.Reactions.Any(r => r.OwnerId == userId))
                 .Select(e => new EventDto(e))
                 .ToListAsync();
+            foreach (var ev in events)
+            {
+                ev.Reactions = await GetReactionsForEvent(ev.Id);
+            }
             return events;
         }
         public async Task<List<EventDto>> GetUserEventsByRange(Guid userId, DateTime dateFrom, DateTime dateTo)
@@ -217,8 +224,11 @@ namespace gcapi.Realizations
                 .Include(e => e.Group)
                 .Where(e => e.Owner.Id == userId &&
                 (e.DateTimeFrom >= dateFrom && e.DateTimeFrom <= dateTo || e.DateTimeTo >= dateFrom && e.DateTimeTo <= dateTo))
-                .Select(e => new EventDto(e))
-                .ToListAsync();
+                .Select(e => new EventDto(e)).ToListAsync();
+            foreach (var ev in events)
+            {
+                ev.Reactions = await GetReactionsForEvent(ev.Id);
+            }
             return events;
         }
 
