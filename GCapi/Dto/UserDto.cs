@@ -7,14 +7,14 @@ namespace gcapi.Dto
 
     public class UserDto
     {
-        public Guid Id { get; set; }
-        public string FirstName { get; set; }
+        public Guid? Id { get; set; }
+        public string? FirstName { get; set; }
         public string? SecondName { get; set; }
-        public string Emoji { get; set; } = "😘";
+        public string? Emoji { get; set; } = "😘";
         public string? Email { get; set; }
-        public string Username { get; set; }
-        public long TgId { get; set; }
-        public Roles Role { get; set; }
+        public string? Username { get; set; }
+        public long? TgId { get; set; }
+        public Roles? Role { get; set; }
         public int? TimeZone { get; set; }
 
         public UserDto(UserModel user)
@@ -30,6 +30,6 @@ namespace gcapi.Dto
             Emoji = user.Emoji;
         }
 
-
+        public UserDto() { }
     }
 }
