@@ -116,6 +116,13 @@ namespace gcapi.Controllers
         {
             return await _objService.GetUserPlansByTimerange(userId, dateFrom, dateTo);
         }
+        
+        [HttpGet]
+        [Route("GetGroupPlansByTimerange")]
+        public async Task<List<PlanDto>> GetGroupPlansByTimerange(Guid groupId, DateTime dateFrom, DateTime dateTo)
+        {
+            return await _objService.GetGroupPlansByTimerange(groupId, dateFrom, dateTo);
+        }
     }
 }
 
