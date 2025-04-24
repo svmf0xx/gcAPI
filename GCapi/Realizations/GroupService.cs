@@ -261,7 +261,6 @@ namespace gcapi.Realizations
                 var events = await _context.EventTable.Include(e => e.Reactions).Where(e => e.Group == inv.Group).ToListAsync();
                 foreach (var ev in events)
                 {
-                    user.Events.Add(ev);
                     ev.Reactions.Add(new ReactionModel { OwnerId = user.Id, Reaction = Enums.Reaction.None });
                     _context.Update(ev);
                 }
