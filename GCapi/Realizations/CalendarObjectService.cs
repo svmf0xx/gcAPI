@@ -12,11 +12,12 @@ namespace gcapi.Realizations
     public class CalendarObjectService : ICalendarObjectService
     {
         private readonly gContext _context;
-        public CalendarObjectService(gContext context)
+        private readonly ISignalRHub _signalRHub;
+        public CalendarObjectService(gContext context, ISignalRHub signalRHub)
         {
             _context = context;
+            _signalRHub = signalRHub;
         }
-
 
         public async Task<IActionResult> AddEventAsync(EventDto obj)
         {
@@ -42,6 +43,7 @@ namespace gcapi.Realizations
                 }
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
+                await _signalRHub.SendMessageToAll("Писька!!!!!");
                 return new OkResult();
             }
             catch (Exception ex)

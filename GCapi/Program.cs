@@ -41,12 +41,14 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<gContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSignalR();
 
 //DI Containers
 builder.Services.AddTransient<ICalendarObjectService, CalendarObjectService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<ISignalRHub, SignalRHub>();
 
 
 var app = builder.Build();
@@ -59,6 +61,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+app.MapHub<SignalRHub>("/signalRHub");
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
