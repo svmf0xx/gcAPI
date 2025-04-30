@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using gcapi.Dto;
+using gcapi.Models;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace gcapi.Realizations
 {
@@ -11,9 +14,15 @@ namespace gcapi.Realizations
             _hubContext = hubContext;
         }
 
-        public async Task SendToAll(string message)
+        public async Task SendNewEventNotification(string eventName, GroupModel theGroup)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", message);
+            var message = new
+            {
+                eventName = eventName,
+                groupName = theGroup.Name,
+                userIds = theGroup.GroupUsers.Select(u => u.Id).ToList()
+            };
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", JsonConvert.SerializeObject(message));
         }
     }
 }

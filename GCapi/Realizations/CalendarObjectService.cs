@@ -8,12 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.HttpResults;
 using gcapi.Enums;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 namespace gcapi.Realizations
 {
     public class CalendarObjectService : ICalendarObjectService
     {
         private readonly gContext _context;
         private readonly SignalRService _signalRService;
+        private const string _separator = ", ";
         public CalendarObjectService(gContext context, SignalRService signalRService)
         {
             _context = context;
@@ -44,7 +46,14 @@ namespace gcapi.Realizations
                 }
                 _context.Add(newEvent);
                 await _context.SaveChangesAsync();
-                await _signalRService.SendToAll("sosiska");
+
+                var notificationInfo = new
+                {
+                    eventName = newEvent.Name,
+                    groupName = theGroup.Name,
+                    userIds = theGroup.GroupUsers.Select(u => u.Id).ToList()
+                };
+                await _signalRService.SendNewEventNotification(newEvent.Name, theGroup);
                 return new OkResult();
             }
             catch (Exception ex)
