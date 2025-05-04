@@ -15,13 +15,12 @@ namespace gcapi.Realizations
     {
         private readonly gContext _context;
         private readonly SignalRService _signalRService;
-        private readonly INotificationService _notificationService;
+
         private const string _separator = ", ";
-        public CalendarObjectService(gContext context, SignalRService signalRService, INotificationService notificationService)
+        public CalendarObjectService(gContext context, SignalRService signalRService)
         {
             _context = context;
             _signalRService = signalRService;
-            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> AddEventAsync(EventDto obj)
@@ -55,8 +54,8 @@ namespace gcapi.Realizations
                     groupName = theGroup.Name,
                     userIds = theGroup.GroupUsers.Select(u => u.Id).ToList()
                 };
-                //await _signalRService.SendNewEventNotification(newEvent.Name, theGroup);
-                await _notificationService.SendToTopicAsync("1", "ТЕстим жеско", "жеско тестим");
+                await _signalRService.SendNewEventNotification(newEvent.Name, theGroup);
+                //await _notificationService.SendToTopicAsync("1", "ТЕстим жеско", "жеско тестим");
                 return new OkResult();
             }
             catch (Exception ex)
