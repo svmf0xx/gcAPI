@@ -48,6 +48,7 @@ builder.Services.AddTransient<ICalendarObjectService, CalendarObjectService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<INotificationService, NotificationService>();
 builder.Services.AddSingleton<SignalRService>();
 
 var app = builder.Build();
