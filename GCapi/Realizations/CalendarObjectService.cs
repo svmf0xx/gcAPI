@@ -54,7 +54,7 @@ namespace gcapi.Realizations
                     groupName = theGroup.Name,
                     userIds = theGroup.GroupUsers.Select(u => u.Id).ToList()
                 };
-                await _signalRService.SendNewEventNotification(newEvent.Name, theGroup, newEvent.Owner);
+                await _signalRService.SendNewEventNotification(newEvent.Name, theGroup, newEvent.Owner.Id);
                 return new OkResult();
             }
             catch (Exception ex)
