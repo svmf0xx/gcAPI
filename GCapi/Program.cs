@@ -13,14 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowGcal", policy =>
+    {
+        policy
+            .WithOrigins("https://groupcalendar.ru")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     { 
@@ -52,7 +53,7 @@ builder.Services.AddSingleton<SignalRService>();
 
 var app = builder.Build();
 
-
+app.UseCors("AllowGcal");
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
